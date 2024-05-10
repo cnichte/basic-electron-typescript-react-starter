@@ -42,7 +42,7 @@ npm outdated
 ncu
 ```
 
-be careful when updating…
+be careful when updating.
 
 ```bash
 ncu -u
@@ -50,6 +50,13 @@ ncu -u
 ncu -i
 # or
 ncu -i --format group
+```
+
+updating eslint, causes problems. I have to wait until all installed dependent packages are updated.
+
+```bash
+Major   Potentially breaking API changes
+❯ ◯ eslint  ^8.0.1  →  ^9.2.0
 ```
 
 ## History
@@ -104,7 +111,7 @@ publish has to be setup.
 
 Guide: [electronforge.io/guides/framework-integration/react-with-typescript](https://www.electronforge.io/guides/framework-integration/react-with-typescript)
 
-```
+```bash
 npm install --save react react-dom
 npm install --save-dev @types/react @types/react-dom
 ```
@@ -198,13 +205,4 @@ Warning during `npm run make`
 
 ```bash
 (node:43477) [DEP0174] DeprecationWarning: Calling promisify on a function that returns a Promise is likely a mistake.
-```
-
-updating eslint, causes problems...
-
-```bash
-Major   Potentially breaking API changes
-❯ ◯ @typescript-eslint/eslint-plugin  ^5.0.0  →  ^7.8.0
-  ◯ @typescript-eslint/parser         ^5.0.0  →  ^7.8.0
-  ◯ eslint                            ^8.0.1  →  ^9.2.0
 ```
