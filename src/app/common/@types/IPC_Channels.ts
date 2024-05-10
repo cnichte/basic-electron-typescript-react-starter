@@ -1,0 +1,1 @@
+export type IPC_Channels = "ipc-database" | "ipc-settings";
