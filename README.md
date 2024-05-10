@@ -17,6 +17,17 @@ rm -rf .git*
 git init
 ```
 
+run the commands:
+
+```bash
+npm start
+# builds a zip in /out/make/zip/darwin/arm64
+# you have to extract the zip an lauch the executable file
+npm run make
+# publish on github (has to be setup)
+npm run publish
+```
+
 ## History
 
 How i set this up...
@@ -50,11 +61,9 @@ ignoring these (for now), and continue with:
 ```bash
 # start the app - works
 npm start
-# builds a zip in /out/make/zip/darwin/arm64
-# you have to extract the zip an lauch the executable file
-# works with warnings
+# make the app - works
 npm run make
-# publish on github
+# publish on github (has to be setup)
 npm run publish
 ```
 
