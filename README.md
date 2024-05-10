@@ -106,14 +106,23 @@ npm install --save-dev @types/node
 
 This is for Synology Diskstation, but you can also set up a local Docker for example with [Docker-Desktop](https://www.docker.com/products/docker-desktop/), or [create Docker Container in VS-Code](https://code.visualstudio.com/docs/containers/overview).
 
-* Log in to DSM of your diskstation as admin (this is  Webapp)
-* Create the folders with the File Station `docker-data/mariadb/data`
-* folder
-* Container-Manager aufrufen
+* Log in to DSM of your Diskstation as admin (this is  Webapp)
+* Create the folders with the `File-Station` App: `docker-data/mariadb/data`
+  * Its very important that the `data` folder has enough user-rights!
+    * in File-Station
+    * Select folder `docker-data` on the left
+    * In the right pane, select `mariadb`
+    * Action > Properties
+    * Permissions tab
+    * Create
+    * Select `Everyone`
+    * Assign the rights
+    * save
+* Launch the `Container-Manager` App
   * Project
-  * create button
+  * push the `create` button...
     * Name: mariadb
-    * Path: /volume1/docker-data/mariadb/
+    * Path: `/volume1/docker-data/mariadb/`
     * The yaml is stored there.
   * Source: Docker-compse yaml `upload` or `create`
   * Copy the following code. Or upload the file with the code:
