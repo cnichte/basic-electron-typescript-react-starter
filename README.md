@@ -10,13 +10,12 @@ clone git from <https://github.com/cnichte/basic-electron-typescript-react-start
 
 ```bash
 npm install
-# remove the git
+# backup the .gitignore (rename it)
+# then remove the git:
 rm -rf .git*
-# init your own
+# and init your own:
 git init
 ```
-
-
 
 ## History
 
@@ -96,9 +95,9 @@ npm install --save-dev @types/node
 
 ## create a database
 
-This is for Synology Diskstation.
+This is for Synology Diskstation, but you can also set up a local Docker for example with [Docker-Desktop](https://www.docker.com/products/docker-desktop/), or [create Docker Container in VS-Code](https://code.visualstudio.com/docs/containers/overview).
 
-* Log in to DSM as admin.
+* Log in to DSM of your diskstation as admin (this is  Webapp)
 * Create the folders with the File Station `docker-data/mariadb/data`
 * folder
 * Container-Manager aufrufen
@@ -149,13 +148,13 @@ INSERT INTO projects (project_id, project_name, begin_date, end_date, cost, crea
 
 works
 
-### update for outdated packages
+### UPDATE OUTDATED PACKAGES
 
 ```bash
 npx npm-check-updates
 ```
 
-there is some outdated stuff
+there is some outdated stuff...
 
 ```bash
  @typescript-eslint/eslint-plugin   ^5.0.0  →   ^7.8.0
@@ -170,20 +169,43 @@ there is some outdated stuff
  typescript                         ~4.5.4  →   ~5.4.5
 ```
 
-be careful when updating:
+be careful when updating...
 
 ```bash
 npx npm-check-updates -u
 npm install
 ```
 
-failed... Force:
+this failed with
 
 ```bash
-npm install --force or --legacy-peer-deps
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: basic-electron-typescript-react-starter@1.0.0
+npm error Found: eslint@9.2.0
+npm error node_modules/eslint
+npm error   dev eslint@"^9.2.0" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer eslint@"^8.56.0" from @typescript-eslint/parser@7.8.0
+npm error node_modules/@typescript-eslint/parser
+npm error   dev @typescript-eslint/parser@"^7.8.0" from the root project
+npm error   peer @typescript-eslint/parser@"^7.0.0" from @typescript-eslint/eslint-plugin@7.8.0
+npm error   node_modules/@typescript-eslint/eslint-plugin
+npm error     dev @typescript-eslint/eslint-plugin@"^7.8.0" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /Users/user/.npm/_logs/2024-05-10T13_05_50_318Z-eresolve-report.txt
+
+npm error A complete log of this run can be found in: /Users/user/.npm/_logs/2024-05-10T13_05_50_318Z-debug-0.log
 ```
 
-there are some problems now
 
 ### Issues (so far)
 
