@@ -6,12 +6,11 @@
 
 ## Use the Repo
 
-clone git from https://github.com/cnichte/basic-electron-typescript-react-starter.git
+clone git from <https://github.com/cnichte/basic-electron-typescript-react-starter.git>
 
 ```bash
 npm install
 ```
-
 
 ## History
 
@@ -71,8 +70,8 @@ Guide: [electronforge.io/guides/framework-integration/react-with-typescript](htt
 npm install --save react react-dom
 npm install --save-dev @types/react @types/react-dom
 ```
-works
 
+works
 
 ### Adding IPC Support
 
@@ -89,11 +88,62 @@ npm install --save mysql2
 npm install --save-dev @types/node
 ```
 
+## create a database
+
+This is for Synology Diskstation.
+
+* Log in to DSM as admin.
+* Create the folders with the File Station `docker-data/mariadb/data`
+* folder
+* Container-Manager aufrufen
+  * Project
+  * create button
+    * Name: mariadb
+    * Path: /volume1/docker-data/mariadb/
+    * The yaml is stored there.
+  * Source: Docker-compse yaml `upload` or `create`
+  * Copy the following code. Or upload the file with the code:
+
+```yaml
+# Use root/password as user/password credentials
+# Use user/password as user/password credentials for mydatabase
+# you have to create /volume1/docker-data/mariadb/data
+version: '3.1'
+services:
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - /volume1/docker-data/mariadb/data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+```
+
+you have to create a example table and add records in the db.
+
+```sql
+create table projects(
+    project_id int auto_increment,
+    project_name varchar(255) not null,
+    begin_date date,
+    end_date date,
+    cost decimal(15,2) not null,
+    created_at timestamp default current_timestamp,
+    primary key(project_id)
+);
+
+INSERT INTO projects (project_id, project_name, begin_date, end_date, cost, created_at) VALUES (1, 'Testprojekt Nummer 1', null, null, 100.00, '2024-05-09 21:00:55');
+INSERT INTO projects (project_id, project_name, begin_date, end_date, cost, created_at) VALUES (2, 'Projekt 2', null, null, 50.00, '2024-05-09 21:01:58');
+```
+
 works
 
-
 ### update for outdated packages
-
 
 ```bash
 npx npm-check-updates
@@ -101,7 +151,7 @@ npx npm-check-updates
 
 there is some outdated stuff
 
-```
+```bash
  @typescript-eslint/eslint-plugin   ^5.0.0  →   ^7.8.0
  @typescript-eslint/parser          ^5.0.0  →   ^7.8.0
  css-loader                         ^6.0.0  →   ^7.1.1
