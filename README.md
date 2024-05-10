@@ -199,3 +199,12 @@ Warning during `npm run make`
 ```bash
 (node:43477) [DEP0174] DeprecationWarning: Calling promisify on a function that returns a Promise is likely a mistake.
 ```
+
+updating eslint, causes problems...
+
+```bash
+Major   Potentially breaking API changes
+❯ ◯ @typescript-eslint/eslint-plugin  ^5.0.0  →  ^7.8.0
+  ◯ @typescript-eslint/parser         ^5.0.0  →  ^7.8.0
+  ◯ eslint                            ^8.0.1  →  ^9.2.0
+```
