@@ -20,6 +20,7 @@ git init
 run the commands:
 
 ```bash
+#start the app
 npm start
 # builds a zip in /out/make/zip/darwin/arm64
 # you have to extract the zip an lauch the executable file
