@@ -31,6 +31,25 @@ npm run publish
 
 Should run without errors.
 
+## Update outdated packages
+
+check for updates
+
+```bash
+npm outdated
+#or npx npm-check-updates
+ncu
+```
+
+be carefull when upgrading:
+
+```bash
+# use space to deselect, and enter to start the upgrade
+ncu -i
+# or
+ncu -i --format group
+```
+
 ## History
 
 How i set this up...
@@ -170,65 +189,6 @@ INSERT INTO projects (project_id, project_name, begin_date, end_date, cost, crea
 ```
 
 works
-
-### UPDATE OUTDATED PACKAGES
-
-```bash
-npx npm-check-updates
-```
-
-there is some outdated stuff...
-
-```bash
- @typescript-eslint/eslint-plugin   ^5.0.0  →   ^7.8.0
- @typescript-eslint/parser          ^5.0.0  →   ^7.8.0
- css-loader                         ^6.0.0  →   ^7.1.1
- eslint                             ^8.0.1  →   ^9.2.0
- eslint-plugin-import              ^2.25.0  →  ^2.29.1
- fork-ts-checker-webpack-plugin    ^7.2.13  →   ^9.0.2
- style-loader                       ^3.0.0  →   ^4.0.0
- ts-loader                          ^9.2.2  →   ^9.5.1
- ts-node                           ^10.0.0  →  ^10.9.2
- typescript                         ~4.5.4  →   ~5.4.5
-```
-
-be careful when updating...
-
-```bash
-npx npm-check-updates -u
-npm install
-```
-
-this failed with
-
-```bash
-npm error code ERESOLVE
-npm error ERESOLVE unable to resolve dependency tree
-npm error
-npm error While resolving: basic-electron-typescript-react-starter@1.0.0
-npm error Found: eslint@9.2.0
-npm error node_modules/eslint
-npm error   dev eslint@"^9.2.0" from the root project
-npm error
-npm error Could not resolve dependency:
-npm error peer eslint@"^8.56.0" from @typescript-eslint/parser@7.8.0
-npm error node_modules/@typescript-eslint/parser
-npm error   dev @typescript-eslint/parser@"^7.8.0" from the root project
-npm error   peer @typescript-eslint/parser@"^7.0.0" from @typescript-eslint/eslint-plugin@7.8.0
-npm error   node_modules/@typescript-eslint/eslint-plugin
-npm error     dev @typescript-eslint/eslint-plugin@"^7.8.0" from the root project
-npm error
-npm error Fix the upstream dependency conflict, or retry
-npm error this command with --force or --legacy-peer-deps
-npm error to accept an incorrect (and potentially broken) dependency resolution.
-npm error
-npm error
-npm error For a full report see:
-npm error /Users/user/.npm/_logs/2024-05-10T13_05_50_318Z-eresolve-report.txt
-
-npm error A complete log of this run can be found in: /Users/user/.npm/_logs/2024-05-10T13_05_50_318Z-debug-0.log
-```
-
 
 ### Issues (so far)
 
