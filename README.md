@@ -33,18 +33,20 @@ Should run without errors.
 
 ## Update outdated packages
 
-check for updates
+check for outdated packages
 
 ```bash
+# check 
 npm outdated
-#or npx npm-check-updates
+# or: npx npm-check-updates
 ncu
 ```
 
-be carefull when upgrading:
+be careful when updating…
 
 ```bash
-# use space to deselect, and enter to start the upgrade
+ncu -u
+#or - with space to deselect, and enter to execute
 ncu -i
 # or
 ncu -i --format group
