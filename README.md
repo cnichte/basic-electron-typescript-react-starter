@@ -28,6 +28,8 @@ npm run make
 npm run publish
 ```
 
+Should run without errors.
+
 ## History
 
 How i set this up...
@@ -102,7 +104,9 @@ npm install --save mysql2
 npm install --save-dev @types/node
 ```
 
-## create a database
+works
+
+#### create a database
 
 This is for Synology Diskstation, but you can also set up a local Docker for example with [Docker-Desktop](https://www.docker.com/products/docker-desktop/), or [create Docker Container in VS-Code](https://code.visualstudio.com/docs/containers/overview).
 
