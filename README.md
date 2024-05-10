@@ -10,7 +10,13 @@ clone git from <https://github.com/cnichte/basic-electron-typescript-react-start
 
 ```bash
 npm install
+# remove the git
+rm -rf .git*
+# init your own
+git init
 ```
+
+
 
 ## History
 
