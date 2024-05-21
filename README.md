@@ -38,8 +38,10 @@ check for outdated packages
 ```bash
 # check 
 npm outdated
-# or: npx npm-check-updates
+# or better use: npx npm-check-updates
 ncu
+# install ncu if absent
+npm i npm-check-updates
 ```
 
 be careful when updating.
