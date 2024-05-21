@@ -42,9 +42,10 @@ npm outdated
 ncu
 # install ncu if absent
 npm i npm-check-updates
+# Doc: https://github.com/raineorshine/npm-check-updates
 ```
 
-be careful when updating.
+be careful when updating. I do a quick local backup before updating.
 
 ```bash
 ncu -u
@@ -54,7 +55,7 @@ ncu -i
 ncu -i --format group
 ```
 
-updating eslint, causes problems. I have to wait until all installed dependent packages are updated.
+In this case updating eslint, causes problems. I have to wait until all installed dependent packages are updated.
 
 ```bash
 Major   Potentially breaking API changes

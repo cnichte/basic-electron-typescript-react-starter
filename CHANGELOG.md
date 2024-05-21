@@ -26,8 +26,6 @@ Patch   Backwards-compatible bug fixes
 ❯ ◉ @vercel/webpack-asset-relocator-loader   1.7.3  →  1.7.4
 Major   Potentially breaking API changes
   ◯ eslint                                  ^8.0.1  → ^9.3.0
-
-
 ```
 
 ## Release 1.0.0
