@@ -37,7 +37,7 @@ const createWindow = (): void => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools(); // TODO Comment out DevTools for production.
 };
 
 async function register_IPC_Listeners() {
