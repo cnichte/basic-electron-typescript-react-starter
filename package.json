@@ -1,7 +1,7 @@
 {
   "name": "basic-electron-typescript-react-starter",
-  "productName": "basic-electron-typescript-react-starter",
-  "version": "1.0.0",
+  "productName": "My Electron App",
+  "version": "0.0.1",
   "description": "A up-to-date starting point for my Electron Apps.",
   "main": ".webpack/main",
   "scripts": {
