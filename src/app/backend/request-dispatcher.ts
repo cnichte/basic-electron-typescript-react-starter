@@ -1,3 +1,5 @@
+import { ipcMain } from "electron";
+import { Database } from "./database";
 
 /**
  * dispatches all the ipc requests from the frontend,
@@ -9,6 +11,14 @@ export class Request_Dispatcher {
     }
 
     public dispatch_requests(): void{
-        console.log("Dispatch all the requests from the frontend");
+        
+        ipcMain.on("ipc-database", async (event, arg) => {
+            console.log("\n\n######################################################");
+            console.log(`Request received from frontend: `, arg);
+            const database = new Database();
+            database.test();
+        
+            console.log("------------------------------------------------------");
+          });
     }
 }
