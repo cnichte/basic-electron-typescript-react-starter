@@ -1,4 +1,5 @@
 import { IpcRendererEvent, contextBridge, ipcRenderer } from "electron";
+import { IElectronAPI } from "./app/IElectronAPI"
 import { IPC_Channels } from "./app/common/types/IPC_Channels";
 
 /**
@@ -17,6 +18,36 @@ import { IPC_Channels } from "./app/common/types/IPC_Channels";
  * 
  * TODO https://www.jsgarden.co/blog/how-to-handle-electron-ipc-events-with-typescript
  */
+
+// See the Electron documentation for details on how to use preload scripts:
+// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+
+
+const electronAPI: IElectronAPI = {
+    asyncPing: () => ipcRenderer.send("asyncPing"),
+    syncPing: () => ipcRenderer.sendSync("syncPing"),
+    handlePing: () => ipcRenderer.invoke("handlePing"),
+    handlePingWithError: () => ipcRenderer.invoke("handlePingWithError"),
+    sendMessage(channel: IPC_Channels, ...args: unknown[]) {
+      ipcRenderer.send(channel, ...args);
+    }
+}
+
+contextBridge.exposeInMainWorld('electronAPI', electronAPI)
+
+ipcRenderer.on('asyncPong', (event, args) => {
+    console.log("asyncPong received");
+    const asyncResponseElement = document.getElementById('asyncPingResponse');
+    asyncResponseElement.textContent = args;
+})
+
+console.log("preload complete");
+
+
+
+
+
+/*
 export type ContextBridgeApi = {
   sendMessage(channel: IPC_Channels, ...args: unknown[]): void;
   on(channel: IPC_Channels, func: (...args: unknown[]) => void ):void;
@@ -50,3 +81,4 @@ export const api: any = {
 };
 
 contextBridge.exposeInMainWorld("app_api", api);
+*/

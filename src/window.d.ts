@@ -1,4 +1,5 @@
-import { api } from "./preload";
+import { IElectronAPI } from "./app/IElectronAPI"
+
 /**
  * TypeScript doesn't know that we are extending the Window (see preload.ts) of our renderer process
  * and we need to explicitely tell it, that we have a new typed property defined on our window.
@@ -7,6 +8,6 @@ import { api } from "./preload";
  */
 declare global {
   interface Window {
-    app_api: typeof api;
+    electronAPI: IElectronAPI
   }
 }

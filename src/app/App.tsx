@@ -5,7 +5,7 @@ function MyButton() {
 
   function handleClick() {
     setCount(count + 1);
-    window.app_api.ipc.sendMessage('ipc-database', 'A Request from render-process.');
+    window.electronAPI.sendMessage('ipc-database', 'A Request from render-process.');
     console.log('Message sent! Check main process log in terminal.')
   }
 
