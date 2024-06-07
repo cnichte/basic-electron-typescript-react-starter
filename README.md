@@ -57,7 +57,14 @@ ncu -i --format group
 
 In this case updating eslint, causes problems. I have to wait until all installed dependent packages are updated.
 
+Dont update:
+
 ```bash
+Patch   Backwards-compatible bug fixes
+❯ ◉ @vercel/webpack-asset-relocator-loader    1.7.3  →    1.7.4
+Minor   Backwards-compatible features
+  ◯ @typescript-eslint/eslint-plugin        ^7.10.0  →  ^7.12.0
+❯ ◯ @typescript-eslint/parser               ^7.10.0  →  ^7.12.0
 Major   Potentially breaking API changes
 ❯ ◯ eslint  ^8.0.1  →  ^9.2.0
 ```

@@ -893,10 +893,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@^20.12.12", "@types/node@^20.9.0":
-  version "20.12.12"
-  resolved "https://registry.npmjs.org/@types/node/-/node-20.12.12.tgz"
-  integrity sha512-eWLDGF/FOSPtAvEqeRAQ4C8LSA7M1I7i0ky1I8U7kD1J5ITyW3AsRhQrKVoWf5pFKZ2kILsEGJhsI9r93PYnOw==
+"@types/node@*", "@types/node@^20.14.2", "@types/node@^20.9.0":
+  version "20.14.2"
+  resolved "https://registry.npmjs.org/@types/node/-/node-20.14.2.tgz"
+  integrity sha512-xyu6WAMVwv6AKFLB+e/7ySZVr/0zLCzOa7rSpq6jNwpqOrUbcACDWC+53d4n2QHOnDou0fbIsg8wZu/sxrnI4Q==
   dependencies:
     undici-types "~5.26.4"
 
@@ -922,10 +922,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^18.3.2":
-  version "18.3.2"
-  resolved "https://registry.npmjs.org/@types/react/-/react-18.3.2.tgz"
-  integrity sha512-Btgg89dAnqD4vV7R3hlwOxgqobUQKgx3MmrQRi0yYbs/P0ym8XozIAlkqVilPqHQwXs4e9Tf63rrCgl58BcO4w==
+"@types/react@*", "@types/react@^18.3.3":
+  version "18.3.3"
+  resolved "https://registry.npmjs.org/@types/react/-/react-18.3.3.tgz"
+  integrity sha512-hti/R0pS0q1/xx+TsI73XIqk26eBsISZ2R0wUijXIngRK9R/e7Xw/cXVxQK7R5JjW+SV4zGcn5hXjudkN/pLIw==
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
@@ -2025,10 +2025,10 @@ cross-zip@^4.0.0:
   resolved "https://registry.npmjs.org/cross-zip/-/cross-zip-4.0.1.tgz"
   integrity sha512-n63i0lZ0rvQ6FXiGQ+/JFCKAUyPFhLQYJIqKaa+tSJtfKeULF/IDNDAbdnSIxgS4NTuw2b0+lj8LzfITuq+ZxQ==
 
-css-loader@^7.1.1:
-  version "7.1.1"
-  resolved "https://registry.npmjs.org/css-loader/-/css-loader-7.1.1.tgz"
-  integrity sha512-OxIR5P2mjO1PSXk44bWuQ8XtMK4dpEqpIyERCx3ewOo3I8EmbcxMPUc5ScLtQfgXtOojoMv57So4V/C02HQLsw==
+css-loader@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.npmjs.org/css-loader/-/css-loader-7.1.2.tgz"
+  integrity sha512-6WvYYn7l/XEGN8Xu2vWFt9nVzrCn39vKyTEFf/ExEyoksJjjSZV/0/35XPlMbpnr6VGhZIUg5yJrL8tGfes/FA==
   dependencies:
     icss-utils "^5.1.0"
     postcss "^8.4.33"
@@ -2384,10 +2384,10 @@ electron-winstaller@^5.3.0:
   optionalDependencies:
     "@electron/windows-sign" "^1.1.2"
 
-electron@30.0.6:
-  version "30.0.6"
-  resolved "https://registry.npmjs.org/electron/-/electron-30.0.6.tgz"
-  integrity sha512-PkhEPFdpYcTzjAO3gMHZ+map7g2+xCrMDedo/L1i0ir2BRXvAB93IkTJX497U6Srb/09r2cFt+k20VPNVCdw3Q==
+electron@30.1.0:
+  version "30.1.0"
+  resolved "https://registry.npmjs.org/electron/-/electron-30.1.0.tgz"
+  integrity sha512-9O8m7kinjwMH5Df0hpXbwUaqI6pk3aJm1sKQUkQGCF7NDbNkGhu2BXgqaicPU6oe26zQPc5vtwWnHmiKlh1hYA==
   dependencies:
     "@electron/get" "^2.0.0"
     "@types/node" "^20.9.0"
@@ -4449,10 +4449,10 @@ multicast-dns@^7.2.5:
     dns-packet "^5.2.2"
     thunky "^1.0.2"
 
-mysql2@^3.9.7:
-  version "3.9.7"
-  resolved "https://registry.npmjs.org/mysql2/-/mysql2-3.9.7.tgz"
-  integrity sha512-KnJT8vYRcNAZv73uf9zpXqNbvBG7DJrs+1nACsjZP1HMJ1TgXEy8wnNilXAn/5i57JizXKtrUtwDB7HxT9DDpw==
+mysql2@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.npmjs.org/mysql2/-/mysql2-3.10.0.tgz"
+  integrity sha512-qx0mfWYt1DpTPkw8mAcHW/OwqqyNqBLBHvY5IjN8+icIYTjt6znrgYJ+gxqNNRpVknb5Wc/gcCM4XjbCR0j5tw==
   dependencies:
     denque "^2.1.0"
     generate-function "^2.3.1"
