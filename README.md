@@ -66,7 +66,9 @@ ncu -i
 ncu -i --format group
 ```
 
-In this case updating eslint, causes problems. I have to wait until all installed dependent packages are updated.
+> [!WARNING]
+> In this case updating all `eslint` stuff, causes problems.
+> I have to wait until all installed dependent packages are updated.
 
 Dont update:
 
@@ -221,6 +223,8 @@ INSERT INTO projects (project_id, project_name, begin_date, end_date, cost, crea
 works
 
 ### PouchDB
+
+* <https://pouchdb.com/guides/>
 
 ```bash
 npm install pouchdb
