@@ -10,21 +10,20 @@ export class Request_Dispatcher {
 
   public dispatch_requests(): void {
     ipcMain.on("ipc-database", async (event, arg) => {
-      console.log("\n\n######################################################");
-      console.log(`Request received from frontend: `, arg);
-      const database = new Database();
-      database.test();
-
-      console.log("------------------------------------------------------");
+      // console.log("\n\n######################################################");
+      console.log(`MAIN says: Request received from frontend: `, arg);
+      // const database = new Database();
+      // database.test();
+      // console.log("------------------------------------------------------");
     });
 
     ipcMain.on("asyncPing", (event, args) => {
       console.log("MAIN says: asyncPing received");
-      event.sender.send("asyncPong", "asyncPong");
+      event.sender.send("asyncPong", "main sends: asyncPong");
     });
     ipcMain.on("syncPing", (event, args) => {
       console.log("MAIN says: syncPing received");
-      event.returnValue = "syncPong";
+      event.returnValue = "main sends: syncPong";
     });
     ipcMain.handle("handlePing", (event, args) => {
       console.log("MAIN says: handlePing received");

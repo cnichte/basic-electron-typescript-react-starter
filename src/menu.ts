@@ -5,6 +5,7 @@ import {
   BrowserWindow,
   MenuItemConstructorOptions,
 } from "electron";
+import { App_Info } from "./app/App_Info";
 
 /**
  * Build up a Menu.
@@ -15,8 +16,7 @@ import {
  * Is from
  * - https://github.com/electron-react-boilerplate/electron-react-boilerplate
  */
-interface DarwinMenuItemConstructorOptions
-  extends MenuItemConstructorOptions {
+interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
   submenu?: DarwinMenuItemConstructorOptions[] | Menu;
 }
@@ -25,6 +25,8 @@ export interface Menu_Links {
   label: string;
   link: string;
 }
+
+app.setAboutPanelOptions(App_Info.MY_ABOUT_PANEL_OPTIONS);
 
 export class MenuBuilder {
   mainWindow: BrowserWindow;
@@ -44,17 +46,16 @@ export class MenuBuilder {
     this.help_links_prod = help_links_prod;
   }
 
-  build_help_menu(help_links:Menu_Links[]):any[] {
-    const submenu:any = [];
+  build_help_menu(help_links: Menu_Links[]): any[] {
+    const submenu: any = [];
 
     for (const help_link of help_links) {
-
       submenu.push({
         label: help_link.label,
         click() {
           shell.openExternal(help_link.link);
         },
-      });      
+      });
     }
     return submenu;
   }
@@ -93,6 +94,7 @@ export class MenuBuilder {
     });
   }
 
+  // Customize AboutMe Dialog: https://www.electronjs.org/docs/latest/api/app#appsetaboutpaneloptionsoptions
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
       label: this.app_name,

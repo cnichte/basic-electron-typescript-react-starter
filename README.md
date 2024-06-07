@@ -33,13 +33,14 @@ Should run without errors.
 
 ## Update outdated packages
 
-check for outdated packages
+check for outdated packages:
 
 ```bash
 # check 
 npm outdated
 # or better use: npx npm-check-updates
 ncu
+# or even better: ncu
 # install ncu if absent
 npm i npm-check-updates
 # Doc: https://github.com/raineorshine/npm-check-updates

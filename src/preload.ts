@@ -1,11 +1,11 @@
 import { IpcRendererEvent, contextBridge, ipcRenderer } from "electron";
-import { IElectronAPI } from "./app/IElectronAPI"
+import { IElectronAPI } from "./app/IElectronAPI";
 import { IPC_Channels } from "./app/common/types/IPC_Channels";
 
 /**
  * See the Electron documentation for details on how to use preload scripts:
  * https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
- * 
+ *
  * The preload script contains code that runs
  * before your web page is loaded into the browser window.
  * It has access to both DOM APIs and Node.js environment,
@@ -15,37 +15,31 @@ import { IPC_Channels } from "./app/common/types/IPC_Channels";
  * Electron apps often use the preload script
  * to set up inter-process communication (IPC) interfaces
  * to pass arbitrary messages between the main and render.
- * 
+ *
  * TODO https://www.jsgarden.co/blog/how-to-handle-electron-ipc-events-with-typescript
  */
 
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-
 const electronAPI: IElectronAPI = {
-    asyncPing: () => ipcRenderer.send("asyncPing"),
-    syncPing: () => ipcRenderer.sendSync("syncPing"),
-    handlePing: () => ipcRenderer.invoke("handlePing"),
-    handlePingWithError: () => ipcRenderer.invoke("handlePingWithError"),
-    sendMessage(channel: IPC_Channels, ...args: unknown[]) {
-      ipcRenderer.send(channel, ...args);
-    }
-}
+  asyncPing: () => ipcRenderer.send("asyncPing"),
+  syncPing: () => ipcRenderer.sendSync("syncPing"),
+  handlePing: () => ipcRenderer.invoke("handlePing"),
+  handlePingWithError: () => ipcRenderer.invoke("handlePingWithError"),
+  sendMessage(channel: IPC_Channels, ...args: unknown[]) {
+    ipcRenderer.send(channel, ...args);
+  },
+};
 
-contextBridge.exposeInMainWorld('electronAPI', electronAPI)
+contextBridge.exposeInMainWorld("electronAPI", electronAPI);
 
-ipcRenderer.on('asyncPong', (event, args) => {
-    console.log("asyncPong received");
-    const asyncResponseElement = document.getElementById('asyncPingResponse');
-    asyncResponseElement.textContent = args;
-})
+// das macht Probleme. Kann nur hier verwendet werden?
+ipcRenderer.on("asyncPong", (event, args) => {
+  console.log("renderer-preload: asyncPong received");
+});
 
 console.log("preload complete");
-
-
-
-
 
 /*
 export type ContextBridgeApi = {
