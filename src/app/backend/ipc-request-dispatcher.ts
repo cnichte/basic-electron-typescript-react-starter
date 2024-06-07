@@ -9,7 +9,7 @@ import { DatabaseCRUD_Interface } from "./database-types";
  *
  * @see https://www.electronjs.org/docs/latest/tutorial/ipc
  */
-export class Request_Dispatcher {
+export class IPC_Request_Dispatcher {
   pouchdb: DatabaseCRUD_Interface;
   mysqldb: DatabaseCRUD_Interface;
 
@@ -51,7 +51,7 @@ export class Request_Dispatcher {
     console.log("################################################");
   }
 
-  public dispatch_requests(): void {
+  public dispatch_ipc_requests(): void {
     //! Pattern 1: Renderer to main (one-way)
     ipcMain.on("ipc-database", async (event, arg) => {
       // console.log("\n\n######################################################");
