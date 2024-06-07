@@ -3,8 +3,8 @@
 * A minimalistic (as possible) startingpoint, following the official guides, and avoiding some pitfalls.
 * It was important to me that all dependent packages are up to date.
 * I didn't test the app for all possible and impossible scenarios, only for my very specific requirements.
-  * Explore the Electron Inter-Process Communication (IPC)
-  * Execute CRUD operations via the IPC protocol.
+  * Explore the [Electron Inter-Process Communication](https://www.electronjs.org/de/docs/latest/tutorial/ipc) (IPC), especialy the [Message ports](https://www.electronjs.org/de/docs/latest/tutorial/message-ports)
+  * Execute CRUD-Operations via the IPC-Protocol.
 
 it bundles latest
 
