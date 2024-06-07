@@ -72,8 +72,7 @@ ncu -i --format group
 > [!WARNING]
 > In this case updating all `eslint` stuff, causes problems.
 > I have to wait until all installed dependent packages are updated.
-
-Dont update:
+> Dont update:
 
 ```bash
 Patch   Backwards-compatible bug fixes
