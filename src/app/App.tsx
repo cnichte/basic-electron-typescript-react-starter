@@ -1,6 +1,7 @@
 import { Tabs } from 'antd';
 import { Test_IPC } from './Test_IPC'
-import { Test_Database } from './Test_Database';
+import { View_Catalogs } from './View_Catalogs';
+import { View_Users } from './View_Users';
 
 export function App() {
   const onTabChange = (key: string) => {
@@ -20,10 +21,15 @@ export function App() {
             key: "1",
             children: Test_IPC(),
           },{
-            label: `Database Test`,
+            label: `Database-Test: Users`,
             key: "2",
-            children: Test_Database(),
+            children: View_Users(),
           },
+        {
+          label: `Database-Test: Catalogs`,
+          key: "3",
+          children: View_Catalogs(),
+        },
         ]}
       />
     </>

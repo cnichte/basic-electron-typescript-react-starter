@@ -1,0 +1,1 @@
+export type DocTypes = "user" | "catalog";

@@ -2,7 +2,6 @@ import { ipcMain } from "electron";
 import { Database_Mysql } from "./database-mysql";
 import { Database_Pouchdb } from "./database-pouchdb";
 import { DatabaseCRUD_Interface } from "./database-types";
-
 /**
  * dispatches all the ipc requests from the frontend,
  * to database commands.
@@ -16,18 +15,6 @@ export class IPC_Request_Dispatcher {
   constructor() {
     this.pouchdb = new Database_Pouchdb("pouchdb-test");
     // this.mysqldb = new Database_Mysql();
-    this.pouchdb
-      .initialize(true, false)
-      .then(function (response) {
-        console.log("------------------------------------------------------");
-        console.log("init-then: ", response);
-        console.log("------------------------------------------------------");
-      })
-      .catch(function (err) {
-        console.log("------------------------------------------------------");
-        console.log("init-error: ", err);
-        console.log("------------------------------------------------------");
-      });
   }
 
   public dispatch_ipc_requests(): void {
@@ -69,16 +56,16 @@ export class IPC_Request_Dispatcher {
     ipcMain.handle("ipc-database", async (event, arg) => {
       // console.log("\n\n######################################################");
       console.log(`MAIN says: Request received from frontend: `, arg);
-      const request = arg[0];
+      const req:any = arg[0];
 
       let result: Promise<any>;
 
-      switch (request) {
+      switch (req.request) {
         case `request:list-all`:
           result = new Promise((resolve, reject) => {
             this.pouchdb
               .readFromQuery({
-                selector: { docType: "my-doctype" },
+                selector: { docType: req.module },
               })
               .then(function (response) {
                 console.log("query-then: ", response);
@@ -94,7 +81,7 @@ export class IPC_Request_Dispatcher {
           });
           break;
         default:
-          console.log("unknown request", request);
+          result = Promise.reject(`unknown request: ${req.request}`);
       }
 
       return result;
