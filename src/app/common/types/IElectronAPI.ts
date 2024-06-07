@@ -1,4 +1,4 @@
-import { IPC_Channels } from "./common/types/IPC_Channels";
+import { IPC_Channels } from "./IPC_Channels";
 
 export interface IElectronAPI {
     //! Pattern 1: Renderer to main (one-way)

@@ -1,5 +1,5 @@
 import { IpcRendererEvent, contextBridge, ipcRenderer } from "electron";
-import { IElectronAPI } from "./app/IElectronAPI";
+import { IElectronAPI } from "./app/common/types/IElectronAPI";
 import { IPC_Channels } from "./app/common/types/IPC_Channels";
 
 /**

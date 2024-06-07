@@ -210,6 +210,26 @@ INSERT INTO projects (project_id, project_name, begin_date, end_date, cost, crea
 
 works
 
+### PouchDB
+
+```bash
+npm install pouchdb
+npm install pouchdb-find
+npm install pouchdb @types/pouchdb
+npm i uuid
+npm i --save-dev @types/uuid
+```
+
+tsconfig.json
+
+```js
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true
+  }
+}
+```
+
 ### Issues (so far)
 
 Warning during `npm run make`

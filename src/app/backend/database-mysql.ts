@@ -1,4 +1,5 @@
 import mysql, { ConnectionOptions } from "mysql2/promise";
+import { DatabaseCRUD_Interface } from "./database-types";
 
 /**
  * https://evertpot.com/executing-a-mysql-query-in-nodejs/
@@ -9,8 +10,35 @@ import mysql, { ConnectionOptions } from "mysql2/promise";
  * 
  * sqlite https://www.youtube.com/watch?v=c76FTxLRwAw
  */
-export class Database {
+export class Database_Mysql implements DatabaseCRUD_Interface {
   constructor() {}
+  initialize(exampleData: boolean, createViews: boolean): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  create(data: any): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  readFromQuery(query: Object): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  readFromID(uuid: string, options: any): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  readFromRelations(type: string, options: Object): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  readFromRelationsID(type: string, id: string): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  update(type: string, data: any): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  delete(type: string, data: any): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  deleteAll(): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
 
   public async test(): Promise<mysql.Connection> {
     let connection;
