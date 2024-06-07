@@ -4,7 +4,8 @@ import { Button, Flex, message } from "antd";
 export function App() {
   const [count, setCount] = useState(0);
 
-  /* one way render to main */
+  //! Pattern 1: Renderer to main (one-way)
+  // https://www.electronjs.org/docs/latest/tutorial/ipc#pattern-1-renderer-to-main-one-way
   function handleClick_1(): void {
     setCount(count + 1);
     window.electronAPI.sendMessage(
@@ -27,6 +28,8 @@ export function App() {
     message.info(response);
   }
 
+  //! Pattern 2: Renderer to main (two-way)
+  // https://www.electronjs.org/docs/latest/tutorial/ipc#pattern-2-renderer-to-main-two-way
   function handlePingButtonClicked() {
     console.log("renderer says: Handle Ping Clicked");
     window.electronAPI.handlePing().then((result: any) => {
@@ -49,26 +52,53 @@ export function App() {
       });
   }
 
+  //! Pattern 3: Main to renderer (see also main.ts)
+
+  const counter = document.getElementById("counter");
+
+  window.electronAPI.onUpdateCounter((value: any) => {
+    const oldValue = Number(counter.innerText);
+    const newValue = oldValue + value;
+    counter.innerText = newValue.toString();
+    window.electronAPI.counterValue(newValue);
+  });
+
   return (
     <>
-      <h1>Welcome to React</h1>
-      <p>IPC-Check</p>
+      <h1>Hi!</h1>
+
+      <p>Welcome to Electron + React + Antd + PouchDB.</p>
+
+      <h2>Electron Inter-Process Communication (IPC) Test</h2>
+
       <Flex vertical gap="small" style={{ width: "100%" }}>
+        <h3>Pattern 1: Renderer to main (one-way)</h3>
+
         <Button block onClick={() => handleClick_1()}>
-          Send Message to Backend: {count} times
+          asyncPing, done {count} times.
         </Button>
+
         <Button block onClick={() => asyncPingButtonClicked()}>
-          Async Ping
+          asyncPing to preload
         </Button>
         <Button block onClick={() => syncPingButtonClicked()}>
-          Sync Ping
+          syncPing
         </Button>
+
+        <h3>Pattern 2: Renderer to main (two-way)</h3>
+
         <Button block onClick={() => handlePingButtonClicked()}>
-          Ping
+          handlePing
         </Button>
         <Button block onClick={() => handlePingWithErrorButtonClicked()}>
-          Ping with Error
+          handlePing with Error
         </Button>
+
+        <h3>Pattern 3: Main to renderer</h3>
+        <p>Trigger in Electon-Menu (doesnt work for now)</p>
+        <p>
+          Current value is: <strong id="counter">0</strong>.
+        </p>
       </Flex>
     </>
   );

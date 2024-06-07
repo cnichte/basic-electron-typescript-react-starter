@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen } from "electron";
+import { app, BrowserWindow, Menu, screen } from "electron";
 import { MenuBuilder } from "./menu";
 import { App_Info } from "./app/App_Info";
 import { Request_Dispatcher } from "./app/backend/request-dispatcher";
@@ -43,6 +43,25 @@ const createWindow = (): void => {
     App_Info.HELP_LINKS_PROD
   );
   menuBuilder.buildMenu();
+
+  //! Pattern 3: Main to renderer
+  const menu = Menu.buildFromTemplate([
+    {
+      label: app.name,
+      submenu: [
+        {
+          click: () => mainWindow.webContents.send("update-counter", 1),
+          label: "Increment",
+        },
+        {
+          click: () => mainWindow.webContents.send("update-counter", -1),
+          label: "Decrement",
+        },
+      ],
+    },
+  ]);
+
+  Menu.setApplicationMenu(menu);
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);

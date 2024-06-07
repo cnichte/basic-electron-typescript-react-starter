@@ -23,13 +23,20 @@ import { IPC_Channels } from "./app/common/types/IPC_Channels";
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
 const electronAPI: IElectronAPI = {
-  asyncPing: () => ipcRenderer.send("asyncPing"),
-  syncPing: () => ipcRenderer.sendSync("syncPing"),
-  handlePing: () => ipcRenderer.invoke("handlePing"),
-  handlePingWithError: () => ipcRenderer.invoke("handlePingWithError"),
+  //! Pattern 1: Renderer to main (one-way)
   sendMessage(channel: IPC_Channels, ...args: unknown[]) {
     ipcRenderer.send(channel, ...args);
   },
+  asyncPing: () => ipcRenderer.send("asyncPing"),
+  syncPing: () => ipcRenderer.sendSync("syncPing"),
+
+  //! Pattern 2: Renderer to main (two-way)
+  handlePing: () => ipcRenderer.invoke("handlePing"),
+  handlePingWithError: () => ipcRenderer.invoke("handlePingWithError"),
+
+  //! Pattern 3: Main to renderer (see also main.ts)
+  onUpdateCounter: (callback) => ipcRenderer.on('update-counter', (_event, value) => callback(value)),
+  counterValue: (value) => ipcRenderer.send('counter-value', value),
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronAPI);
