@@ -4,6 +4,8 @@
 * It was important to me that all dependent packages are up to date.
 * I didn't test the app for all possible and impossible scenarios, only for my very specific requirements.
 
+![](readme-images/screenshot-001.png)
+
 ## Use the Repo
 
 clone git from <https://github.com/cnichte/basic-electron-typescript-react-starter.git>
