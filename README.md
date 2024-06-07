@@ -4,6 +4,14 @@
 * It was important to me that all dependent packages are up to date.
 * I didn't test the app for all possible and impossible scenarios, only for my very specific requirements.
 
+it bundles latest
+
+* Electron / Electron-Forge
+* Typescript
+* React
+* Antd
+* Pouchdb
+
 ![](readme-images/screenshot-001.png)
 
 ## Use the Repo
