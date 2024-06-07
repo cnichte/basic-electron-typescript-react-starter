@@ -3,6 +3,7 @@ import { IPC_Channels } from "./common/types/IPC_Channels";
 export interface IElectronAPI {
     //! Pattern 1: Renderer to main (one-way)
     sendMessage(channel: IPC_Channels, ...args: unknown[]): void;
+    
     asyncPing: () => void
     syncPing: () => string
 

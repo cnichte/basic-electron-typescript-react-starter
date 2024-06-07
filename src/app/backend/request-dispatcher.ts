@@ -44,7 +44,7 @@ export class Request_Dispatcher {
 
     //! Pattern 3: Main to renderer (see also main.ts)
     ipcMain.on('counter-value', (_event, value) => {
-      console.log("MAIN says: count-value:", value);
+      console.log("MAIN says: ", value);
     });
 
   }

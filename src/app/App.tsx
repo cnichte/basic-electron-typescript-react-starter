@@ -3,6 +3,7 @@ import { Button, Flex, message } from "antd";
 
 export function App() {
   const [count, setCount] = useState(0);
+  const [count2, setCount2] = useState(0);
 
   //! Pattern 1: Renderer to main (one-way)
   // https://www.electronjs.org/docs/latest/tutorial/ipc#pattern-1-renderer-to-main-one-way
@@ -57,10 +58,9 @@ export function App() {
   const counter = document.getElementById("counter");
 
   window.electronAPI.onUpdateCounter((value: any) => {
-    const oldValue = Number(counter.innerText);
-    const newValue = oldValue + value;
-    counter.innerText = newValue.toString();
-    window.electronAPI.counterValue(newValue);
+    console.log('renderer says: ', value);
+    setCount2((count2 + value));
+    window.electronAPI.counterValue(count2);
   });
 
   return (
@@ -95,9 +95,9 @@ export function App() {
         </Button>
 
         <h3>Pattern 3: Main to renderer</h3>
-        <p>Trigger in Electon-Menu (doesnt work for now)</p>
+        <p>Trigger in Electon-Menu</p>
         <p>
-          Current value is: <strong id="counter">0</strong>.
+          Current value is: <strong>{count2}</strong>.
         </p>
       </Flex>
     </>
