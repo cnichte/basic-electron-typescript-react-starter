@@ -6,11 +6,14 @@
 
 it bundles latest
 
-* Electron / Electron-Forge
-* Typescript
-* React
-* Antd
-* Pouchdb
+* [Electron](https://www.electronjs.org)
+* [Electron-Forge](https://www.electronforge.io)
+* [Typescript](https://www.typescriptlang.org)
+* [React](https://react.dev)
+* [Antd Design](https://ant.design)
+* [Pouchdb](https://pouchdb.com/guides/)
+
+## How it Looks
 
 ![](readme-images/screenshot-001.png)
 
