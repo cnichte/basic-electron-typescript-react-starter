@@ -37,6 +37,10 @@ const electronAPI: IElectronAPI = {
   //! Pattern 3: Main to renderer (see also main.ts)
   onUpdateCounter: (callback) => ipcRenderer.on('update-counter', (_event, value) => callback(value)),
   counterValue: (value) => ipcRenderer.send('counter-value', value),
+
+ //! Following Pattern 2 for the Database requests
+ request_data: (channel: IPC_Channels, ...args: unknown[]) => ipcRenderer.invoke(channel, ...args),
+
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronAPI);

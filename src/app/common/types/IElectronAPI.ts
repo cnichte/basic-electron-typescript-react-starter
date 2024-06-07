@@ -14,4 +14,7 @@ export interface IElectronAPI {
     //! Pattern 3: Main to renderer (see also main.ts)
     onUpdateCounter: (callback:any) => any;
     counterValue: (value:any) => any;
+
+    //! Following Pattern 2 for the Database requests
+    request_data: (channel: IPC_Channels, ...args: unknown[]) => Promise<any>
 }

@@ -15,40 +15,19 @@ export class IPC_Request_Dispatcher {
 
   constructor() {
     this.pouchdb = new Database_Pouchdb("pouchdb-test");
-    this.mysqldb = new Database_Mysql();
-
-    console.log("################################################");
+    // this.mysqldb = new Database_Mysql();
     this.pouchdb
       .initialize(true, false)
       .then(function (response) {
         console.log("------------------------------------------------------");
-        console.log('init-then: ',response);
+        console.log("init-then: ", response);
         console.log("------------------------------------------------------");
       })
       .catch(function (err) {
         console.log("------------------------------------------------------");
-        console.log('init-error: ',err);
+        console.log("init-error: ", err);
         console.log("------------------------------------------------------");
       });
-
-
-
-    this.pouchdb
-      .readFromQuery({
-        selector: { docType: "my-doctype" }
-      })
-      .then(function (response) {
-        console.log("------------------------------------------------------");
-        console.log('query-then: ',response);
-        console.log("------------------------------------------------------");
-      })
-      .catch(function (err) {
-        console.log("------------------------------------------------------");
-        console.log('query-error: ',err);
-        console.log("------------------------------------------------------");
-      });
-
-    console.log("################################################");
   }
 
   public dispatch_ipc_requests(): void {
@@ -84,6 +63,41 @@ export class IPC_Request_Dispatcher {
     //! Pattern 3: Main to renderer (see also main.ts)
     ipcMain.on("counter-value", (_event, value) => {
       console.log("MAIN says: ", value);
+    });
+
+    //! Following Pattern 2 for the Database requests
+    ipcMain.handle("ipc-database", async (event, arg) => {
+      // console.log("\n\n######################################################");
+      console.log(`MAIN says: Request received from frontend: `, arg);
+      const request = arg[0];
+
+      let result: Promise<any>;
+
+      switch (request) {
+        case `request:list-all`:
+          result = new Promise((resolve, reject) => {
+            this.pouchdb
+              .readFromQuery({
+                selector: { docType: "my-doctype" },
+              })
+              .then(function (response) {
+                console.log("query-then: ", response);
+                console.log("---------------------");
+                return resolve(response.docs);
+              })
+              .catch(function (err) {
+                console.log("---------------------");
+                console.log("query-error: ", err);
+                console.log("---------------------");
+                return reject(err);
+              });
+          });
+          break;
+        default:
+          console.log("unknown request", request);
+      }
+
+      return result;
     });
   }
 }
