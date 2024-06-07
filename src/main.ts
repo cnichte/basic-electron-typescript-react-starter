@@ -44,25 +44,6 @@ const createWindow = (): void => {
   );
   menuBuilder.buildMenu();
 
-  //! Pattern 3: Main to renderer
-  const menu = Menu.buildFromTemplate([
-    {
-      label: app.name,
-      submenu: [
-        {
-          click: () => mainWindow.webContents.send("update-counter", 1),
-          label: "Increment",
-        },
-        {
-          click: () => mainWindow.webContents.send("update-counter", -1),
-          label: "Decrement",
-        },
-      ],
-    },
-  ]);
-
-  Menu.setApplicationMenu(menu);
-
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 

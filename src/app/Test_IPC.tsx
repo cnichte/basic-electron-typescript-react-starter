@@ -92,7 +92,7 @@ export function Test_IPC() {
           </Button>
   
           <h3>Pattern 3: Main to renderer</h3>
-          <p>Trigger in Electon-Menu</p>
+          <p>Trigger Increment / Decrement in Edit-Menu</p>
           <p>
             Current value is: <strong>{count2}</strong>.
           </p>

@@ -8,12 +8,9 @@ import { Menu_Links } from "../menu";
  */
 export class App_Info {
   
-  static MY_APP_NAME = "Art.Works!";
+  static MY_APP_NAME = "My Electron App";
   static MY_APP_VERSION = "0.1.0"; // Semantic Versioning: https://de.wikipedia.org/wiki/Version_(Software)
-  static MY_APP_FOLDER = "Art.Works";
-
-  static MY_APP_API_NAME = "my_app_api";
-  public static APP_NAME = "basic-electron-typescript-react-starter";
+  static MY_APP_FOLDER = "my-electron-app";
 
   // https://www.electronjs.org/docs/latest/api/app#appsetaboutpaneloptionsoptions
   static MY_ABOUT_PANEL_OPTIONS: any = {
@@ -49,12 +46,6 @@ export class App_Info {
     },
   ];
 
-
-
-
-
-
-
   public static getApp_HomePath(): string {
     return App_Info.getPath("home");
   }
@@ -72,7 +63,7 @@ export class App_Info {
 
   private static getPath(name: "home" | "appData" | "userData" | "sessionData" | "temp" | "exe" | "module" | "desktop" | "documents" | "downloads" | "music" | "pictures" | "videos" | "recent" | "logs" | "crashDumps"): string{
 
-    const the_path = `${app.getPath(name)}/${App_Info.APP_NAME}/`; // `${app.getPath(name)}/.${App_Info.APP_NAME}/`; 
+    const the_path = `${app.getPath(name)}/${App_Info.MY_APP_FOLDER}/`; // `${app.getPath(name)}/.${App_Info.APP_NAME}/`; 
 
     if (!fs.existsSync(the_path as PathLike)) {
       fs.ensureDirSync(the_path);

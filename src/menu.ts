@@ -141,6 +141,18 @@ export class MenuBuilder {
           accelerator: "Command+A",
           selector: "selectAll:",
         },
+        { type: "separator" },
+        // --------------------------------------------------------
+        //! Pattern 3: Main to renderer
+        {
+          click: () => this.mainWindow.webContents.send("update-counter", 1),
+          label: "Increment",
+        },
+        {
+          click: () => this.mainWindow.webContents.send("update-counter", -1),
+          label: "Decrement",
+        },
+        // --------------------------------------------------------
       ],
     };
     const subMenuViewDev: MenuItemConstructorOptions = {
