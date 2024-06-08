@@ -12,11 +12,10 @@ import {
 } from "antd";
 import { Request, RequestData } from "./common/types/request-types";
 import { FormTool } from "./FormTool";
-import { Messages } from "./Messages";
-import { DocUser } from "./common/types/doc-user";
 import { FormState } from "./form-types";
+import { Messages } from "./Messages";
 
-
+import { DocUser } from "./common/types/doc-user";
 
 export function View_Users() {
   const [form] = Form.useForm();
@@ -42,7 +41,7 @@ export function View_Users() {
       .request_data("ipc-database", [request])
       .then((result: DocUser[]) => {
         setListData(result);
-        message.info(Messages.get_message_from_request(request.type, "User"));
+        message.info(Messages.from_request(request.type, "User"));
       })
       .catch(function (error: any) {
         message.error(JSON.stringify(error));
@@ -105,6 +104,7 @@ export function View_Users() {
     window.electronAPI
       .request_data("ipc-database", [request])
       .then((result: any) => {
+        message.info(Messages.from_request(request.type,'User'));
         load_list();
       })
       .catch(function (error): any {

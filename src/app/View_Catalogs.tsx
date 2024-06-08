@@ -12,10 +12,10 @@ import {
 } from "antd";
 import { Request, RequestData } from "./common/types/request-types";
 import { FormTool } from "./FormTool";
+import { FormState } from "./form-types";
 import { Messages } from "./Messages";
 
 import { DocCatalog } from "./common/types/doc-catalog";
-import { FormState } from "./form-types";
 
 export function View_Catalogs() {
   const [form] = Form.useForm();
@@ -43,7 +43,7 @@ export function View_Catalogs() {
         console.log(result);
         setListData(result);
         message.info(
-          Messages.get_message_from_request(request.type, "Catalog")
+          Messages.from_request(request.type, "Catalog")
         );
       })
       .catch(function (error): any {
@@ -54,7 +54,7 @@ export function View_Catalogs() {
   function reset_form(): void {
     let data: DocCatalog = {
       _id: "",
-      docType: "user",
+      docType: "catalog",
       title: "",
     };
     setDataObject(data);
@@ -106,6 +106,7 @@ export function View_Catalogs() {
     window.electronAPI
       .request_data("ipc-database", [request])
       .then((result: any) => {
+        message.info(Messages.from_request(request.type,'User'));
         load_list();
       })
       .catch(function (error): any {

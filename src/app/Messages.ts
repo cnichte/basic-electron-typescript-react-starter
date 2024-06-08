@@ -8,7 +8,7 @@ export class Messages {
      * @param prefix 
      * @returns 
      */
-    public static get_message_from_request(request: RequestTypes, prefix?:string ) {
+    public static from_request(request: RequestTypes, prefix?:string ) {
       let result: string = "Unbekannter Request.";
   
       switch (request) {
