@@ -1,29 +1,32 @@
 import { useEffect, useState } from "react";
 import {
   Button,
-  Checkbox,
   Divider,
   Form,
   FormProps,
   Input,
   List,
-  Space,
   Tooltip,
   Typography,
   message,
 } from "antd";
 import { Request, RequestData } from "./common/types/request-types";
-import { DocCatalog } from "./common/types/doc-catalog";
 import { FormTool } from "./FormTool";
+import { Messages } from "./Messages";
+
+import { DocCatalog } from "./common/types/doc-catalog";
+import { FormState } from "./form-types";
 
 export function View_Catalogs() {
   const [form] = Form.useForm();
-  const [listdata, setListData] = useState<DocCatalog[]>([]);
-  const [dataOrigin, setDataOrigin] = useState<DocCatalog>(null);
+  const [formstate, setFormState] = useState<FormState>("create");
+  const [dataObject, setDataObject] = useState<DocCatalog>(null);
 
   type MyForm_FieldType = {
     title: string;
   };
+
+  const [listdata, setListData] = useState<DocCatalog[]>([]);
 
   function load_list(): void {
     // Request data from pouchdb
@@ -36,29 +39,44 @@ export function View_Catalogs() {
 
     window.electronAPI
       .request_data("ipc-database", [request])
-      .then((result: any) => {
+      .then((result: DocCatalog[]) => {
         console.log(result);
         setListData(result);
-        message.info("Catalog-List loaded.");
+        message.info(
+          Messages.get_message_from_request(request.type, "Catalog")
+        );
       })
       .catch(function (error): any {
         message.error(JSON.stringify(error));
       });
   }
 
+  function reset_form(): void {
+    let data: DocCatalog = {
+      _id: "",
+      docType: "user",
+      title: "",
+    };
+    setDataObject(data);
+    form.resetFields();
+  }
+
   useEffect(() => {
-    load_list()
+    load_list();
+    // form.setFieldsValue(dataOrigin);
+    reset_form();
   }, []);
 
   const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {
+    // add butten clicked, so create a new record annd save the data.
     let formTool: FormTool<DocCatalog> = new FormTool();
 
     formTool
-      .save_data("new", dataOrigin, formValues)
+      .save_data("new", dataObject, formValues)
       .then((result: DocCatalog) => {
         //! has new _rev from backend
-        setDataOrigin(result);
-        load_list()
+        setDataObject(result);
+        load_list();
       })
       .catch(function (error) {
         message.error(JSON.stringify(error));
@@ -72,7 +90,7 @@ export function View_Catalogs() {
   };
 
   function onFormReset(): void {
-    form.resetFields();
+    reset_form();
   }
 
   function onListItemDelete(item: DocCatalog): any {
@@ -93,9 +111,7 @@ export function View_Catalogs() {
       });
   }
 
-  function onListItemEdit(item: any): any {
-
-  }
+  function onListItemEdit(item: any): any {}
 
   return (
     <>
@@ -127,7 +143,7 @@ export function View_Catalogs() {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Add
+            {formstate === "create" ? "Add" : "Update"}
           </Button>
         </Form.Item>
         <Form.Item>
@@ -135,8 +151,8 @@ export function View_Catalogs() {
         </Form.Item>
       </Form>
       <ul>
-        <li>uuid: {dataOrigin?._id}</li>
-        <li>_ref: {dataOrigin?._rev}</li>
+        <li>uuid: {dataObject?._id}</li>
+        <li>_ref: {dataObject?._rev}</li>
       </ul>
       <Divider orientation="left">
         The List of Documents in the Database

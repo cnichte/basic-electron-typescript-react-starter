@@ -11,18 +11,23 @@ import {
   message,
 } from "antd";
 import { Request, RequestData } from "./common/types/request-types";
-import { DocUser } from "./common/types/doc-user";
 import { FormTool } from "./FormTool";
 import { Messages } from "./Messages";
+import { DocUser } from "./common/types/doc-user";
+import { FormState } from "./form-types";
+
+
 
 export function View_Users() {
   const [form] = Form.useForm();
-  const [listdata, setListData] = useState<DocUser[]>([]);
-  const [dataOrigin, setDataOrigin] = useState<DocUser>(null);
-
+  const [formstate, setFormState] = useState<FormState>("create");
+  const [dataObject, setDataObject] = useState<DocUser>(null);
+  
   type MyForm_FieldType = {
     name: string;
   };
+
+  const [listdata, setListData] = useState<DocUser[]>([]);
 
   function load_list(): void {
     // Request data from pouchdb on page load.
@@ -35,26 +40,31 @@ export function View_Users() {
 
     window.electronAPI
       .request_data("ipc-database", [request])
-      .then((result: any) => {
+      .then((result: DocUser[]) => {
         setListData(result);
-        message.info(Messages.get_message_from_request(request.type, 'User'));
+        message.info(Messages.get_message_from_request(request.type, "User"));
       })
       .catch(function (error: any) {
         message.error(JSON.stringify(error));
       });
+  }
 
+  function reset_form(): void {
+    // init form
     let data: DocUser = {
-      _id: "test",
+      _id: "",
       docType: "user",
-      name: "test",
+      name: "",
     };
-    setDataOrigin(data);
-
-    form.setFieldsValue(dataOrigin);
+    setDataObject(data);
+    form.resetFields();
+    setFormState('create');
   }
 
   useEffect(() => {
     load_list();
+    // form.setFieldsValue(dataOrigin);
+    reset_form();
   }, []);
 
   const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {
@@ -62,11 +72,12 @@ export function View_Users() {
     let formTool: FormTool<DocUser> = new FormTool();
 
     formTool
-      .save_data("new", dataOrigin, formValues)
+      .save_data("new", dataObject, formValues)
       .then((result: DocUser) => {
         //! has new _rev from backend
-        setDataOrigin(result);
+        setDataObject(result);
         load_list();
+        setFormState("update");
       })
       .catch(function (error) {
         message.error(JSON.stringify(error));
@@ -80,13 +91,7 @@ export function View_Users() {
   };
 
   function onFormReset(): void {
-    let data: DocUser = {
-      _id: "test",
-      docType: "user",
-      name: "test",
-    };
-    setDataOrigin(data);
-    form.resetFields();
+    reset_form();
   }
 
   function onListItemDelete(item: DocUser): any {
@@ -100,8 +105,6 @@ export function View_Users() {
     window.electronAPI
       .request_data("ipc-database", [request])
       .then((result: any) => {
-        console.log(result);
-        message.info("Catalog-Item removed.");
         load_list();
       })
       .catch(function (error): any {
@@ -141,7 +144,7 @@ export function View_Users() {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Add
+            {formstate === "create" ? "Add" : "Update"}
           </Button>
         </Form.Item>
         <Form.Item>
@@ -149,8 +152,8 @@ export function View_Users() {
         </Form.Item>
       </Form>
       <ul>
-        <li>uuid: {dataOrigin?._id}</li>
-        <li>_ref: {dataOrigin?._rev}</li>
+        <li>uuid: {dataObject?._id}</li>
+        <li>_ref: {dataObject?._rev}</li>
       </ul>
       <Divider orientation="left">
         The List of Documents in the Database
