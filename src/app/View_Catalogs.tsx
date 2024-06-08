@@ -59,6 +59,7 @@ export function View_Catalogs() {
     };
     setDataObject(data);
     form.resetFields();
+    setFormState('create');
   }
 
   useEffect(() => {
@@ -77,6 +78,7 @@ export function View_Catalogs() {
         //! has new _rev from backend
         setDataObject(result);
         load_list();
+        setFormState("update");
       })
       .catch(function (error) {
         message.error(JSON.stringify(error));
