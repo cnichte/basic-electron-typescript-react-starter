@@ -15,18 +15,18 @@ import { FormTool } from "./FormTool";
 import { FormState } from "./form-types";
 import { Messages } from "./Messages";
 
-import { DocCatalog } from "./common/types/doc-catalog";
+import { DocCatalogType } from "./common/types/doc-catalog";
 
 export function View_Catalogs() {
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
-  const [dataObject, setDataObject] = useState<DocCatalog>(null);
+  const [dataObject, setDataObject] = useState<DocCatalogType>(null);
 
   type MyForm_FieldType = {
     title: string;
   };
 
-  const [listdata, setListData] = useState<DocCatalog[]>([]);
+  const [listdata, setListData] = useState<DocCatalogType[]>([]);
 
   function load_list(): void {
     // Request data from pouchdb
@@ -39,7 +39,7 @@ export function View_Catalogs() {
 
     window.electronAPI
       .request_data("ipc-database", [request])
-      .then((result: DocCatalog[]) => {
+      .then((result: DocCatalogType[]) => {
         console.log(result);
         setListData(result);
         message.info(
@@ -52,7 +52,7 @@ export function View_Catalogs() {
   }
 
   function reset_form(): void {
-    let data: DocCatalog = {
+    let data: DocCatalogType = {
       _id: "",
       docType: "catalog",
       title: "",
@@ -70,11 +70,11 @@ export function View_Catalogs() {
 
   const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {
     // add butten clicked, so create a new record annd save the data.
-    let formTool: FormTool<DocCatalog> = new FormTool();
+    let formTool: FormTool<DocCatalogType> = new FormTool();
 
     formTool
       .save_data("new", dataObject, formValues)
-      .then((result: DocCatalog) => {
+      .then((result: DocCatalogType) => {
         //! has new _rev from backend
         setDataObject(result);
         load_list();
@@ -95,8 +95,8 @@ export function View_Catalogs() {
     reset_form();
   }
 
-  function onListItemDelete(item: DocCatalog): any {
-    const request: RequestData<DocCatalog> = {
+  function onListItemDelete(item: DocCatalogType): any {
+    const request: RequestData<DocCatalogType> = {
       type: "request:delete",
       module: "catalog",
       options: {},

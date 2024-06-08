@@ -15,18 +15,18 @@ import { FormTool } from "./FormTool";
 import { FormState } from "./form-types";
 import { Messages } from "./Messages";
 
-import { DocUser } from "./common/types/doc-user";
+import { DocUserType } from "./common/types/doc-user";
 
 export function View_Users() {
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
-  const [dataObject, setDataObject] = useState<DocUser>(null);
-  
+  const [dataObject, setDataObject] = useState<DocUserType>(null);
+
   type MyForm_FieldType = {
     name: string;
   };
 
-  const [listdata, setListData] = useState<DocUser[]>([]);
+  const [listdata, setListData] = useState<DocUserType[]>([]);
 
   function load_list(): void {
     // Request data from pouchdb on page load.
@@ -39,7 +39,7 @@ export function View_Users() {
 
     window.electronAPI
       .request_data("ipc-database", [request])
-      .then((result: DocUser[]) => {
+      .then((result: DocUserType[]) => {
         setListData(result);
         message.info(Messages.from_request(request.type, "User"));
       })
@@ -50,14 +50,16 @@ export function View_Users() {
 
   function reset_form(): void {
     // init form
-    let data: DocUser = {
+
+    let data: DocUserType = {
       _id: "",
       docType: "user",
       name: "",
     };
+
     setDataObject(data);
     form.resetFields();
-    setFormState('create');
+    setFormState("create");
   }
 
   useEffect(() => {
@@ -68,11 +70,11 @@ export function View_Users() {
 
   const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {
     // add butten clicked, so create a new record annd save the data.
-    let formTool: FormTool<DocUser> = new FormTool();
+    let formTool: FormTool<DocUserType> = new FormTool();
 
     formTool
       .save_data("new", dataObject, formValues)
-      .then((result: DocUser) => {
+      .then((result: DocUserType) => {
         //! has new _rev from backend
         setDataObject(result);
         load_list();
@@ -93,8 +95,8 @@ export function View_Users() {
     reset_form();
   }
 
-  function onListItemDelete(item: DocUser): any {
-    const request: RequestData<DocUser> = {
+  function onListItemDelete(item: DocUserType): any {
+    const request: RequestData<DocUserType> = {
       type: "request:delete",
       module: "user",
       options: {},
@@ -104,7 +106,7 @@ export function View_Users() {
     window.electronAPI
       .request_data("ipc-database", [request])
       .then((result: any) => {
-        message.info(Messages.from_request(request.type,'User'));
+        message.info(Messages.from_request(request.type, "User"));
         load_list();
       })
       .catch(function (error): any {
