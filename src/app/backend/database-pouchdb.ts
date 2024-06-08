@@ -3,50 +3,45 @@ import find from "pouchdb-find";
 import { v4 as uuidv4 } from "uuid";
 
 import { DatabaseCRUD_Interface } from "./database-types";
-import { DocUser } from "../common/types/doc-user";
-import { DocCatalog } from "../common/types/doc-catalog";
 
 export class Database_Pouchdb implements DatabaseCRUD_Interface {
   db: any;
 
   constructor(name: string) {
-
     var self = this;
 
     this.does_db_exist(name)
-    .then(function (result: boolean) {
-        if(result){
+      .then(function (result: boolean) {
+        if (result) {
           self.db = new PouchDB(name);
           PouchDB.plugin(find);
-        }else{
+        } else {
           self.db = new PouchDB(name);
           PouchDB.plugin(find);
 
-          self.initialize(true, false) //! Fills the DB with saple data on every start.
-          .then(function (response: any) {
-            console.log(
-              "------------------------------------------------------"
-            );
-            console.log("init-then: ", response);
-            console.log(
-              "------------------------------------------------------"
-            );
-          })
-          .catch(function (err: any) {
-            console.log(
-              "------------------------------------------------------"
-            );
-            console.log("init-error: ", err);
-            console.log(
-              "------------------------------------------------------"
-            );
-          });
+          self
+            .initialize(true, false) //! Fills the DB with saple data on every start.
+            .then(function (response: any) {
+              console.log(
+                "------------------------------------------------------"
+              );
+              console.log("init-then: ", response);
+              console.log(
+                "------------------------------------------------------"
+              );
+            })
+            .catch(function (err: any) {
+              console.log(
+                "------------------------------------------------------"
+              );
+              console.log("init-error: ", err);
+              console.log(
+                "------------------------------------------------------"
+              );
+            });
         }
-    
-    })
-    .catch(function (error: any) {
-
-    });
+      })
+      .catch(function (error: any) {});
   }
 
   does_db_exist(name: string): Promise<boolean> {
@@ -141,16 +136,14 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
     });
   }
   create(data: any): Promise<any> {
-    return this.db.save(data.docType, data);
+    return this.db.put(data);
   }
   readFromQuery(query: Object): Promise<any> {
     return this.db.find(query);
   }
 
   readFromID(uuid: string, options: any): Promise<any> {
-    return new Promise((resolve) => {
-      resolve(true);
-    });
+    return this.db.get(uuid, options);
   }
   readFromRelations(type: string, options: Object): Promise<any> {
     return new Promise((resolve) => {
@@ -163,18 +156,25 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
     });
   }
   update(type: string, data: any): Promise<any> {
-    return new Promise((resolve) => {
-      resolve(true);
-    });
+    return this.db.put(data);
   }
+
+  //? https://pouchdb.com/api.html#delete_document
   delete(type: string, data: any): Promise<any> {
-    return new Promise((resolve) => {
-      resolve(true);
-    });
+    return this.db.remove(data);
   }
+
+  //? https://stackoverflow.com/questions/29877607/pouchdb-delete-alldocs-javascript
   deleteAll(): Promise<any> {
-    return new Promise((resolve) => {
-      resolve(true);
-    });
+    return this.db
+      .allDocs({ include_docs: true })
+      .then((allDocs: { rows: any[] }) => {
+        return allDocs.rows.map((row: { id: any; doc: { _rev: any } }) => {
+          return { id: row.id, _rev: row.doc._rev, _deleted: true };
+        });
+      })
+      .then((deleteDocs: any) => {
+        return this.db.bulkDocs(deleteDocs);
+      });
   }
 }

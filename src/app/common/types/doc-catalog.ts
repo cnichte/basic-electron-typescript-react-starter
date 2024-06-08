@@ -1,6 +1,6 @@
-import { DocTypes } from "./doc-types";
+import { DocItentifiable, DocTypes } from "./doc-types";
 
-export interface DocCatalog {
+export interface DocCatalog extends DocItentifiable {
   _id: string;
   docType: DocTypes;
   title: string;

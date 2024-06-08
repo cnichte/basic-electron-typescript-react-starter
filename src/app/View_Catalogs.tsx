@@ -12,52 +12,53 @@ import {
   Typography,
   message,
 } from "antd";
-import { Request } from "./common/types/request-types";
+import { Request, RequestData } from "./common/types/request-types";
 import { DocCatalog } from "./common/types/doc-catalog";
+import { FormTool } from "./FormTool";
 
 export function View_Catalogs() {
+  const [form] = Form.useForm();
+  const [listdata, setListData] = useState<DocCatalog[]>([]);
+  const [dataOrigin, setDataOrigin] = useState<DocCatalog>(null);
+
   type MyForm_FieldType = {
-    name: string;
+    title: string;
   };
 
-  const [listdata, setListData] = useState<any>([]);
-
-  const [data, setData] = useState<any>({});
-
-  useEffect(() => {
+  function load_list(): void {
     // Request data from pouchdb
     //! Following Pattern 2 for the Database requests
-    const request:Request<DocCatalog> = {
-      request: "request:list-all",
+    const request: Request = {
+      type: "request:list-all",
       module: "catalog",
-      data: {
-        _id: "",
-        docType: "catalog",
-        title: ""
-      },
-      options: {}
-    }
+      options: {},
+    };
 
     window.electronAPI
       .request_data("ipc-database", [request])
       .then((result: any) => {
         console.log(result);
         setListData(result);
-        message.info("list loaded");
+        message.info("Catalog-List loaded.");
       })
-      .catch(function (error) {
+      .catch(function (error): any {
         message.error(JSON.stringify(error));
       });
+  }
+
+  useEffect(() => {
+    load_list()
   }, []);
 
-  const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (values) => {
-    console.log("Form.Success:", values);
-    window.electronAPI
-      .request_data("ipc-database", ["request:save", { data: values }])
-      .then((result: any) => {
-        console.log(result);
-        setListData(result);
-        message.info("list loaded");
+  const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {
+    let formTool: FormTool<DocCatalog> = new FormTool();
+
+    formTool
+      .save_data("new", dataOrigin, formValues)
+      .then((result: DocCatalog) => {
+        //! has new _rev from backend
+        setDataOrigin(result);
+        load_list()
       })
       .catch(function (error) {
         message.error(JSON.stringify(error));
@@ -70,6 +71,32 @@ export function View_Catalogs() {
     console.log("Failed:", errorInfo);
   };
 
+  function onFormReset(): void {
+    form.resetFields();
+  }
+
+  function onListItemDelete(item: DocCatalog): any {
+    const request: RequestData<DocCatalog> = {
+      type: "request:delete",
+      module: "catalog",
+      options: {},
+      data: item,
+    };
+
+    window.electronAPI
+      .request_data("ipc-database", [request])
+      .then((result: any) => {
+        load_list();
+      })
+      .catch(function (error): any {
+        message.error(JSON.stringify(error));
+      });
+  }
+
+  function onListItemEdit(item: any): any {
+
+  }
+
   return (
     <>
       <p>
@@ -80,32 +107,40 @@ export function View_Catalogs() {
       <Divider orientation="left">Input Form</Divider>
 
       <Form
+        form={form}
         name="catalog-form"
-        layout='inline'
+        layout="inline"
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        style={{ maxWidth: 'none' }}
+        style={{ maxWidth: "none" }}
       >
         <Form.Item<MyForm_FieldType>
-          label="Name"
-          name="name"
-          rules={[{ required: true, message: "Your name, please." }]}
+          label="Title"
+          name="title"
+          rules={[{ required: true, message: "A Titel, please." }]}
           style={{ maxWidth: "none" }}
           layout="horizontal"
         >
           <Input />
-          <Typography.Text>uuid: und _ref:</Typography.Text>
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
             Add
           </Button>
         </Form.Item>
+        <Form.Item>
+          <Button onClick={onFormReset}>reset</Button>
+        </Form.Item>
       </Form>
-
-      <Divider orientation="left">The List of Documents in the Database</Divider>
+      <ul>
+        <li>uuid: {dataOrigin?._id}</li>
+        <li>_ref: {dataOrigin?._rev}</li>
+      </ul>
+      <Divider orientation="left">
+        The List of Documents in the Database
+      </Divider>
 
       <List
         header={<div>Data in PouchDB: {listdata.length} Records</div>}
@@ -116,10 +151,14 @@ export function View_Catalogs() {
           <List.Item
             actions={[
               <Tooltip title={JSON.stringify(item)}>
-                <a key="_id">edit</a>
+                <a key="_id" onClick={() => onListItemEdit(item)}>
+                  edit
+                </a>
               </Tooltip>,
               <Tooltip title={JSON.stringify(item)}>
-                <a key="_id">delete</a>
+                <a key="_id" onClick={() => onListItemDelete(item)}>
+                  delete
+                </a>
               </Tooltip>,
             ]}
           >

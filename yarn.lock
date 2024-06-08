@@ -1633,6 +1633,16 @@ ajv@^8.0.0:
     require-from-string "^2.0.2"
     uri-js "^4.4.1"
 
+ajv@^8.13.0:
+  version "8.16.0"
+  resolved "https://registry.npmjs.org/ajv/-/ajv-8.16.0.tgz"
+  integrity sha512-F0twR8U1ZU67JIEtekUcLkXkoO5mMMmgGD8sK/xUFzJ805jxHQl92hImFAqqXMyMYjSPOyUPAwHYhB72g5sTXw==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    json-schema-traverse "^1.0.0"
+    require-from-string "^2.0.2"
+    uri-js "^4.4.1"
+
 ajv@^8.8.2, ajv@^8.9.0:
   version "8.13.0"
   resolved "https://registry.npmjs.org/ajv/-/ajv-8.13.0.tgz"
@@ -2737,6 +2747,13 @@ ee-first@1.1.1:
   resolved "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz"
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
+electron-conf@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/electron-conf/-/electron-conf-1.1.0.tgz"
+  integrity sha512-dKhEg0QYTaV6uGABVv93fn29mVUzf6aT60vh8DG9U3+2q47t/bcWr81pInqPjDw/n/5y2utT+kbYuZH6n8x37w==
+  dependencies:
+    ajv "^8.13.0"
+
 electron-installer-common@^0.10.2:
   version "0.10.3"
   resolved "https://registry.npmjs.org/electron-installer-common/-/electron-installer-common-0.10.3.tgz"
@@ -2806,7 +2823,7 @@ electron-winstaller@^5.3.0:
   optionalDependencies:
     "@electron/windows-sign" "^1.1.2"
 
-electron@30.1.0:
+electron@>=13.0.0, electron@30.1.0:
   version "30.1.0"
   resolved "https://registry.npmjs.org/electron/-/electron-30.1.0.tgz"
   integrity sha512-9O8m7kinjwMH5Df0hpXbwUaqI6pk3aJm1sKQUkQGCF7NDbNkGhu2BXgqaicPU6oe26zQPc5vtwWnHmiKlh1hYA==

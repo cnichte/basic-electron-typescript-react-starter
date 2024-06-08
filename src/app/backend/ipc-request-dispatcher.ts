@@ -56,18 +56,19 @@ export class IPC_Request_Dispatcher {
     ipcMain.handle("ipc-database", async (event, arg) => {
       // console.log("\n\n######################################################");
       console.log(`MAIN says: Request received from frontend: `, arg);
-      const req:any = arg[0];
+      const request: any = arg[0];
 
       let result: Promise<any>;
 
-      switch (req.request) {
+      switch (request.type) {
         case `request:list-all`:
           result = new Promise((resolve, reject) => {
             this.pouchdb
               .readFromQuery({
-                selector: { docType: req.module },
+                selector: { docType: request.module },
               })
               .then(function (response) {
+                // This is space to transform the result before send it back.
                 console.log("query-then: ", response);
                 console.log("---------------------");
                 return resolve(response.docs);
@@ -80,8 +81,46 @@ export class IPC_Request_Dispatcher {
               });
           });
           break;
+        case `request:save`:
+          result = new Promise((resolve, reject) => {
+            this.pouchdb
+              .update(request.module, request.data)
+              .then(function (response) {
+                // This is space to transform the result before send it back.
+                // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
+                console.log("save-then: ", response);
+                console.log("---------------------");
+                return resolve(response);
+              })
+              .catch(function (err) {
+                console.log("---------------------");
+                console.log("save-error: ", err);
+                console.log("---------------------");
+                return reject(err);
+              });
+          });
+          break
+          case `request:delete`:
+            result = new Promise((resolve, reject) => {  
+              this.pouchdb
+                .delete(request.module, request.data)
+                .then(function (response) {
+                  // This is space to transform the result before send it back.
+                  // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
+                  console.log("delete-then: ", response);
+                  console.log("---------------------");
+                  return resolve(response);
+                })
+                .catch(function (err) {
+                  console.log("---------------------");
+                  console.log("delete-error: ", err);
+                  console.log("---------------------");
+                  return reject(err);
+                });
+            });
+            break
         default:
-          result = Promise.reject(`unknown request: ${req.request}`);
+          result = Promise.reject(`unknown request: ${request.request}`);
       }
 
       return result;

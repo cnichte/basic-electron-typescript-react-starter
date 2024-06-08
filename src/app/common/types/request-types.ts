@@ -3,13 +3,16 @@ import { DocTypes } from "./doc-types";
 
 export type RequestTypes =
   | "request:list-all"
-  | "request:delete"
-  | "request:update";
+  | "request:create"
+  | "request:save"
+  | "request:delete";
 
-
-export interface Request<T> {
-  request: RequestTypes;
+export interface Request {
+  type: RequestTypes;
   module: DocTypes;
-  data: T;
   options: any;
+}
+
+export interface RequestData<T> extends Request {
+  data: T;
 }

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button, Flex, message } from "antd";
 
-export function Test_IPC() {
+export function View_Test_IPC() {
     const [count, setCount] = useState(0);
     const [count2, setCount2] = useState(0);
   

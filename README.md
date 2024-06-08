@@ -14,6 +14,7 @@ it bundles latest
 * [React](https://react.dev)
 * [Antd Design](https://ant.design)
 * [Pouchdb](https://pouchdb.com/guides/)
+* [Electron Conf](https://github.com/alex8088/electron-conf)
 
 ## How it Looks
 
