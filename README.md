@@ -199,6 +199,33 @@ Creates a local `pouchdb-test` Database in the Project-folder.
 
 * Guide: <https://www.electronjs.org/docs/latest/tutorial/debugging-vscode>
 
+Add a file `.vscode/launch.json` with the following configuration:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Main Process",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "args" : ["."],
+      "outputCapture": "std"
+    }
+  ]
+}
+```
+
+* Set some breakpoints in `main.js`.
+* Start debugging in the [Debug View](https://code.visualstudio.com/docs/editor/debugging).
+
+works
+
 ### Issues (so far)
 
 Warning during `npm run make`
