@@ -202,6 +202,14 @@ Problems:
   * App Icon on  is blurred.
   * Installer has the Electron Default-Icon
 
+### Antd-Design
+
+* Guide: <https://ant.design/docs/react/introduce>
+
+```bash
+npm install antd --save
+```
+
 ### PouchDB
 
 * Guide: <https://pouchdb.com/guides/>
@@ -225,6 +233,14 @@ tsconfig.json
 ```
 
 Creates a local `pouchdb-test` Database in the Project-folder, on the first startup with `npm start`.
+
+### Electron Conf
+
+* Guide: <https://github.com/alex8088/electron-conf>
+
+```bash
+npm install electron-conf
+```
 
 ### Add Debugging in VSCode
 
