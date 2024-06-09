@@ -274,3 +274,5 @@ Multiple warnings during `npm run make` under Mac OS of this type:
 ```bash
 (node:43477) [DEP0174] DeprecationWarning: Calling promisify on a function that returns a Promise is likely a mistake.
 ```
+
+This needs to be investigated in more detail.
