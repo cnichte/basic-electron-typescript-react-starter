@@ -98,16 +98,9 @@ npm i npm-check-updates
 # Doc: https://github.com/raineorshine/npm-check-updates
 ```
 
-> [!NOTE]
-> In this case updating all `eslint` stuff, causes problems.
-> I have to wait until all installed dependent packages are updated.
-> Dont update:
+Use Cursor-Keys up and down to navigate, space to deselect, and enter to execute:
 
 ```bash
-ncu -u
-#or - with space to deselect, and enter to execute
-ncu -i
-# or
 ncu -i --format group
 ```
 
