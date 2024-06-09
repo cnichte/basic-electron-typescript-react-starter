@@ -28,7 +28,25 @@ it bundles latest
 
 ## Use the Repo
 
-clone git from <https://github.com/cnichte/basic-electron-typescript-react-starter.git>
+### Preparations
+
+node, npm and yarn shold be in place:
+
+* Guides:
+* <https://docs.npmjs.com/downloading-and-installing-node-js-and-npm>
+* <https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable>
+
+```bash
+node -v
+npm -v
+yarn -v
+```
+
+### Clone the git repository
+
+Guide: <https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository>
+
+Clone git from <https://github.com/cnichte/basic-electron-typescript-react-starter.git>
 
 ```bash
 npm install
@@ -47,13 +65,16 @@ npm start
 # builds a zip in /out/make/zip/darwin/arm64
 # you have to extract the zip an lauch the executable file
 npm run make
-# publish on github (has to be setup)
-npm run publish
 ```
 
 `npm run make` builds a zipped App in the `out/make/` Folder.
 
 Should run without errors.
+
+```bash
+# publish on github (has to be setup)
+npm run publish
+````
 
 ## Update outdated packages
 
