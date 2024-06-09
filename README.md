@@ -30,7 +30,7 @@ it bundles latest
 
 ### Preparations
 
-node, npm and yarn shold be in place:
+node, npm and yarn should be in place:
 
 * Guides:
 * <https://docs.npmjs.com/downloading-and-installing-node-js-and-npm>
