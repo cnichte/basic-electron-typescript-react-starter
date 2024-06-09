@@ -80,6 +80,9 @@ npm run publish
 
 ## Update outdated packages
 
+> [!IMPORTANT]
+> be careful when updating.
+
 check for outdated packages:
 
 ```bash
@@ -92,9 +95,6 @@ ncu
 npm i npm-check-updates
 # Doc: https://github.com/raineorshine/npm-check-updates
 ```
-
-> [!IMPORTANT]
-> be careful when updating.
 
 > [!NOTE]
 > In this case updating all `eslint` stuff, causes problems.
