@@ -70,7 +70,17 @@ npm i npm-check-updates
 # Doc: https://github.com/raineorshine/npm-check-updates
 ```
 
-be careful when updating. I do a quick local backup before updating.
+be careful when updating.
+
+> [!NOTE]
+> In this case updating all `eslint` stuff, causes problems.
+> I have to wait until all installed dependent packages are updated.
+> Dont update:
+
+...
+
+> [!TIP]
+> I do a quick local backup before updating.
 
 ```bash
 ncu -u
