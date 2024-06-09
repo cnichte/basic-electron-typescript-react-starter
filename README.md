@@ -202,7 +202,7 @@ tsconfig.json
 }
 ```
 
-Creates a local `pouchdb-test` Database in the Project-folder, on the first startup with `npm start`;
+Creates a local `pouchdb-test` Database in the Project-folder, on the first startup with `npm start`.
 
 ### Add Debugging in VSCode
 
