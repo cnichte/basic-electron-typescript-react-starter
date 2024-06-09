@@ -16,6 +16,7 @@ import { FormState } from "./form-types";
 import { Messages } from "./Messages";
 
 import { DocUserType } from "./common/types/doc-user";
+import { View_Modal_Form } from "./View_Modal_Form";
 
 export function View_Users() {
   const [form] = Form.useForm();
@@ -114,7 +115,11 @@ export function View_Users() {
       });
   }
 
-  function onListItemEdit(item: any): any {}
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  function onListItemEdit(item: any): any {
+    setModalOpen(true);
+  }
 
   return (
     <>
@@ -124,6 +129,15 @@ export function View_Users() {
       </p>
 
       <Divider orientation="left">Input Form</Divider>
+
+      <View_Modal_Form
+        id={""}
+        data={undefined}
+        open={modalOpen}
+        onCancel={function (): void {
+          // setModalOpen(false);
+        }}
+      />
 
       <Form
         form={form}
