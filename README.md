@@ -10,6 +10,7 @@ Goals
 * Execute CRUD-Operations via the IPC-Protocol.
 * Take the tour with Andt-Design.
 * Provide a complete basic framework for real-life use cases.
+* Make the whole process easy as possible to understand and follow.
 
 it bundles latest
 
