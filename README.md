@@ -44,9 +44,9 @@ yarn -v
 
 ### Clone the git repository
 
-Guide: <https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository>
+* Guide: <https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository>
 
-Clone git from <https://github.com/cnichte/basic-electron-typescript-react-starter.git>
+* Clone git from <https://github.com/cnichte/basic-electron-typescript-react-starter.git>
 
 ```bash
 npm install
@@ -131,7 +131,7 @@ How i set this up...
 
 ### Create Project and Install
 
-Guide: [www.electronforge.io](https://www.electronforge.io)
+* Guide: [www.electronforge.io](https://www.electronforge.io)
 
 ```bash
 # in parent folder
@@ -175,7 +175,7 @@ publish has to be setup.
 
 ### Add React
 
-Guide: [electronforge.io/guides/framework-integration/react-with-typescript](https://www.electronforge.io/guides/framework-integration/react-with-typescript)
+* Guide: [electronforge.io/guides/framework-integration/react-with-typescript](https://www.electronforge.io/guides/framework-integration/react-with-typescript)
 
 ```bash
 npm install --save react react-dom
@@ -186,13 +186,14 @@ works
 
 ### Adding IPC Support
 
-Guide: [electronjs.org/de/docs/latest/tutorial/ipc](https://www.electronjs.org/de/docs/latest/tutorial/ipc)
+* Guide: [electronjs.org/de/docs/latest/tutorial/ipc](https://www.electronjs.org/de/docs/latest/tutorial/ipc)
 
 works
 
 ### App-Icon Support
 
-* Guide: <https://www.electronforge.io/guides/create-and-add-icons>
+* Guide:
+* <https://www.electronforge.io/guides/create-and-add-icons>
 * <https://stackoverflow.com/questions/31529772/how-to-set-app-icon-for-electron-atom-shell-app>
 
 Problems:
