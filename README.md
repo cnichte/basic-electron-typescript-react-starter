@@ -22,7 +22,7 @@ it bundles latest
 * [Pouchdb](https://pouchdb.com/guides/)
 * [Electron Conf](https://github.com/alex8088/electron-conf)
 
-If you also want to build an app with this setup, this could be a good starting point for you. Please note: I am travelling with Mac OS.
+If you also want to build an app with this setup, this could be a good starting point for you. Please note: I am travelling with Mac OS, but do the my builds also an Windows (Linux is untested so far).
 
 ## How it Looks
 
