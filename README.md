@@ -22,7 +22,7 @@ it bundles latest
 * [Pouchdb](https://pouchdb.com/guides/)
 * [Electron Conf](https://github.com/alex8088/electron-conf)
 
-If you also want to build an app with the setup, this could be a good starting point for you.
+If you also want to build an app with this setup, this could be a good starting point for you.
 
 ## How it Looks
 
