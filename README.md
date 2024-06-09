@@ -237,7 +237,7 @@ works
 
 ### Issues (so far)
 
-Warning during `npm run make`
+Warning during `npm run make` on Mac-OS:
 
 ```bash
 (node:43477) [DEP0174] DeprecationWarning: Calling promisify on a function that returns a Promise is likely a mistake.
