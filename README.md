@@ -83,6 +83,9 @@ npm run publish
 > [!IMPORTANT]
 > be careful when updating.
 
+> [!TIP]
+> I do a quick local backup before updating, for an easy rollback if an update fails.
+
 check for outdated packages:
 
 ```bash
@@ -90,7 +93,6 @@ check for outdated packages:
 npm outdated
 # or better use: npx npm-check-updates
 ncu
-# or even better: ncu
 # install ncu if absent
 npm i npm-check-updates
 # Doc: https://github.com/raineorshine/npm-check-updates
@@ -100,9 +102,6 @@ npm i npm-check-updates
 > In this case updating all `eslint` stuff, causes problems.
 > I have to wait until all installed dependent packages are updated.
 > Dont update:
-
-> [!TIP]
-> I do a quick local backup before updating.
 
 ```bash
 ncu -u
