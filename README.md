@@ -68,6 +68,8 @@ npm start
 # builds a zip in /out/make/zip/darwin/arm64
 # you have to extract the zip an lauch the executable file
 npm run make
+# publish on github (has to be setup)
+# npm run publish
 ```
 
 `npm run make` builds a zipped App in the `out/make/` Folder.
@@ -75,11 +77,6 @@ npm run make
 * Should run without errors.
 * Inspect the code for further reference.
 * Have fun and success with your project.
-
-```bash
-# publish on github (has to be setup)
-npm run publish
-````
 
 ## Update outdated packages
 
