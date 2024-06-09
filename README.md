@@ -72,9 +72,9 @@ npm run make
 
 `npm run make` builds a zipped App in the `out/make/` Folder.
 
-Should run without errors.
-
-Inspect the code for further reference.
+* Should run without errors.
+* Inspect the code for further reference.
+* Have fun and success with your project.
 
 ```bash
 # publish on github (has to be setup)
