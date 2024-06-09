@@ -51,6 +51,8 @@ npm run make
 npm run publish
 ```
 
+`npm run make` builds a zipped App in the `out/make/` Folder.
+
 Should run without errors.
 
 ## Update outdated packages
@@ -190,6 +192,12 @@ tsconfig.json
   }
 }
 ```
+
+Creates a local `pouchdb-test` Database in the Project-folder.
+
+### Add Debugging in VSCode
+
+* Guide: <https://www.electronjs.org/docs/latest/tutorial/debugging-vscode>
 
 ### Issues (so far)
 
