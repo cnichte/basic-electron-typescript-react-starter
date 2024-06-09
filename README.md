@@ -53,10 +53,11 @@ yarn -v
 ```bash
 npm install
 # backup the .gitignore (rename it)
-# then remove the git:
+# then remove the existing git
 rm -rf .git*
-# and init your own:
+# and init your own
 git init
+# restore the backuped .gitignore
 ```
 
 run the commands:
