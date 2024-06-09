@@ -28,6 +28,7 @@ If you also want to build an app with this setup, this could be a good starting 
 
 ![Screenshot IPC Ping-Pong](readme-images/screenshot-001.png)
 ![Screenshot Database CRUD Operations](readme-images/screenshot-002.png)
+![Souce-Code Anatomy](readme-images/screenshot-003.png)
 
 ## Use the Repo
 
