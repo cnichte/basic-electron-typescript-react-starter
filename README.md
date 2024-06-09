@@ -6,7 +6,7 @@
 
 Goals
 
-* Explore the [Electron Inter-Process Communication](https://www.electronjs.org/de/docs/latest/tutorial/ipc) (IPC), especialy the [Message ports](https://www.electronjs.org/de/docs/latest/tutorial/message-ports)
+* Explore the [Electron Inter-Process Communication](https://www.electronjs.org/de/docs/latest/tutorial/ipc) (IPC), especialy the [Message ports](https://www.electronjs.org/de/docs/latest/tutorial/message-ports).
 * Execute CRUD-Operations via the IPC-Protocol.
 * Take the tour with Andt-Design.
 * Provide a complete basic framework for real-life use cases.
