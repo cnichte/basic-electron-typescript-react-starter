@@ -77,8 +77,6 @@ be careful when updating.
 > I have to wait until all installed dependent packages are updated.
 > Dont update:
 
-...
-
 > [!TIP]
 > I do a quick local backup before updating.
 
