@@ -74,6 +74,8 @@ npm run make
 
 Should run without errors.
 
+Inspect the code for further reference.
+
 ```bash
 # publish on github (has to be setup)
 npm run publish
