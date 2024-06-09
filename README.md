@@ -70,7 +70,8 @@ npm i npm-check-updates
 # Doc: https://github.com/raineorshine/npm-check-updates
 ```
 
-be careful when updating.
+> [!IMPORTANT]
+> be careful when updating.
 
 > [!NOTE]
 > In this case updating all `eslint` stuff, causes problems.
