@@ -167,6 +167,37 @@ make warnings:
 
 publish has to be setup.
 
+### Add Debugging in VSCode
+
+* Guide: <https://www.electronjs.org/docs/latest/tutorial/debugging-vscode>
+
+Add a file `.vscode/launch.json` with the following configuration:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Main Process",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "args" : ["."],
+      "outputCapture": "std"
+    }
+  ]
+}
+```
+
+* Set some breakpoints in `main.js`.
+* Start debugging in the [Debug View](https://code.visualstudio.com/docs/editor/debugging).
+
+works
+
 ### Add React
 
 * Guide: [electronforge.io/guides/framework-integration/react-with-typescript](https://www.electronforge.io/guides/framework-integration/react-with-typescript)
@@ -235,37 +266,6 @@ Creates a local `pouchdb-test` Database in the Project-folder, on the first star
 ```bash
 npm install electron-conf
 ```
-
-### Add Debugging in VSCode
-
-* Guide: <https://www.electronjs.org/docs/latest/tutorial/debugging-vscode>
-
-Add a file `.vscode/launch.json` with the following configuration:
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Debug Main Process",
-      "type": "node",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-      "windows": {
-        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-      },
-      "args" : ["."],
-      "outputCapture": "std"
-    }
-  ]
-}
-```
-
-* Set some breakpoints in `main.js`.
-* Start debugging in the [Debug View](https://code.visualstudio.com/docs/editor/debugging).
-
-works
 
 ### Issues (so far)
 
