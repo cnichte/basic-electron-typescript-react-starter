@@ -19,13 +19,6 @@ import { useNavigate, useParams } from "react-router";
  * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
  * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
  */
-window.electronAPI.receive_action_request((response: Action_Request) => {
-  if (response.module === DOCTYPE_USER && response.view =='view') {
-    console.log("View_Users says ACTION: ", response);
-    message.info(response.type);
-  }
-});
-
 export function User_View() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -52,6 +45,22 @@ export function User_View() {
       .catch(function (error: any) {
         message.error(JSON.stringify(error));
       });
+
+    // Register and remove the event listener
+    const ocrUnsubscribe = window.electronAPI.on(
+      "ipc-button-action",
+      (response: Action_Request) => {
+        if (response.module === DOCTYPE_USER && response.view == "view") {
+          console.log("View_Users says ACTION: ", response);
+          message.info(response.type);
+        }
+      }
+    );
+
+    // Cleanup function to remove the listener on component unmount
+    return () => {
+      ocrUnsubscribe();
+    };
   }, []);
 
   return (

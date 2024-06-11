@@ -31,13 +31,6 @@ import { DOCTYPE_CATALOG } from "../../../common/types/doc-types";
  * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
  * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
  */
-window.electronAPI.receive_action_request((response: Action_Request) => {
-  if (response.module === DOCTYPE_CATALOG && response.view =='form' ) {
-    console.log("View_Catalogs says ACTION: ", response);
-    message.info(response.type);
-    // TODO ja, schön und gut, ABER WIE komm ich hier an die fucking Daten?
-  }
-});
 
 export function Catalog_Form() {
   const artworks_context = useContext(ArtWorks_Context);
@@ -88,9 +81,28 @@ export function Catalog_Form() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
+    
     load_list();
     // form.setFieldsValue(dataOrigin);
     reset_form();
+
+    // Register and remove the event listener
+    const ocrUnsubscribe = window.electronAPI.on(
+      "ipc-button-action",
+      (response: Action_Request) => {
+        if (response.module === DOCTYPE_CATALOG && response.view == "form") {
+          console.log("View_Catalogs says ACTION: ", response);
+          message.info(response.type);
+          // TODO ja, schön und gut, ABER WIE komm ich hier an die fucking Daten?
+        }
+      }
+    );
+
+    // Cleanup function to remove the listener on component unmount
+    return () => {
+      ocrUnsubscribe();
+    };
+
   }, []);
 
   const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {

@@ -1,8 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Divider, Form, FormProps, Input, message } from "antd";
-import {
-  Action_Request,
-} from "../../../common/types/request-types";
+import { Action_Request } from "../../../common/types/request-types";
 import { FormTool } from "../../FormTool";
 import { FormState } from "../../types/form-types";
 import { Messages } from "../../Messages";
@@ -23,12 +21,6 @@ import { DOCTYPE_USER } from "../../../common/types/doc-types";
  * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
  * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
  */
-window.electronAPI.receive_action_request((response: Action_Request) => {
-  if (response.module === DOCTYPE_USER && response.view =='form') {
-    console.log("View_Users says ACTION: ", response);
-    message.info(response.type);
-  }
-});
 
 export function User_Form() {
   const artworks_context = useContext(ArtWorks_Context);
@@ -62,6 +54,23 @@ export function User_Form() {
 
     // TODO Save Button is in Header-Menu, das ersetzt onFinish
     // https://stackoverflow.com/questions/68937238/electron-js-how-to-call-a-function-rendered-in-index
+
+    // Register and remove the event listener
+    const ocrUnsubscribe = window.electronAPI.on(
+      "ipc-button-action",
+      (response: Action_Request) => {
+        if (response.module === DOCTYPE_USER && response.view == "form") {
+          console.log("View_Users says ACTION: ", response);
+          message.info(response.type);
+        }
+      }
+    );
+    
+    // Cleanup function to remove the listener on component unmount
+    return () => {
+      ocrUnsubscribe();
+    };
+
   }, []);
 
   // TODO Multiple - see App_Routes

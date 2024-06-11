@@ -11,9 +11,15 @@ import {
 import { Messages } from "../../Messages";
 import { DocUserType } from "../../../common/types/doc-user";
 import { ArtWorks_Context } from "../../App_Context";
-import { IPC_BUTTON_ACTION, IPC_DATABASE } from "../../../common/types/IPC_Channels";
+import {
+  IPC_BUTTON_ACTION,
+  IPC_DATABASE,
+} from "../../../common/types/IPC_Channels";
 
-import { DOCTYPE_HEADER_BUTTONS, DOCTYPE_USER } from "../../../common/types/doc-types";
+import {
+  DOCTYPE_HEADER_BUTTONS,
+  DOCTYPE_USER,
+} from "../../../common/types/doc-types";
 
 /**
  * Subscribe to listener only on component construction
@@ -22,12 +28,6 @@ import { DOCTYPE_HEADER_BUTTONS, DOCTYPE_USER } from "../../../common/types/doc-
  * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
  * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
  */
-window.electronAPI.receive_action_request((response: Action_Request) => {
-  if (response.module === DOCTYPE_USER && response.view =='list') {
-    console.log("View_Users says ACTION: ", response);
-    message.info(response.type);
-  }
-});
 
 export function User_List() {
   const navigate = useNavigate();
@@ -55,12 +55,12 @@ export function User_List() {
       });
   }
 
-  function request_buttons(){
+  function request_buttons() {
     let request: Action_Request = {
       type: "request:show-list-buttons",
-      view:'list',
+      view: "list",
       module: DOCTYPE_HEADER_BUTTONS, //das ist die Zielkomponente / target
-      options: {}
+      options: {},
     };
 
     window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
@@ -69,7 +69,23 @@ export function User_List() {
   useEffect(() => {
     console.log("ContextData", artworks_context);
     load_list();
-    request_buttons();    
+    request_buttons();
+
+    // Register and remove the event listener
+    const ocrUnsubscribe = window.electronAPI.on(
+      "ipc-button-action",
+      (response: Action_Request) => {
+        if (response.module === DOCTYPE_USER && response.view == "list") {
+          console.log("View_Users says ACTION: ", response);
+          message.info(response.type);
+        }
+      }
+    );
+
+    // Cleanup function to remove the listener on component unmount
+    return () => {
+      ocrUnsubscribe();
+    };
   }, []);
 
   function onListItemDelete(item: DocUserType): any {
@@ -109,12 +125,12 @@ export function User_List() {
         renderItem={(item: DocUserType) => (
           <List.Item
             actions={[
-              <Tooltip title='Edit the Item'>
+              <Tooltip title="Edit the Item">
                 <a key="_id" onClick={() => onListItemEdit(item)}>
                   edit
                 </a>
               </Tooltip>,
-              <Tooltip title={'View the Item'}>
+              <Tooltip title={"View the Item"}>
                 <a key="_id" onClick={() => onListItemView(item)}>
                   view
                 </a>

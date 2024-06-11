@@ -57,8 +57,28 @@ const electronAPI: IElectronAPI = {
   // The request comes via sendMessage from the Header-Buttons
   // runs via the ipc-action-broker and then over here.
   // The Views are listening to this, for actions to perform...
-  receive_action_request: (callback) => {
-    ipcRenderer.on(IPC_BUTTON_ACTION, (_event, value) => callback(value));
+  receive_action_request: (channel, callback) => {
+    // https://stackoverflow.com/questions/57418499/how-to-unregister-from-ipcrenderer-on-event-listener
+    const subscription = (_event: any, ...args: any[]) => callback(...args);
+    ipcRenderer.on(channel, subscription);
+    return () => {
+      ipcRenderer.removeListener(channel, subscription);
+    };
+  },
+
+  //! https://berom0227.medium.com/implementing-the-off-method-in-electron-api-a-critical-aspect-of-event-listener-management-189b5232ea2a
+  on: (channel: string, callback: (...args: any[]) => void) => {
+    const subscription = (_event: Electron.IpcRendererEvent, ...args: any[]) =>
+      callback(...args);
+    ipcRenderer.on(channel, subscription);
+    // Return a function to remove the listener
+    return () => {
+      ipcRenderer.removeListener(channel, subscription);
+    };
+  },
+  
+  off: (channel: string, callback: (...args: any[]) => void) => {
+    ipcRenderer.removeListener(channel, callback);
   },
 };
 

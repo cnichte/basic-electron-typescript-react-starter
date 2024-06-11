@@ -26,5 +26,8 @@ export interface IElectronAPI {
   request_data: (channel: IPC_Channels, ...args: unknown[]) => Promise<any>;
 
   //! Following Pattern 3 for header-button-actions
-  receive_action_request: (callback: any) => any;
+  receive_action_request: (channel: IPC_Channels, callback: any) => any;
+
+  on:  (channel: IPC_Channels, callback:( ...args: any[]) => void) => any;
+  off: (channel: IPC_Channels, callback:( ...args: any[]) => void) => any;
 }

@@ -1,7 +1,7 @@
 import { Button, message, theme } from "antd";
 import { Action_Request } from "../common/types/request-types";
 import { IPC_BUTTON_ACTION } from "../common/types/IPC_Channels";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ArtWorks_Context } from "./App_Context";
 import { ViewType } from "./types/view-types";
 import { DOCTYPE_HEADER_BUTTONS } from "../common/types/doc-types";
@@ -26,12 +26,6 @@ export interface ArtWorks_Actions {
  * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
  * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
  */
-window.electronAPI.receive_action_request((response: Action_Request) => {
-  if (response.module === DOCTYPE_HEADER_BUTTONS) {
-    console.log("App_Buttons says: SHOW Buttons for: ", response);
-    message.info(response.type);
-  }
-});
 
 /**
  * These are the buttons in the header.
@@ -45,12 +39,31 @@ window.electronAPI.receive_action_request((response: Action_Request) => {
  */
 export function App_Buttons(props: any) {
   const artworks_context = useContext(ArtWorks_Context);
-  const [state, setState] = useState<string>('list');
-
+  const [state, setState] = useState<string>("list");
 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  useEffect(() => {
+    console.log("ContextData", artworks_context);
+
+    // Register and remove the event listener
+    const ocrUnsubscribe = window.electronAPI.on(
+      "ipc-button-action",
+      (response: Action_Request) => {
+        if (response.module === DOCTYPE_HEADER_BUTTONS) {
+          console.log("App_Buttons says: SHOW Buttons for: ", response);
+          message.info(response.type);
+        }
+      }
+    );
+
+    // Cleanup function to remove the listener on component unmount
+    return () => {
+      ocrUnsubscribe();
+    };
+  }, []);
 
   /**
    * Since the buttons in the header cannot communicate
@@ -63,7 +76,7 @@ export function App_Buttons(props: any) {
     let request: Action_Request = {
       type: "request:save-action",
       module: artworks_context.doctype,
-      view:'view', // ist hier egal
+      view: "list", // TODO Das kennt er hier auch nicht weil das im Child umgeschaltet wird.
       options: {},
     };
 
@@ -71,7 +84,6 @@ export function App_Buttons(props: any) {
   };
 
   return (
-
     <Button
       id="add-action"
       type="primary"

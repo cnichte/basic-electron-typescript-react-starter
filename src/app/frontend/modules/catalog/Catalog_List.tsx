@@ -20,12 +20,6 @@ import { DOCTYPE_CATALOG } from "../../../common/types/doc-types";
  * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
  * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
  */
-window.electronAPI.receive_action_request((response: Action_Request) => {
-  if (response.module === DOCTYPE_CATALOG && response.view =='list') {
-    console.log("View_Catalogs says ACTION: ", response);
-    message.info(response.type);
-  }
-});
 
 export function Catalog_List() {
   const navigate = useNavigate();
@@ -56,7 +50,24 @@ export function Catalog_List() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
+
     load_list();
+
+    // Register and remove the event listener
+    const ocrUnsubscribe = window.electronAPI.on(
+      "ipc-button-action",
+      (response: Action_Request) => {
+        if (response.module === DOCTYPE_CATALOG && response.view == "list") {
+          console.log("View_Catalogs says ACTION: ", response);
+          message.info(response.type);
+        }
+      }
+    );
+
+    // Cleanup function to remove the listener on component unmount
+    return () => {
+      ocrUnsubscribe();
+    };
   }, []);
 
   function onListItemDelete(item: DocCatalogType): any {
