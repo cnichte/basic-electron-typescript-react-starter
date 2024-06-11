@@ -25,14 +25,6 @@ import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
 import { DOCTYPE_CATALOG } from "../../../common/types/doc-types";
 import { Header_Buttons_IPC } from "../../Header_Buttons_IPC";
 
-/**
- * Subscribe to listener only on component construction
- * If this is inside the Component
- * You are subscribing to ipcRenderer.on after every button click which is causing multiple subscriptions.
- * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
- * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
- */
-
 export function Catalog_Form() {
   const artworks_context = useContext(ArtWorks_Context);
 
