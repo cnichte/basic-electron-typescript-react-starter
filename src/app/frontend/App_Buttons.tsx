@@ -1,6 +1,6 @@
 import { Button, theme } from "antd";
 import { ActionRequestTypes, Action_Request } from "../common/types/request-types";
-import { IPC_ACTIONS } from "../common/types/IPC_Channels";
+import { IPC_BUTTON_ACTION } from "../common/types/IPC_Channels";
 import { useContext } from "react";
 import { ArtWorks_Context } from "./App_Context";
 import { AppViewType } from "./types/view-types";
@@ -50,7 +50,7 @@ export function App_Buttons(props: any) {
       options: {}
     };
 
-    window.electronAPI.sendMessage(IPC_ACTIONS, [request]);
+    window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
   };
 
   return (

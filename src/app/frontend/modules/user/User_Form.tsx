@@ -12,7 +12,7 @@ import { Messages } from "../../Messages";
 import { DocUserType } from "../../../common/types/doc-user";
 import { ArtWorks_Context } from "../../App_Context";
 import {
-  IPC_ACTIONS,
+  IPC_BUTTON_ACTION,
   IPC_Channels,
   IPC_DATABASE,
 } from "../../../common/types/IPC_Channels";

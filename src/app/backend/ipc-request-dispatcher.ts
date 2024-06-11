@@ -2,7 +2,7 @@ import { BrowserWindow, ipcMain } from "electron";
 import { Database_Mysql } from "./database-mysql";
 import { Database_Pouchdb } from "./database-pouchdb";
 import { DatabaseCRUD_Interface } from "./database-types";
-import { IPC_ACTIONS, IPC_DATABASE } from "../common/types/IPC_Channels";
+import { IPC_BUTTON_ACTION, IPC_DATABASE } from "../common/types/IPC_Channels";
 /**
  * dispatches all the ipc requests from the frontend,
  * to database commands.
@@ -11,7 +11,6 @@ import { IPC_ACTIONS, IPC_DATABASE } from "../common/types/IPC_Channels";
  */
 export class IPC_Request_Dispatcher {
   mainWindow: BrowserWindow;
-
   pouchdb: DatabaseCRUD_Interface;
   mysqldb: DatabaseCRUD_Interface;
 
@@ -22,6 +21,10 @@ export class IPC_Request_Dispatcher {
   }
 
   public dispatch_ipc_requests(): void {
+    // ######################################################################
+    // This are Examples
+    // ######################################################################
+
     //! Pattern 1: Renderer to main (one-way)
     ipcMain.on(IPC_DATABASE, async (event, arg) => {
       // console.log("\n\n######################################################");
@@ -69,13 +72,13 @@ export class IPC_Request_Dispatcher {
      * and an action request was sent to the server.
      * This request is simply forwarded here to interested listeners in another render process.
      */
-    ipcMain.on(IPC_ACTIONS, async (event, arg) => {
+    ipcMain.on(IPC_BUTTON_ACTION, async (event, arg) => {
       console.log(
         `MAIN says: Button-Action-Request received from frontend: `,
         arg
       );
       //! Following Pattern 3 for header-button-actions
-      this.mainWindow.webContents.send(IPC_ACTIONS, arg[0]);
+      this.mainWindow.webContents.send(IPC_BUTTON_ACTION, arg[0]);
     });
 
     // ----------------------------------------------------------------------
@@ -130,25 +133,25 @@ export class IPC_Request_Dispatcher {
               });
           });
           break;
-          case "request:data":
-            result = new Promise((resolve, reject) => {
-              this.pouchdb
-                .readFromID(request.id, request.options)
-                .then(function (response) {
-                  // This is space to transform the result before send it back.
-                  // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
-                  console.log("data-then: ", response);
-                  console.log("---------------------");
-                  return resolve(response);
-                })
-                .catch(function (err) {
-                  console.log("---------------------");
-                  console.log("data-error: ", err);
-                  console.log("---------------------");
-                  return reject(err);
-                });    
-              });     
-            break;
+        case "request:data":
+          result = new Promise((resolve, reject) => {
+            this.pouchdb
+              .readFromID(request.id, request.options)
+              .then(function (response) {
+                // This is space to transform the result before send it back.
+                // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
+                console.log("data-then: ", response);
+                console.log("---------------------");
+                return resolve(response);
+              })
+              .catch(function (err) {
+                console.log("---------------------");
+                console.log("data-error: ", err);
+                console.log("---------------------");
+                return reject(err);
+              });
+          });
+          break;
         case `request:delete`:
           result = new Promise((resolve, reject) => {
             this.pouchdb
@@ -170,7 +173,7 @@ export class IPC_Request_Dispatcher {
           break;
         default:
           result = new Promise((resolve, reject) => {
-            reject(`unknown request: ${request}`);
+            reject(`Sorry, this is a unknown request: ${request}`);
           });
       }
 

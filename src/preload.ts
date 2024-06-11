@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { IElectronAPI } from "./app/common/types/IElectronAPI";
-import { IPC_ACTIONS, IPC_Channels } from "./app/common/types/IPC_Channels";
+import { IPC_BUTTON_ACTION, IPC_Channels } from "./app/common/types/IPC_Channels";
 
 /**
  * See the Electron documentation for details on how to use preload scripts:
@@ -52,7 +52,7 @@ const electronAPI: IElectronAPI = {
   // runs via the ipc-action-broker and then over here.
   // The Views are listening to this, for actions to perform...
   receive_action: (callback) => {
-    ipcRenderer.on(IPC_ACTIONS, (_event, value) => callback(value));
+    ipcRenderer.on(IPC_BUTTON_ACTION, (_event, value) => callback(value));
   },
 };
 
