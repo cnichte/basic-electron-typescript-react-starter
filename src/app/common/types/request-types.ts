@@ -10,7 +10,7 @@ export type DatabaseRequestTypes =
 
 export interface DB_Request {
   type: DatabaseRequestTypes;
-  doctype: DocType; // module
+  doctype: DocType; // equals a 'module'
   id?: string;
   options: any;
 }

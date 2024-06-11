@@ -98,7 +98,7 @@ export class IPC_Request_Dispatcher {
           result = new Promise((resolve, reject) => {
             this.pouchdb
               .readFromQuery({
-                selector: { docType: request.module },
+                selector: { docType: request.doctype },
               })
               .then(function (response) {
                 // This is space to transform the result before send it back.
@@ -117,7 +117,7 @@ export class IPC_Request_Dispatcher {
         case `request:save`:
           result = new Promise((resolve, reject) => {
             this.pouchdb
-              .update(request.module, request.data)
+              .update(request.doctype, request.data)
               .then(function (response) {
                 // This is space to transform the result before send it back.
                 // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
@@ -155,7 +155,7 @@ export class IPC_Request_Dispatcher {
         case `request:delete`:
           result = new Promise((resolve, reject) => {
             this.pouchdb
-              .delete(request.module, request.data)
+              .delete(request.doctype, request.data)
               .then(function (response) {
                 // This is space to transform the result before send it back.
                 // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
