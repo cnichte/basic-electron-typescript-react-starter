@@ -29,7 +29,7 @@ export function User_View() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-    Header_Buttons_IPC.request_buttons('view');
+    Header_Buttons_IPC.request_buttons('view', 'user');
     
     const request: DB_Request = {
       type: "request:data",

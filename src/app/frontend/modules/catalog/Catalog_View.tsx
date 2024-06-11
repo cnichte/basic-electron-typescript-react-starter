@@ -31,7 +31,7 @@ export function Catalog_View() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-    Header_Buttons_IPC.request_buttons('view');
+    Header_Buttons_IPC.request_buttons('view','catalog');
     
     const request: DB_Request = {
       type: "request:data",

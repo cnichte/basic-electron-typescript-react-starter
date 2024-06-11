@@ -56,20 +56,9 @@ export function User_List() {
       });
   }
 
-  function request_buttons() {
-    let request: Action_Request = {
-      type: "request:show-list-buttons",
-      view: "list",
-      target: DOCTYPE_HEADER_BUTTONS, //das ist die Zielkomponente / target
-      options: {},
-    };
-
-    window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
-  }
-
   useEffect(() => {
     console.log("ContextData", artworks_context);
-    Header_Buttons_IPC.request_buttons('list');
+    Header_Buttons_IPC.request_buttons('list','user');
     
     load_list();
 

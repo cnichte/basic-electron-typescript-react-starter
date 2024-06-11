@@ -50,7 +50,7 @@ export function User_Form() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-    Header_Buttons_IPC.request_buttons('form');
+    Header_Buttons_IPC.request_buttons('form', 'user');
     
     // form.setFieldsValue(dataOrigin);
     reset_form();

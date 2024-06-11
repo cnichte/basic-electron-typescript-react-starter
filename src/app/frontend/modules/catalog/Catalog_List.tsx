@@ -51,7 +51,7 @@ export function Catalog_List() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-    Header_Buttons_IPC.request_buttons('list');
+    Header_Buttons_IPC.request_buttons('list','catalog');
     
     load_list();
 

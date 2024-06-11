@@ -82,7 +82,7 @@ export function Catalog_Form() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-    Header_Buttons_IPC.request_buttons('form');
+    Header_Buttons_IPC.request_buttons('form','catalog');
     
     load_list();
     // form.setFieldsValue(dataOrigin);
