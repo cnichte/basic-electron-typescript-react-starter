@@ -47,7 +47,7 @@ const electronAPI: IElectronAPI = {
   // runs via the ipc-action-broker and then over here.
   // The Views are listening to this, for actions to perform...
   receive_action: (callback) => {
-    ipcRenderer.once(IPC_ACTIONS, (_event, value) => callback(value));
+    ipcRenderer.on(IPC_ACTIONS, (_event, value) => callback(value));
   },
 };
 
