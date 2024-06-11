@@ -13,7 +13,7 @@ import {
   IPC_DATABASE,
 } from "../../../common/types/IPC_Channels";
 import { DOCTYPE_USER } from "../../../common/types/doc-types";
-import { App_Buttons_IPC } from "../../App_Buttons_IPC";
+import { Header_Buttons_IPC } from "../../Header_Buttons_IPC";
 
 /**
  * Subscribe to listener only on component construction
@@ -50,7 +50,7 @@ export function User_Form() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-    App_Buttons_IPC.request_buttons('form');
+    Header_Buttons_IPC.request_buttons('form');
     
     // form.setFieldsValue(dataOrigin);
     reset_form();

@@ -3,7 +3,7 @@ import { DOCTYPE_HEADER_BUTTONS } from "../common/types/doc-types";
 import { Action_Request } from "../common/types/request-types";
 import { ViewType } from "./types/view-types";
 
-export class App_Buttons_IPC {
+export class Header_Buttons_IPC {
   /**
    *
    * @param viewtype

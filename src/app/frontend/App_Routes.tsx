@@ -1,22 +1,20 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState } from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Space, Typography, theme } from "antd";
 
-import { App_SideNavigationBar } from "./App_SideNavigationBar";
-import { Catalog_Form } from "./modules/catalog/Catalog_Form";
-import { User_View } from "./modules/user/User_View";
+import { App_SideNavigationBar } from "./Side_NavigationBar";
 import { IPCTest_View } from "./modules/ipc/IPCTest_View";
 import {
   ROUTE_TEST_IPC,
-  CATALOGS_ROUTE_LIST,
-  USERS_ROUTE_VIEW,
   RouteType,
   USERS_ROUTE_LIST,
+  USERS_ROUTE_VIEW,
   USERS_ROUTE_FORM,
-  CATALOGS_ROUTE_FORM,
+  CATALOGS_ROUTE_LIST,
   CATALOGS_ROUTE_VIEW,
+  CATALOGS_ROUTE_FORM,
 } from "./types/route-names";
 import { App_Info } from "../common/app-info";
 
@@ -24,13 +22,18 @@ const { Header, Sider, Content, Footer } = Layout;
 const { Title } = Typography;
 
 import { ArtWorks_Context, ContextData } from "./App_Context";
-import { App_Buttons } from "./App_Buttons";
+import { Header_Buttons } from "./Header_Buttons";
+
 import { DocType } from "../common/types/doc-types";
 import { ViewType } from "./types/view-types";
+
 import { User_List } from "./modules/user/User_List";
-import { Catalog_List } from "./modules/catalog/Catalog_List";
+import { User_View } from "./modules/user/User_View";
 import { User_Form } from "./modules/user/User_Form";
+
+import { Catalog_List } from "./modules/catalog/Catalog_List";
 import { Catalog_View } from "./modules/catalog/Catalog_View";
+import { Catalog_Form } from "./modules/catalog/Catalog_Form";
 
 export function App_Routes() {
   const [collapsed, setCollapsed] = useState(false);
@@ -90,7 +93,7 @@ export function App_Routes() {
                 }}
               />
               <Space>
-                <App_Buttons />
+                <Header_Buttons />
               </Space>
             </Header>
             <Content
@@ -112,7 +115,6 @@ export function App_Routes() {
                 <Route path={CATALOGS_ROUTE_LIST} Component={Catalog_List} />
                 <Route path={CATALOGS_ROUTE_VIEW} Component={Catalog_View} />
                 <Route path={CATALOGS_ROUTE_FORM} Component={Catalog_Form} />
-
               </Routes>
             </Content>
             <Footer style={{ textAlign: "center" }}>

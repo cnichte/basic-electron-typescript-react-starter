@@ -1,5 +1,4 @@
-import { createContext, useState } from "react";
-import { RouteType } from "./types/route-names";
+import { createContext } from "react";
 import { DocType } from "../common/types/doc-types";
 import { ViewType } from "./types/view-types";
 

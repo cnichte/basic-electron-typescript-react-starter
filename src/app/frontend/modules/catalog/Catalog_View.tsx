@@ -12,7 +12,7 @@ import { DOCTYPE_USER } from "../../../common/types/doc-types";
 import { useNavigate, useParams } from "react-router";
 
 import { DocCatalogType } from "../../../common/types/doc-catalog";
-import { App_Buttons_IPC } from "../../App_Buttons_IPC";
+import { Header_Buttons_IPC } from "../../Header_Buttons_IPC";
 
 /**
  * Subscribe to listener only on component construction
@@ -31,7 +31,7 @@ export function Catalog_View() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-    App_Buttons_IPC.request_buttons('view');
+    Header_Buttons_IPC.request_buttons('view');
     
     const request: DB_Request = {
       type: "request:data",

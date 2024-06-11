@@ -21,8 +21,11 @@ export interface RequestData<T> extends DB_Request {
 
 export interface Action_Request {
   type: ActionRequestTypes;
-  target: DocType;
+  target: DocType; // Das könnte ich auftrennen?
+
   view: ViewType;
+  doctype:DocType;
+
   options: any;
 }
 

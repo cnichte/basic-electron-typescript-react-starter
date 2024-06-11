@@ -20,7 +20,7 @@ import {
   DOCTYPE_HEADER_BUTTONS,
   DOCTYPE_USER,
 } from "../../../common/types/doc-types";
-import { App_Buttons_IPC } from "../../App_Buttons_IPC";
+import { Header_Buttons_IPC } from "../../Header_Buttons_IPC";
 
 /**
  * Subscribe to listener only on component construction
@@ -69,7 +69,7 @@ export function User_List() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-    App_Buttons_IPC.request_buttons('list');
+    Header_Buttons_IPC.request_buttons('list');
     
     load_list();
 
@@ -110,10 +110,12 @@ export function User_List() {
   }
 
   function onListItemEdit(item: DocUserType): any {
+    console.log(`/${item.docType}/form/${item._id}`);
     navigate(`/${item.docType}/form/${item._id}`);
   }
 
   function onListItemView(item: DocUserType): any {
+    console.log(`/${item.docType}/view/${item._id}`);
     navigate(`/${item.docType}/view/${item._id}`);
   }
 

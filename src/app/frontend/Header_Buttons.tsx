@@ -4,7 +4,7 @@ import { IPC_BUTTON_ACTION } from "../common/types/IPC_Channels";
 import { useContext, useEffect, useState } from "react";
 import { ArtWorks_Context } from "./App_Context";
 import { ViewType } from "./types/view-types";
-import { DOCTYPE_HEADER_BUTTONS } from "../common/types/doc-types";
+import { DOCTYPE_HEADER_BUTTONS, DocType } from "../common/types/doc-types";
 
 /**
  * Subscribe to listener only on component construction
@@ -24,9 +24,10 @@ import { DOCTYPE_HEADER_BUTTONS } from "../common/types/doc-types";
  * @param props
  * @returns
  */
-export function App_Buttons(props: any) {
+export function Header_Buttons(props: any) {
   const artworks_context = useContext(ArtWorks_Context);
   const [viewtype, setViewType] = useState<ViewType>("list");
+  const [doctype, setDocType] = useState<DocType>('user');
 
   const {
     token: { colorBgContainer },
@@ -42,6 +43,7 @@ export function App_Buttons(props: any) {
         if (response.target === DOCTYPE_HEADER_BUTTONS) {
           console.log("App_Buttons says: SHOW Buttons for: ", response);
           setViewType(response.view);
+          setDocType(response.doctype)
         }
       }
     );
@@ -62,9 +64,13 @@ export function App_Buttons(props: any) {
   const callbackCloseHandler = () => {
     let request: Action_Request = {
       type: "request:close-action",
-      target: artworks_context.doctype,
+      target: doctype,
+
+      doctype: doctype,
       view: viewtype,
+
       options: {},
+
     };
 
     window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
@@ -73,8 +79,11 @@ export function App_Buttons(props: any) {
   const callbackAddHandler = () => {
     let request: Action_Request = {
       type: "request:add-action",
-      target: artworks_context.doctype,
+      target:doctype,
+
+      doctype: doctype,
       view: viewtype,
+
       options: {},
     };
 
@@ -85,7 +94,10 @@ export function App_Buttons(props: any) {
     let request: Action_Request = {
       type: "request:edit-action",
       target: artworks_context.doctype,
+
+      doctype: doctype,
       view: viewtype,
+
       options: {},
     };
 
@@ -96,7 +108,10 @@ export function App_Buttons(props: any) {
     let request: Action_Request = {
       type: "request:save-action",
       target: artworks_context.doctype,
+
+      doctype: doctype,
       view: viewtype,
+      
       options: {},
     };
 

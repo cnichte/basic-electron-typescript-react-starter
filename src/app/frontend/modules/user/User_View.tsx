@@ -11,7 +11,7 @@ import { ArtWorks_Context } from "../../App_Context";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
 import { DOCTYPE_USER } from "../../../common/types/doc-types";
 import { useNavigate, useParams } from "react-router";
-import { App_Buttons_IPC } from "../../App_Buttons_IPC";
+import { Header_Buttons_IPC } from "../../Header_Buttons_IPC";
 
 /**
  * Subscribe to listener only on component construction
@@ -29,7 +29,7 @@ export function User_View() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-    App_Buttons_IPC.request_buttons('view');
+    Header_Buttons_IPC.request_buttons('view');
     
     const request: DB_Request = {
       type: "request:data",
