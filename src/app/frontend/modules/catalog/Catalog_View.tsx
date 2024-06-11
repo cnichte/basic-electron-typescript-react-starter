@@ -4,7 +4,7 @@ import {
   Action_Request,
   DB_Request,
 } from "../../../common/types/request-types";
-import { Messages } from "../../Messages";
+import { App_Messages } from "../../App_Messages";
 
 import { ArtWorks_Context } from "../../App_Context";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
@@ -44,7 +44,7 @@ export function Catalog_View() {
       .request_data(IPC_DATABASE, [request])
       .then((result: DocCatalogType) => {
         setDataObject(result);
-        message.info(Messages.from_request(request.type, "User"));
+        message.info(App_Messages.from_request(request.type, "User"));
       })
       .catch(function (error: any) {
         message.error(JSON.stringify(error));

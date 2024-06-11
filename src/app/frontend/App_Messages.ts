@@ -18,7 +18,7 @@ export const success = (msg:string) => {
 };
 */
 
-export class Messages {
+export class App_Messages {
   /**
    *
    * @param request
