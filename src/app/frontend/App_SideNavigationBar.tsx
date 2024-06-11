@@ -5,9 +5,10 @@ import { useNavigate } from "react-router";
 import { MenuProps, Divider } from "antd";
 import {
   ROUTE_TEST_IPC,
-  ROUTE_VIEW_CATALOGS,
-  ROUTE_VIEW_USERS,
+  CATALOGS_ROUTE_LIST,
+  USERS_ROUTE_VIEW,
   RouteType,
+  USERS_ROUTE_LIST,
 } from "./types/route-names";
 import { ArtWorks_Context } from "./App_Context";
 import {
@@ -16,7 +17,7 @@ import {
   DOCTYPE_USER,
   DocTypes,
 } from "../common/types/doc-types";
-import { AppViewType, VIEWTYPE_LIST } from "./types/view-types";
+import { AppViewType, VIEWTYPE_LIST, VIEWTYPE_VIEW } from "./types/view-types";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -92,21 +93,21 @@ export function App_SideNavigationBar({
   }
 
   /**
-   * This is the Menu Structure.
+   * This is the Sidebar Menu-Structure.
    */
   const items: MenuItem[] = [
     getMenuItem("IPC Test", "10", <UserOutlined />, () =>
-      handleChange(ROUTE_TEST_IPC, DOCTYPE_IPC, VIEWTYPE_LIST)
+      handleChange(ROUTE_TEST_IPC, DOCTYPE_IPC, VIEWTYPE_VIEW)
     ),
     {
       type: "divider",
     },
     getMenuItem("Database", "sub1", <AppstoreOutlined />, undefined, [
       getMenuItem("User", "30", null, () =>
-        handleChange(ROUTE_VIEW_USERS, DOCTYPE_USER, VIEWTYPE_LIST)
+        handleChange(USERS_ROUTE_LIST, DOCTYPE_USER, VIEWTYPE_LIST)
       ),
       getMenuItem("Catalog", "40", null, () =>
-        handleChange(ROUTE_VIEW_CATALOGS, DOCTYPE_CATALOG, VIEWTYPE_LIST)
+        handleChange(CATALOGS_ROUTE_LIST, DOCTYPE_CATALOG, VIEWTYPE_LIST)
       ),
     ]),
   ];

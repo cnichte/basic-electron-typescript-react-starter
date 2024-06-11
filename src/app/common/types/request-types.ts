@@ -3,6 +3,7 @@ import { DocTypes } from "./doc-types";
 
 export type DatabaseRequestTypes =
   | "request:list-all"
+  | "request:data"  
   | "request:create"
   | "request:save"
   | "request:delete";
@@ -10,6 +11,7 @@ export type DatabaseRequestTypes =
 export interface DB_Request {
   type: DatabaseRequestTypes;
   module: DocTypes;
+  id?:string;
   options: any;
 }
 

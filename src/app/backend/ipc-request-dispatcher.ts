@@ -1,8 +1,8 @@
-import { ipcMain } from "electron";
+import { BrowserWindow, ipcMain } from "electron";
 import { Database_Mysql } from "./database-mysql";
 import { Database_Pouchdb } from "./database-pouchdb";
 import { DatabaseCRUD_Interface } from "./database-types";
-import { IPC_DATABASE } from "../common/types/IPC_Channels";
+import { IPC_ACTIONS, IPC_DATABASE } from "../common/types/IPC_Channels";
 /**
  * dispatches all the ipc requests from the frontend,
  * to database commands.
@@ -10,10 +10,13 @@ import { IPC_DATABASE } from "../common/types/IPC_Channels";
  * @see https://www.electronjs.org/docs/latest/tutorial/ipc
  */
 export class IPC_Request_Dispatcher {
+  mainWindow: BrowserWindow;
+
   pouchdb: DatabaseCRUD_Interface;
   mysqldb: DatabaseCRUD_Interface;
 
-  constructor() {
+  constructor(mainWindow: BrowserWindow) {
+    this.mainWindow = mainWindow;
     this.pouchdb = new Database_Pouchdb("pouchdb-test");
     // this.mysqldb = new Database_Mysql();
   }
@@ -52,6 +55,32 @@ export class IPC_Request_Dispatcher {
     ipcMain.on("counter-value", (_event, value) => {
       console.log("MAIN says: ", value);
     });
+
+    // ######################################################################
+    // This supports my Applications API
+    // ######################################################################
+
+    // ----------------------------------------------------------------------
+    // Button Action Requests
+    // ----------------------------------------------------------------------
+
+    /**
+     * A button was clicked in the header
+     * and an action request was sent to the server.
+     * This request is simply forwarded here to interested listeners in another render process.
+     */
+    ipcMain.on(IPC_ACTIONS, async (event, arg) => {
+      console.log(
+        `MAIN says: Button-Action-Request received from frontend: `,
+        arg
+      );
+      //! Following Pattern 3 for header-button-actions
+      this.mainWindow.webContents.send(IPC_ACTIONS, arg[0]);
+    });
+
+    // ----------------------------------------------------------------------
+    // Database Requests
+    // ----------------------------------------------------------------------
 
     //! Following Pattern 2 for the Database requests
     ipcMain.handle(IPC_DATABASE, async (event, arg) => {
@@ -100,28 +129,49 @@ export class IPC_Request_Dispatcher {
                 return reject(err);
               });
           });
-          break
-          case `request:delete`:
-            result = new Promise((resolve, reject) => {  
+          break;
+          case "request:data":
+            result = new Promise((resolve, reject) => {
               this.pouchdb
-                .delete(request.module, request.data)
+                .readFromID(request.id, request.options)
                 .then(function (response) {
                   // This is space to transform the result before send it back.
                   // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
-                  console.log("delete-then: ", response);
+                  console.log("data-then: ", response);
                   console.log("---------------------");
                   return resolve(response);
                 })
                 .catch(function (err) {
                   console.log("---------------------");
-                  console.log("delete-error: ", err);
+                  console.log("data-error: ", err);
                   console.log("---------------------");
                   return reject(err);
-                });
-            });
-            break
+                });    
+              });     
+            break;
+        case `request:delete`:
+          result = new Promise((resolve, reject) => {
+            this.pouchdb
+              .delete(request.module, request.data)
+              .then(function (response) {
+                // This is space to transform the result before send it back.
+                // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
+                console.log("delete-then: ", response);
+                console.log("---------------------");
+                return resolve(response);
+              })
+              .catch(function (err) {
+                console.log("---------------------");
+                console.log("delete-error: ", err);
+                console.log("---------------------");
+                return reject(err);
+              });
+          });
+          break;
         default:
-          result = Promise.reject(`unknown request: ${request.request}`);
+          result = new Promise((resolve, reject) => {
+            reject(`unknown request: ${request}`);
+          });
       }
 
       return result;

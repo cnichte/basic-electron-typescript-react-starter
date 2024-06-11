@@ -14,16 +14,23 @@ import {
   Action_Request,
   DB_Request,
   RequestData,
-} from "../common/types/request-types";
-import { FormTool } from "./FormTool";
-import { FormState } from "./types/form-types";
-import { Messages } from "./Messages";
+} from "../../../common/types/request-types"; //  common/types/request-types";
+import { FormTool } from "../../FormTool";
+import { FormState } from "../../types/form-types";
+import { Messages } from "../../Messages";
 
-import { DocCatalogType } from "../common/types/doc-catalog";
-import { ArtWorks_Context } from "./App_Context";
-import { IPC_DATABASE } from "../common/types/IPC_Channels";
-import { DOCTYPE_CATALOG } from "../common/types/doc-types";
+import { DocCatalogType } from "../../../common/types/doc-catalog";
+import { ArtWorks_Context } from "../../App_Context";
+import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
+import { DOCTYPE_CATALOG } from "../../../common/types/doc-types";
 
+/**
+ * Subscribe to listener only on component construction
+ * If this is inside the Component
+ * You are subscribing to ipcRenderer.on after every button click which is causing multiple subscriptions.
+ * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
+ * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
+ */
 window.electronAPI.receive_action((response: Action_Request) => {
   if (response.module === DOCTYPE_CATALOG) {
     console.log("View_Catalogs says ACTION: ", response);
@@ -31,7 +38,7 @@ window.electronAPI.receive_action((response: Action_Request) => {
   }
 });
 
-export function View_Catalogs() {
+export function Catalog_Form() {
   const artworks_context = useContext(ArtWorks_Context);
 
   const [form] = Form.useForm();

@@ -5,7 +5,6 @@ import { useContext } from "react";
 import { ArtWorks_Context } from "./App_Context";
 import { AppViewType } from "./types/view-types";
 
-
 // TODO
 export type ArtworkList_Action = "add" | "edit";
 export type ArtworkView_Action = "close" | "save";
@@ -36,6 +35,14 @@ export function App_Buttons(props: any) {
     token: { colorBgContainer },
   } = theme.useToken();
 
+
+  /**
+   * Since the buttons in the header cannot communicate
+   * with the content that is displayed via the router,
+   * I use Electron's IPC protocol, following Pattern 4:
+   * https://www.electronjs.org/de/docs/latest/tutorial/ipc#pattern-4-renderer-to-renderer
+   * ...to trigger the actions for Child-Views: list, view and form.
+   */
   const callbackHandler = () => {
     let request: Action_Request = {
       type: "request:save-action",
@@ -44,7 +51,6 @@ export function App_Buttons(props: any) {
     };
 
     window.electronAPI.sendMessage(IPC_ACTIONS, [request]);
-    props.cb();
   };
 
   return (
@@ -56,7 +62,7 @@ export function App_Buttons(props: any) {
       }}
       style={{ color: colorBgContainer }}
     >
-      Dokument - {artworks_context.doctype}
+      Add {artworks_context.doctype}
     </Button>
   );
 }

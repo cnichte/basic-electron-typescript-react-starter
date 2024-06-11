@@ -15,9 +15,9 @@ import { IPC_ACTIONS, IPC_Channels } from "./app/common/types/IPC_Channels";
  * Electron apps often use the preload script
  * to set up inter-process communication (IPC) interfaces
  * to pass arbitrary messages between the main and render.
- * 
+ *
  * https://www.jsgarden.co/blog/how-to-handle-electron-ipc-events-with-typescript
- * 
+ *
  * See the Electron documentation for details on how to use preload scripts:
  * https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
  */
@@ -37,6 +37,11 @@ const electronAPI: IElectronAPI = {
   onUpdateCounter: (callback) =>
     ipcRenderer.on("update-counter", (_event, value) => callback(value)),
   counterValue: (value) => ipcRenderer.send("counter-value", value),
+
+  // ----------------------------------------------------------
+  // above are examples
+  // down there is my Framework-Api, but including sendMessage.
+  // ----------------------------------------------------------
 
   //! Following Pattern 2 for the Database requests
   request_data: (channel: IPC_Channels, ...args: unknown[]) =>
