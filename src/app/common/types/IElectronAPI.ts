@@ -1,6 +1,9 @@
 import { IPC_Channels } from "./IPC_Channels";
 
 export interface IElectronAPI {
+  // ######################################################################
+  // This are Examples
+  // ######################################################################
   //! Pattern 1: Renderer to main (one-way)
   sendMessage(channel: IPC_Channels, ...args: unknown[]): void;
 
@@ -15,14 +18,13 @@ export interface IElectronAPI {
   onUpdateCounter: (callback: any) => any;
   counterValue: (value: any) => any;
 
-  // ----------------------------------------------------------
-  // above are examples
-  // down there is my Framework-Api, but including sendMessage.
-  // ----------------------------------------------------------
+  // ######################################################################
+  // This supports my Applications API, but including sendMessage.
+  // ######################################################################
 
   //! Following Pattern 2 for the Database requests
   request_data: (channel: IPC_Channels, ...args: unknown[]) => Promise<any>;
 
   //! Following Pattern 3 for header-button-actions
-  receive_action: (callback: any) => any;
+  receive_action_request: (callback: any) => any;
 }

@@ -17,7 +17,7 @@ import {
   DOCTYPE_USER,
   DocTypes,
 } from "../common/types/doc-types";
-import { AppViewType, VIEWTYPE_LIST, VIEWTYPE_VIEW } from "./types/view-types";
+import { ViewType, VIEWTYPE_LIST, VIEWTYPE_VIEW } from "./types/view-types";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -47,7 +47,7 @@ export function App_SideNavigationBar({
   const handleChange = (
     route: RouteType,
     doctype: DocTypes,
-    viewtype: AppViewType
+    viewtype: ViewType
   ) => {
     // Ich gehe hier immer zu einer liste.
     // Sollte sich das mal ändern braucht es hier einen callback

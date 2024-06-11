@@ -1,9 +1,10 @@
-import { Button, theme } from "antd";
-import { ActionRequestTypes, Action_Request } from "../common/types/request-types";
+import { Button, message, theme } from "antd";
+import { Action_Request } from "../common/types/request-types";
 import { IPC_BUTTON_ACTION } from "../common/types/IPC_Channels";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ArtWorks_Context } from "./App_Context";
-import { AppViewType } from "./types/view-types";
+import { ViewType } from "./types/view-types";
+import { DOCTYPE_HEADER_BUTTONS } from "../common/types/doc-types";
 
 // TODO
 export type ArtworkList_Action = "add" | "edit";
@@ -12,11 +13,25 @@ export type ArtworkForm_Action = "save" | "close";
 
 // TODO
 export interface ArtWorks_Actions {
-  section: AppViewType;
+  section: ViewType;
   actions_list: ArtworkList_Action;
   actions_view: ArtworkView_Action;
   actions_form: ArtworkForm_Action;
 }
+
+/**
+ * Subscribe to listener only on component construction
+ * If this is inside the Component
+ * You are subscribing to ipcRenderer.on after every button click which is causing multiple subscriptions.
+ * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
+ * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
+ */
+window.electronAPI.receive_action_request((response: Action_Request) => {
+  if (response.module === DOCTYPE_HEADER_BUTTONS) {
+    console.log("App_Buttons says: SHOW Buttons for: ", response);
+    message.info(response.type);
+  }
+});
 
 /**
  * These are the buttons in the header.
@@ -30,11 +45,12 @@ export interface ArtWorks_Actions {
  */
 export function App_Buttons(props: any) {
   const artworks_context = useContext(ArtWorks_Context);
+  const [state, setState] = useState<string>('list');
+
 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
 
   /**
    * Since the buttons in the header cannot communicate
@@ -47,13 +63,15 @@ export function App_Buttons(props: any) {
     let request: Action_Request = {
       type: "request:save-action",
       module: artworks_context.doctype,
-      options: {}
+      view:'view', // ist hier egal
+      options: {},
     };
 
     window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
   };
 
   return (
+
     <Button
       id="add-action"
       type="primary"

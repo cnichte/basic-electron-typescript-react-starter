@@ -2,8 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { Button, Divider, Form, FormProps, Input, message } from "antd";
 import {
   Action_Request,
-  DB_Request,
-  RequestData,
 } from "../../../common/types/request-types";
 import { FormTool } from "../../FormTool";
 import { FormState } from "../../types/form-types";
@@ -25,8 +23,8 @@ import { DOCTYPE_USER } from "../../../common/types/doc-types";
  * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
  * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
  */
-window.electronAPI.receive_action((response: Action_Request) => {
-  if (response.module === DOCTYPE_USER) {
+window.electronAPI.receive_action_request((response: Action_Request) => {
+  if (response.module === DOCTYPE_USER && response.view =='form') {
     console.log("View_Users says ACTION: ", response);
     message.info(response.type);
   }

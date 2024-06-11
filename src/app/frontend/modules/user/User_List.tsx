@@ -11,9 +11,9 @@ import {
 import { Messages } from "../../Messages";
 import { DocUserType } from "../../../common/types/doc-user";
 import { ArtWorks_Context } from "../../App_Context";
-import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
+import { IPC_BUTTON_ACTION, IPC_DATABASE } from "../../../common/types/IPC_Channels";
 
-import { DOCTYPE_USER } from "../../../common/types/doc-types";
+import { DOCTYPE_HEADER_BUTTONS, DOCTYPE_USER } from "../../../common/types/doc-types";
 
 /**
  * Subscribe to listener only on component construction
@@ -22,8 +22,8 @@ import { DOCTYPE_USER } from "../../../common/types/doc-types";
  * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
  * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
  */
-window.electronAPI.receive_action((response: Action_Request) => {
-  if (response.module === DOCTYPE_USER) {
+window.electronAPI.receive_action_request((response: Action_Request) => {
+  if (response.module === DOCTYPE_USER && response.view =='list') {
     console.log("View_Users says ACTION: ", response);
     message.info(response.type);
   }
@@ -55,9 +55,21 @@ export function User_List() {
       });
   }
 
+  function request_buttons(){
+    let request: Action_Request = {
+      type: "request:show-list-buttons",
+      view:'list',
+      module: DOCTYPE_HEADER_BUTTONS, //das ist die Zielkomponente / target
+      options: {}
+    };
+
+    window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
+  }
+
   useEffect(() => {
     console.log("ContextData", artworks_context);
     load_list();
+    request_buttons();    
   }, []);
 
   function onListItemDelete(item: DocUserType): any {

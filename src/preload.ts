@@ -1,6 +1,9 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { IElectronAPI } from "./app/common/types/IElectronAPI";
-import { IPC_BUTTON_ACTION, IPC_Channels } from "./app/common/types/IPC_Channels";
+import {
+  IPC_BUTTON_ACTION,
+  IPC_Channels,
+} from "./app/common/types/IPC_Channels";
 
 /**
  * See the Electron documentation for details on how to use preload scripts:
@@ -22,6 +25,10 @@ import { IPC_BUTTON_ACTION, IPC_Channels } from "./app/common/types/IPC_Channels
  * https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
  */
 const electronAPI: IElectronAPI = {
+  // ######################################################################
+  // This are Examples
+  // ######################################################################
+
   //! Pattern 1: Renderer to main (one-way)
   sendMessage(channel: IPC_Channels, ...args: unknown[]) {
     ipcRenderer.send(channel, ...args);
@@ -38,10 +45,9 @@ const electronAPI: IElectronAPI = {
     ipcRenderer.on("update-counter", (_event, value) => callback(value)),
   counterValue: (value) => ipcRenderer.send("counter-value", value),
 
-  // ----------------------------------------------------------
-  // above are examples
-  // down there is my Framework-Api, but including sendMessage.
-  // ----------------------------------------------------------
+  // ######################################################################
+  // This supports my Applications API, but including sendMessage.
+  // ######################################################################
 
   //! Following Pattern 2 for the Database requests
   request_data: (channel: IPC_Channels, ...args: unknown[]) =>
@@ -51,7 +57,7 @@ const electronAPI: IElectronAPI = {
   // The request comes via sendMessage from the Header-Buttons
   // runs via the ipc-action-broker and then over here.
   // The Views are listening to this, for actions to perform...
-  receive_action: (callback) => {
+  receive_action_request: (callback) => {
     ipcRenderer.on(IPC_BUTTON_ACTION, (_event, value) => callback(value));
   },
 };

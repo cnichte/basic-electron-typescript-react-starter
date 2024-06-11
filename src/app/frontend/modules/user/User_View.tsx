@@ -19,8 +19,8 @@ import { useNavigate, useParams } from "react-router";
  * Try to define the ipcRenderer.on event handler outside click event and it should work fine.
  * https://stackoverflow.com/questions/69444055/how-to-prevent-multiplication-of-ipcrenderer-listenters
  */
-window.electronAPI.receive_action((response: Action_Request) => {
-  if (response.module === DOCTYPE_USER) {
+window.electronAPI.receive_action_request((response: Action_Request) => {
+  if (response.module === DOCTYPE_USER && response.view =='view') {
     console.log("View_Users says ACTION: ", response);
     message.info(response.type);
   }

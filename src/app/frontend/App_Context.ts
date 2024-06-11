@@ -1,11 +1,11 @@
 import { createContext, useState } from "react";
 import { RouteType } from "./types/route-names";
 import { DocTypes } from "../common/types/doc-types";
-import { AppViewType } from "./types/view-types";
+import { ViewType } from "./types/view-types";
 
 export interface ContextData {
   
-  viewtype: AppViewType;
+  viewtype: ViewType;
   setViewtype:any;
   
   doctype: DocTypes;
