@@ -1,4 +1,11 @@
-import { Button, Space, message, theme } from "antd";
+import { Button, Space, theme } from "antd";
+import {
+  PlusOutlined,
+  CloseCircleOutlined,
+  EditOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
+
 import { Action_Request } from "../common/types/request-types";
 import { IPC_BUTTON_ACTION } from "../common/types/IPC_Channels";
 import { useContext, useEffect, useState } from "react";
@@ -19,7 +26,7 @@ import { DOCTYPE_HEADER_BUTTONS, DocType } from "../common/types/doc-types";
 export function Header_Buttons(props: any) {
   const artworks_context = useContext(ArtWorks_Context);
   const [viewtype, setViewType] = useState<ViewType>("list");
-  const [doctype, setDocType] = useState<DocType>('user');
+  const [doctype, setDocType] = useState<DocType>("user");
 
   const {
     token: { colorBgContainer },
@@ -35,7 +42,7 @@ export function Header_Buttons(props: any) {
         if (response.target === DOCTYPE_HEADER_BUTTONS) {
           console.log("App_Buttons says: SHOW Buttons for: ", response);
           setViewType(response.view);
-          setDocType(response.doctype)
+          setDocType(response.doctype);
         }
       }
     );
@@ -62,7 +69,6 @@ export function Header_Buttons(props: any) {
       view: viewtype,
 
       options: {},
-
     };
 
     window.electronAPI.send(IPC_BUTTON_ACTION, [request]);
@@ -71,7 +77,7 @@ export function Header_Buttons(props: any) {
   const callbackAddHandler = () => {
     let request: Action_Request = {
       type: "request:add-action",
-      target:doctype,
+      target: doctype,
 
       doctype: doctype,
       view: viewtype,
@@ -103,7 +109,7 @@ export function Header_Buttons(props: any) {
 
       doctype: doctype,
       view: viewtype,
-      
+
       options: {},
     };
 
@@ -116,18 +122,9 @@ export function Header_Buttons(props: any) {
    * Form = "save" | "close";
    */
   function Buttons() {
-    if (viewtype === "view") {
+    if (viewtype === "list") {
       return (
         <Space>
-          <Button
-            id="close-action"
-            type="dashed"
-            onClick={(e) => {
-              callbackCloseHandler();
-            }}
-          >
-            Close {artworks_context.doctype}
-          </Button>
           <Button
             id="add-action"
             onClick={(e) => {
@@ -138,16 +135,26 @@ export function Header_Buttons(props: any) {
           </Button>
         </Space>
       );
-    } else if (viewtype === "list") {
+    } else if (viewtype === "view") {
       return (
         <Space>
           <Button
-            id="add-action"
+            id="close-action"
+            type="dashed"
             onClick={(e) => {
-              callbackAddHandler();
+              callbackCloseHandler();
             }}
           >
-            Add {artworks_context.doctype}
+            <CloseCircleOutlined /> Close {artworks_context.doctype}
+          </Button>
+          <Button
+            id="edit-action"
+            onClick={(e) => {
+              callbackEditHandler();
+            }}
+          >
+            <EditOutlined />
+            Edit {artworks_context.doctype}
           </Button>
         </Space>
       );
@@ -161,7 +168,7 @@ export function Header_Buttons(props: any) {
               callbackCloseHandler();
             }}
           >
-            Close {artworks_context.doctype}
+            <CloseCircleOutlined /> Close {artworks_context.doctype}
           </Button>
           <Button
             id="save-action"
@@ -171,6 +178,7 @@ export function Header_Buttons(props: any) {
             }}
             style={{ color: colorBgContainer }}
           >
+            <UploadOutlined />
             Save {artworks_context.doctype}
           </Button>
         </Space>

@@ -85,7 +85,7 @@ export function Catalog_Form() {
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_CATALOG && response.view == "form") {
-          console.log("View_Catalogs says ACTION: ", response);
+          console.log("Catalog_Form says ACTION: ", response);
           message.info(response.type);
         }
       }

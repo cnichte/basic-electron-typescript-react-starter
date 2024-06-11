@@ -49,7 +49,7 @@ export function User_Form() {
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_USER && response.view == "form") {
-          console.log("View_Users says ACTION: ", response);
+          console.log("User_Form says ACTION: ", response);
           message.info(response.type);
         }
       }

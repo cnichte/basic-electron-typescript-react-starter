@@ -46,7 +46,7 @@ export function User_View() {
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_USER && response.view == "view") {
-          console.log("View_Users says ACTION: ", response);
+          console.log("User_View says ACTION: ", response);
           message.info(response.type);
         }
       }

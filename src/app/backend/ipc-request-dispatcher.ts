@@ -51,7 +51,7 @@ export class IPC_Request_Dispatcher {
     });
 
     ipcMain.handle("handlePingWithError", () => {
-      throw new Error("MAIN throws: handlePing - throws error.");
+      throw new Error("MAIN throws: handlePing - throws error."); // TODO returns an empty object
     });
 
     //! Pattern 3: Main to renderer (see also main.ts)
@@ -172,7 +172,7 @@ export class IPC_Request_Dispatcher {
           });
           break;
         default:
-          result = new Promise((resolve, reject) => {
+          result = new Promise((reject) => {
             reject(`Sorry, this is a unknown request: ${request}`);
           });
       }

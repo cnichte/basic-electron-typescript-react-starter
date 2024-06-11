@@ -52,7 +52,7 @@ export function Catalog_List() {
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_CATALOG && response.view == "list") {
-          console.log("View_Catalogs says ACTION: ", response);
+          console.log("Catalog_List says ACTION: ", response);
           message.info(response.type);
         }
       }
