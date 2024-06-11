@@ -19,6 +19,6 @@ export class Header_Buttons_IPC {
       options: {},
     };
 
-    window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
+    window.electronAPI.send(IPC_BUTTON_ACTION, [request]);
   }
 }

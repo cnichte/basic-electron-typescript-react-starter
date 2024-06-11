@@ -17,7 +17,7 @@ export function IPCTest_View() {
   // https://www.electronjs.org/docs/latest/tutorial/ipc#pattern-1-renderer-to-main-one-way
   function handleClick_1(): void {
     setCount(count + 1);
-    window.electronAPI.sendMessage(
+    window.electronAPI.send(
       IPC_DATABASE,
       "A Request from render-process."
     );

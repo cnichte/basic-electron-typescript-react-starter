@@ -5,7 +5,7 @@ export interface IElectronAPI {
   // This are Examples
   // ######################################################################
   //! Pattern 1: Renderer to main (one-way)
-  sendMessage(channel: IPC_Channels, ...args: unknown[]): void;
+  send(channel: IPC_Channels, ...args: unknown[]): void;
 
   asyncPing: () => void;
   syncPing: () => string;
@@ -19,15 +19,13 @@ export interface IElectronAPI {
   counterValue: (value: any) => any;
 
   // ######################################################################
-  // This supports my Applications API, but including sendMessage.
+  // This supports my Applications API, but including send()
   // ######################################################################
 
   //! Following Pattern 2 for the Database requests
   request_data: (channel: IPC_Channels, ...args: unknown[]) => Promise<any>;
 
   //! Following Pattern 3 for header-button-actions
-  receive_action_request: (channel: IPC_Channels, callback: any) => any;
-
   on:  (channel: IPC_Channels, callback:( ...args: any[]) => void) => any;
   off: (channel: IPC_Channels, callback:( ...args: any[]) => void) => any;
 }

@@ -73,7 +73,7 @@ export function Header_Buttons(props: any) {
 
     };
 
-    window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
+    window.electronAPI.send(IPC_BUTTON_ACTION, [request]);
   };
 
   const callbackAddHandler = () => {
@@ -87,7 +87,7 @@ export function Header_Buttons(props: any) {
       options: {},
     };
 
-    window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
+    window.electronAPI.send(IPC_BUTTON_ACTION, [request]);
   };
 
   const callbackEditHandler = () => {
@@ -101,7 +101,7 @@ export function Header_Buttons(props: any) {
       options: {},
     };
 
-    window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
+    window.electronAPI.send(IPC_BUTTON_ACTION, [request]);
   };
 
   const callbackSaveHandler = () => {
@@ -115,7 +115,7 @@ export function Header_Buttons(props: any) {
       options: {},
     };
 
-    window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
+    window.electronAPI.send(IPC_BUTTON_ACTION, [request]);
   };
 
   /**

@@ -30,7 +30,7 @@ const electronAPI: IElectronAPI = {
   // ######################################################################
 
   //! Pattern 1: Renderer to main (one-way)
-  sendMessage(channel: IPC_Channels, ...args: unknown[]) {
+  send(channel: IPC_Channels, ...args: unknown[]) {
     ipcRenderer.send(channel, ...args);
   },
   asyncPing: () => ipcRenderer.send("asyncPing"),
@@ -46,27 +46,19 @@ const electronAPI: IElectronAPI = {
   counterValue: (value) => ipcRenderer.send("counter-value", value),
 
   // ######################################################################
-  // This supports my Applications API, but including sendMessage.
+  // This supports my Applications API, but including send()
   // ######################################################################
 
   //! Following Pattern 2 for the Database requests
   request_data: (channel: IPC_Channels, ...args: unknown[]) =>
     ipcRenderer.invoke(channel, ...args),
 
-  //! Following Pattern 3 for header-button-actions
   // The request comes via sendMessage from the Header-Buttons
   // runs via the ipc-action-broker and then over here.
   // The Views are listening to this, for actions to perform...
-  receive_action_request: (channel, callback) => {
-    // https://stackoverflow.com/questions/57418499/how-to-unregister-from-ipcrenderer-on-event-listener
-    const subscription = (_event: any, ...args: any[]) => callback(...args);
-    ipcRenderer.on(channel, subscription);
-    return () => {
-      ipcRenderer.removeListener(channel, subscription);
-    };
-  },
-
+  //! Following Pattern 3 for header-button-actions
   //! https://berom0227.medium.com/implementing-the-off-method-in-electron-api-a-critical-aspect-of-event-listener-management-189b5232ea2a
+  // https://stackoverflow.com/questions/57418499/how-to-unregister-from-ipcrenderer-on-event-listener
   on: (channel: IPC_Channels, callback: (...args: any[]) => void) => {
     // _event: Electron.IpcRendererEvent,
     const subscription = (_event: any, ...args: any[]) => callback(...args);
