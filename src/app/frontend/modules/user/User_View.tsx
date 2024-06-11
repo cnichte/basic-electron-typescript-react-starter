@@ -4,7 +4,7 @@ import {
   Action_Request,
   DB_Request,
 } from "../../../common/types/request-types";
-import { App_Messages } from "../../App_Messages";
+import { App_MessagesTool } from "../../App_MessagesTool";
 
 import { DocUserType } from "../../../common/types/doc-user";
 import { ArtWorks_Context } from "../../App_Context";
@@ -35,7 +35,7 @@ export function User_View() {
       .request_data(IPC_DATABASE, [request])
       .then((result: DocUserType) => {
         setDataObject(result);
-        message.info(App_Messages.from_request(request.type, "User"));
+        message.info(App_MessagesTool.from_request(request.type, "User"));
       })
       .catch(function (error: any) {
         message.error(JSON.stringify(error));

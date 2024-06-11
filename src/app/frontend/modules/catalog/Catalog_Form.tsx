@@ -17,7 +17,7 @@ import {
 } from "../../../common/types/request-types"; //  common/types/request-types";
 import { FormTool } from "../../FormTool";
 import { FormState } from "../../types/form-types";
-import { App_Messages } from "../../App_Messages";
+import { App_MessagesTool } from "../../App_MessagesTool";
 
 import { DocCatalogType } from "../../../common/types/doc-catalog";
 import { ArtWorks_Context } from "../../App_Context";
@@ -54,7 +54,7 @@ export function Catalog_Form() {
       .then((result: DocCatalogType[]) => {
         console.log(result);
         setListData(result);
-        message.info(App_Messages.from_request(request.type, "Catalog"));
+        message.info(App_MessagesTool.from_request(request.type, "Catalog"));
       })
       .catch(function (error): any {
         message.error(JSON.stringify(error));
@@ -138,7 +138,7 @@ export function Catalog_Form() {
     window.electronAPI
       .request_data(IPC_DATABASE, [request])
       .then((result: any) => {
-        message.info(App_Messages.from_request(request.type, "User"));
+        message.info(App_MessagesTool.from_request(request.type, "User"));
         load_list();
       })
       .catch(function (error): any {

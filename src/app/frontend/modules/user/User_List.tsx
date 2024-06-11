@@ -8,7 +8,7 @@ import {
   DB_Request,
   RequestData,
 } from "../../../common/types/request-types";
-import { App_Messages } from "../../App_Messages";
+import { App_MessagesTool } from "../../App_MessagesTool";
 import { DocUserType } from "../../../common/types/doc-user";
 import { ArtWorks_Context } from "../../App_Context";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
@@ -35,7 +35,7 @@ export function User_List() {
       .request_data(IPC_DATABASE, [request])
       .then((result: DocUserType[]) => {
         setListData(result);
-        message.info(App_Messages.from_request(request.type, "User"));
+        message.info(App_MessagesTool.from_request(request.type, "User"));
       })
       .catch(function (error: any) {
         message.error(JSON.stringify(error));
@@ -76,7 +76,7 @@ export function User_List() {
     window.electronAPI
       .request_data(IPC_DATABASE, [request])
       .then((result: any) => {
-        message.info(App_Messages.from_request(request.type, "User"));
+        message.info(App_MessagesTool.from_request(request.type, "User"));
         load_list();
       })
       .catch(function (error): any {

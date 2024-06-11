@@ -1,7 +1,7 @@
 import { ViewType } from "../../frontend/types/view-types"; 
 import { DocType } from "./doc-types";
 
-export type DatabaseRequestTypes =
+export type DatabaseRequestType =
   | "request:list-all"
   | "request:data"
   | "request:create"
@@ -9,7 +9,7 @@ export type DatabaseRequestTypes =
   | "request:delete";
 
 export interface DB_Request {
-  type: DatabaseRequestTypes;
+  type: DatabaseRequestType;
   doctype: DocType; // equals a 'module'
   id?: string;
   options: any;
@@ -20,7 +20,7 @@ export interface RequestData<T> extends DB_Request {
 }
 
 export interface Action_Request {
-  type: ActionRequestTypes;
+  type: ActionRequestType;
   target: DocType; // Das könnte ich auftrennen?
 
   view: ViewType;
@@ -29,7 +29,7 @@ export interface Action_Request {
   options: any;
 }
 
-export type ActionRequestTypes =
+export type ActionRequestType =
   // Header-Buttons to List- View- Form-Component
   | "request:close-action"
   | "request:add-action"
@@ -39,3 +39,17 @@ export type ActionRequestTypes =
   | "request:show-list-buttons"
   | "request:show-view-buttons"
   | "request:show-form-buttons";
+
+
+
+  export interface Message_Request {
+    type: MessageRequestType;
+    content:string;
+    dbrequesttype:DatabaseRequestType;
+    options: any;
+  }
+
+  export type MessageRequestType =
+  | "request:message-success"
+  | "request:message-error"
+  | "request:message-warning";
