@@ -1,5 +1,5 @@
 import { ViewType } from "../../frontend/types/view-types"; 
-import { DocTypes } from "./doc-types";
+import { DocType } from "./doc-types";
 
 export type DatabaseRequestTypes =
   | "request:list-all"
@@ -10,7 +10,7 @@ export type DatabaseRequestTypes =
 
 export interface DB_Request {
   type: DatabaseRequestTypes;
-  module: DocTypes;
+  doctype: DocType; // module
   id?: string;
   options: any;
 }
@@ -21,16 +21,17 @@ export interface RequestData<T> extends DB_Request {
 
 export interface Action_Request {
   type: ActionRequestTypes;
-  module: DocTypes;
+  target: DocType;
   view: ViewType;
   options: any;
 }
 
 export type ActionRequestTypes =
   // Header-Buttons to List- View- Form-Component
-  | "request:save-action"
+  | "request:close-action"
+  | "request:add-action"
   | "request:edit-action"
-  | "request:go-back-action"
+  | "request:save-action"
   // List- View- Form-Component to Header-Buttons
   | "request:show-list-buttons"
   | "request:show-view-buttons"

@@ -12,6 +12,7 @@ import { DOCTYPE_USER } from "../../../common/types/doc-types";
 import { useNavigate, useParams } from "react-router";
 
 import { DocCatalogType } from "../../../common/types/doc-catalog";
+import { App_Buttons_IPC } from "../../App_Buttons_IPC";
 
 /**
  * Subscribe to listener only on component construction
@@ -30,10 +31,11 @@ export function Catalog_View() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-
+    App_Buttons_IPC.request_buttons('view');
+    
     const request: DB_Request = {
       type: "request:data",
-      module: "catalog",
+      doctype: "catalog",
       id: id,
       options: {},
     };
@@ -52,12 +54,14 @@ export function Catalog_View() {
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.module === DOCTYPE_USER && response.view == "view") {
+        if (response.target === DOCTYPE_USER && response.view == "view") {
           console.log("View_Catalog says ACTION: ", response);
           message.info(response.type);
         }
       }
     );
+
+    console.log('ocrUnsubscribe', ocrUnsubscribe);
 
     // Cleanup function to remove the listener on component unmount
     return () => {

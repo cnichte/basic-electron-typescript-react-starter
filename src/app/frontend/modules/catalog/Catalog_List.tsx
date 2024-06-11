@@ -12,6 +12,7 @@ import { DocCatalogType } from "../../../common/types/doc-catalog";
 import { ArtWorks_Context } from "../../App_Context";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
 import { DOCTYPE_CATALOG } from "../../../common/types/doc-types";
+import { App_Buttons_IPC } from "../../App_Buttons_IPC";
 
 /**
  * Subscribe to listener only on component construction
@@ -32,7 +33,7 @@ export function Catalog_List() {
     //! Following Pattern 2 for the Database requests
     const request: DB_Request = {
       type: "request:list-all",
-      module: "catalog",
+      doctype: "catalog",
       options: {},
     };
 
@@ -50,14 +51,15 @@ export function Catalog_List() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-
+    App_Buttons_IPC.request_buttons('list');
+    
     load_list();
 
     // Register and remove the event listener
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.module === DOCTYPE_CATALOG && response.view == "list") {
+        if (response.target === DOCTYPE_CATALOG && response.view == "list") {
           console.log("View_Catalogs says ACTION: ", response);
           message.info(response.type);
         }
@@ -73,7 +75,7 @@ export function Catalog_List() {
   function onListItemDelete(item: DocCatalogType): any {
     const request: RequestData<DocCatalogType> = {
       type: "request:delete",
-      module: "catalog",
+      doctype: "catalog",
       options: {},
       data: item,
     };

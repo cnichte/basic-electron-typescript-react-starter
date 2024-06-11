@@ -1,12 +1,16 @@
+// This is a special internal
+// it adresses the frameworks header-buttons
+export const DOCTYPE_HEADER_BUTTONS = "headerbuttons";
+
+// custom types
 export const DOCTYPE_USER = "user";
 export const DOCTYPE_CATALOG = "catalog";
 export const DOCTYPE_IPC = "ipc";
 
-// TODO spätestes hier macht es sinn das module oder components zu nennen:
-export const DOCTYPE_HEADER_BUTTONS = "headerbuttons";
-
-export type DocTypes =
+export type DocType =
+  // framework
   | typeof DOCTYPE_HEADER_BUTTONS
+  // custom
   | typeof DOCTYPE_USER
   | typeof DOCTYPE_CATALOG
   | typeof DOCTYPE_IPC;
@@ -16,5 +20,5 @@ export type DocTypes =
 export interface DocItentifiable {
   _id: string;
   _rev?: string;
-  docType: DocTypes;
+  docType: DocType;
 }

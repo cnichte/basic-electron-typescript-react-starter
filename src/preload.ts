@@ -67,17 +67,20 @@ const electronAPI: IElectronAPI = {
   },
 
   //! https://berom0227.medium.com/implementing-the-off-method-in-electron-api-a-critical-aspect-of-event-listener-management-189b5232ea2a
-  on: (channel: string, callback: (...args: any[]) => void) => {
-    const subscription = (_event: Electron.IpcRendererEvent, ...args: any[]) =>
-      callback(...args);
+  on: (channel: IPC_Channels, callback: (...args: any[]) => void) => {
+    // _event: Electron.IpcRendererEvent,
+    const subscription = (_event: any, ...args: any[]) => callback(...args);
     ipcRenderer.on(channel, subscription);
+    console.log("preload.on -> subscribe listener", channel, subscription);
     // Return a function to remove the listener
     return () => {
+      console.log("preload.on -> remove listener", channel, subscription);
       ipcRenderer.removeListener(channel, subscription);
     };
   },
-  
-  off: (channel: string, callback: (...args: any[]) => void) => {
+
+  off: (channel: IPC_Channels, callback: (...args: any[]) => void) => {
+    console.log("preload.off -> remove listener", channel, callback);
     ipcRenderer.removeListener(channel, callback);
   },
 };

@@ -20,6 +20,7 @@ import {
   DOCTYPE_HEADER_BUTTONS,
   DOCTYPE_USER,
 } from "../../../common/types/doc-types";
+import { App_Buttons_IPC } from "../../App_Buttons_IPC";
 
 /**
  * Subscribe to listener only on component construction
@@ -40,7 +41,7 @@ export function User_List() {
     //! Following Pattern 2 for the Database requests
     const request: DB_Request = {
       type: "request:list-all",
-      module: "user",
+      doctype: "user",
       options: {},
     };
 
@@ -59,7 +60,7 @@ export function User_List() {
     let request: Action_Request = {
       type: "request:show-list-buttons",
       view: "list",
-      module: DOCTYPE_HEADER_BUTTONS, //das ist die Zielkomponente / target
+      target: DOCTYPE_HEADER_BUTTONS, //das ist die Zielkomponente / target
       options: {},
     };
 
@@ -68,14 +69,15 @@ export function User_List() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
+    App_Buttons_IPC.request_buttons('list');
+    
     load_list();
-    request_buttons();
 
     // Register and remove the event listener
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.module === DOCTYPE_USER && response.view == "list") {
+        if (response.target === DOCTYPE_USER && response.view == "list") {
           console.log("View_Users says ACTION: ", response);
           message.info(response.type);
         }
@@ -91,7 +93,7 @@ export function User_List() {
   function onListItemDelete(item: DocUserType): any {
     const request: RequestData<DocUserType> = {
       type: "request:delete",
-      module: "user",
+      doctype: "user",
       options: {},
       data: item,
     };

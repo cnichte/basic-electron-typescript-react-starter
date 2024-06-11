@@ -13,6 +13,7 @@ import {
   IPC_DATABASE,
 } from "../../../common/types/IPC_Channels";
 import { DOCTYPE_USER } from "../../../common/types/doc-types";
+import { App_Buttons_IPC } from "../../App_Buttons_IPC";
 
 /**
  * Subscribe to listener only on component construction
@@ -49,6 +50,8 @@ export function User_Form() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
+    App_Buttons_IPC.request_buttons('form');
+    
     // form.setFieldsValue(dataOrigin);
     reset_form();
 
@@ -59,7 +62,7 @@ export function User_Form() {
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.module === DOCTYPE_USER && response.view == "form") {
+        if (response.target === DOCTYPE_USER && response.view == "form") {
           console.log("View_Users says ACTION: ", response);
           message.info(response.type);
         }

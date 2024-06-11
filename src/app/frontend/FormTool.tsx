@@ -33,7 +33,7 @@ export class FormTool<T extends DocItentifiable> {
 
         let request: RequestData<T> = {
           type: "request:save",
-          module: dataObject.docType,
+          doctype: dataObject.docType,
           options: {},
           data: dataObject,
         };

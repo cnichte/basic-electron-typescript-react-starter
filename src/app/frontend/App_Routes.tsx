@@ -25,7 +25,7 @@ const { Title } = Typography;
 
 import { ArtWorks_Context, ContextData } from "./App_Context";
 import { App_Buttons } from "./App_Buttons";
-import { DocTypes } from "../common/types/doc-types";
+import { DocType } from "../common/types/doc-types";
 import { ViewType } from "./types/view-types";
 import { User_List } from "./modules/user/User_List";
 import { Catalog_List } from "./modules/catalog/Catalog_List";
@@ -39,7 +39,7 @@ export function App_Routes() {
   } = theme.useToken();
 
   const [viewtype, setViewtype] = useState<ViewType>();
-  const [doctype, setDoctype] = useState<DocTypes>();
+  const [doctype, setDoctype] = useState<DocType>();
   // is set in App_SideNavigationBar
   const value: ContextData = {
     viewtype,

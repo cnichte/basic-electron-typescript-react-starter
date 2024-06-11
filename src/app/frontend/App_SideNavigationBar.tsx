@@ -15,7 +15,7 @@ import {
   DOCTYPE_CATALOG,
   DOCTYPE_IPC,
   DOCTYPE_USER,
-  DocTypes,
+  DocType,
 } from "../common/types/doc-types";
 import { ViewType, VIEWTYPE_LIST, VIEWTYPE_VIEW } from "./types/view-types";
 
@@ -46,7 +46,7 @@ export function App_SideNavigationBar({
 
   const handleChange = (
     route: RouteType,
-    doctype: DocTypes,
+    doctype: DocType,
     viewtype: ViewType
   ) => {
     // Ich gehe hier immer zu einer liste.

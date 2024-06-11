@@ -1,23 +1,10 @@
-import { Button, message, theme } from "antd";
+import { Button, Space, message, theme } from "antd";
 import { Action_Request } from "../common/types/request-types";
 import { IPC_BUTTON_ACTION } from "../common/types/IPC_Channels";
 import { useContext, useEffect, useState } from "react";
 import { ArtWorks_Context } from "./App_Context";
 import { ViewType } from "./types/view-types";
 import { DOCTYPE_HEADER_BUTTONS } from "../common/types/doc-types";
-
-// TODO
-export type ArtworkList_Action = "add" | "edit";
-export type ArtworkView_Action = "close" | "save";
-export type ArtworkForm_Action = "save" | "close";
-
-// TODO
-export interface ArtWorks_Actions {
-  section: ViewType;
-  actions_list: ArtworkList_Action;
-  actions_view: ArtworkView_Action;
-  actions_form: ArtworkForm_Action;
-}
 
 /**
  * Subscribe to listener only on component construction
@@ -39,7 +26,7 @@ export interface ArtWorks_Actions {
  */
 export function App_Buttons(props: any) {
   const artworks_context = useContext(ArtWorks_Context);
-  const [state, setState] = useState<string>("list");
+  const [viewtype, setViewType] = useState<ViewType>("list");
 
   const {
     token: { colorBgContainer },
@@ -52,9 +39,9 @@ export function App_Buttons(props: any) {
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.module === DOCTYPE_HEADER_BUTTONS) {
+        if (response.target === DOCTYPE_HEADER_BUTTONS) {
           console.log("App_Buttons says: SHOW Buttons for: ", response);
-          message.info(response.type);
+          setViewType(response.view);
         }
       }
     );
@@ -72,27 +59,117 @@ export function App_Buttons(props: any) {
    * https://www.electronjs.org/de/docs/latest/tutorial/ipc#pattern-4-renderer-to-renderer
    * ...to trigger the actions for Child-Views: list, view and form.
    */
-  const callbackHandler = () => {
+  const callbackCloseHandler = () => {
     let request: Action_Request = {
-      type: "request:save-action",
-      module: artworks_context.doctype,
-      view: "list", // TODO Das kennt er hier auch nicht weil das im Child umgeschaltet wird.
+      type: "request:close-action",
+      target: artworks_context.doctype,
+      view: viewtype,
       options: {},
     };
 
     window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
   };
 
-  return (
-    <Button
-      id="add-action"
-      type="primary"
-      onClick={(e) => {
-        callbackHandler();
-      }}
-      style={{ color: colorBgContainer }}
-    >
-      Add {artworks_context.doctype}
-    </Button>
-  );
+  const callbackAddHandler = () => {
+    let request: Action_Request = {
+      type: "request:add-action",
+      target: artworks_context.doctype,
+      view: viewtype,
+      options: {},
+    };
+
+    window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
+  };
+
+  const callbackEditHandler = () => {
+    let request: Action_Request = {
+      type: "request:edit-action",
+      target: artworks_context.doctype,
+      view: viewtype,
+      options: {},
+    };
+
+    window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
+  };
+
+  const callbackSaveHandler = () => {
+    let request: Action_Request = {
+      type: "request:save-action",
+      target: artworks_context.doctype,
+      view: viewtype,
+      options: {},
+    };
+
+    window.electronAPI.sendMessage(IPC_BUTTON_ACTION, [request]);
+  };
+
+  /**
+   * List = "add" | "edit";
+   * View = "close" | "save";
+   * Form = "save" | "close";
+   */
+  function Buttons() {
+    if (viewtype === "view") {
+      return (
+        <Space>
+          <Button
+            id="close-action"
+            type="dashed"
+            onClick={(e) => {
+              callbackCloseHandler();
+            }}
+          >
+            Close {artworks_context.doctype}
+          </Button>
+          <Button
+            id="add-action"
+            onClick={(e) => {
+              callbackAddHandler();
+            }}
+          >
+            Add {artworks_context.doctype}
+          </Button>
+        </Space>
+      );
+    } else if (viewtype === "list") {
+      return (
+        <Space>
+          <Button
+            id="add-action"
+            onClick={(e) => {
+              callbackAddHandler();
+            }}
+          >
+            Add {artworks_context.doctype}
+          </Button>
+        </Space>
+      );
+    } else if (viewtype === "form") {
+      return (
+        <Space>
+          <Button
+            id="close-action"
+            type="dashed"
+            onClick={(e) => {
+              callbackCloseHandler();
+            }}
+          >
+            Close {artworks_context.doctype}
+          </Button>
+          <Button
+            id="save-action"
+            type="primary"
+            onClick={(e) => {
+              callbackSaveHandler();
+            }}
+            style={{ color: colorBgContainer }}
+          >
+            Save {artworks_context.doctype}
+          </Button>
+        </Space>
+      );
+    }
+  }
+
+  return <Buttons />;
 }

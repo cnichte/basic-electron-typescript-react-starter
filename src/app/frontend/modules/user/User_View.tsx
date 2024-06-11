@@ -11,6 +11,7 @@ import { ArtWorks_Context } from "../../App_Context";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
 import { DOCTYPE_USER } from "../../../common/types/doc-types";
 import { useNavigate, useParams } from "react-router";
+import { App_Buttons_IPC } from "../../App_Buttons_IPC";
 
 /**
  * Subscribe to listener only on component construction
@@ -28,10 +29,11 @@ export function User_View() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-
+    App_Buttons_IPC.request_buttons('view');
+    
     const request: DB_Request = {
       type: "request:data",
-      module: "user",
+      doctype: "user",
       id: id,
       options: {},
     };
@@ -50,7 +52,7 @@ export function User_View() {
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.module === DOCTYPE_USER && response.view == "view") {
+        if (response.target === DOCTYPE_USER && response.view == "view") {
           console.log("View_Users says ACTION: ", response);
           message.info(response.type);
         }
