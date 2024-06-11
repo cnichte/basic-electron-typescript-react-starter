@@ -163,7 +163,7 @@ export function Catalog_Form() {
         requests.
       </p>
 
-      <Divider orientation="left">Input Form</Divider>
+      <Divider orientation="left">Catalog Input Form</Divider>
 
       <Form
         form={form}

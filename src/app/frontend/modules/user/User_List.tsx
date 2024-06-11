@@ -11,15 +11,9 @@ import {
 import { Messages } from "../../Messages";
 import { DocUserType } from "../../../common/types/doc-user";
 import { ArtWorks_Context } from "../../App_Context";
-import {
-  IPC_BUTTON_ACTION,
-  IPC_DATABASE,
-} from "../../../common/types/IPC_Channels";
+import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
 
-import {
-  DOCTYPE_HEADER_BUTTONS,
-  DOCTYPE_USER,
-} from "../../../common/types/doc-types";
+import { DOCTYPE_USER } from "../../../common/types/doc-types";
 import { Header_Buttons_IPC } from "../../Header_Buttons_IPC";
 
 /**
@@ -58,8 +52,8 @@ export function User_List() {
 
   useEffect(() => {
     console.log("ContextData", artworks_context);
-    Header_Buttons_IPC.request_buttons('list','user');
-    
+    Header_Buttons_IPC.request_buttons("list", "user");
+
     load_list();
 
     // Register and remove the event listener

@@ -3,15 +3,9 @@ import { Button, Divider, Form, FormProps, Input, message } from "antd";
 import { Action_Request } from "../../../common/types/request-types";
 import { FormTool } from "../../FormTool";
 import { FormState } from "../../types/form-types";
-import { Messages } from "../../Messages";
 
 import { DocUserType } from "../../../common/types/doc-user";
 import { ArtWorks_Context } from "../../App_Context";
-import {
-  IPC_BUTTON_ACTION,
-  IPC_Channels,
-  IPC_DATABASE,
-} from "../../../common/types/IPC_Channels";
 import { DOCTYPE_USER } from "../../../common/types/doc-types";
 import { Header_Buttons_IPC } from "../../Header_Buttons_IPC";
 
@@ -111,7 +105,7 @@ export function User_Form() {
         requests.
       </p>
 
-      <Divider orientation="left">Input Form</Divider>
+      <Divider orientation="left">User Input Form</Divider>
 
       <Form
         form={form}
