@@ -24,6 +24,12 @@ it bundles latest
 
 If you also want to build an app with this setup, this could be a good starting point for you. Please note: I am travelling with Mac OS, but do my builds also an Windows (Linux is untested so far).
 
+## React Pitfalls
+
+* Trigger Button-Actions from the global Header-Menue, and request actions from the underlying indipendent Components.
+* Introducing DocTypes, such as `catalog`, `user`, `ipc`, or whatever you need.
+* Introducing ViewTypes: `list`, `view`, `form`.
+
 ## How it Looks
 
 ![Screenshot IPC Ping-Pong](readme-images/screenshot-001.png)
@@ -285,23 +291,3 @@ Multiple warnings during `npm run make` under Mac OS of this type:
 ```
 
 This needs to be investigated in more detail.
-
-## React Pitfalls
-
-* Trigger Button-Actions from the global Header-Menue, and request actions from the underlying indipendent Components.
-* Introducing DocTypes, such as `catalog`, `user`, `ipc`, or whatever you need.
-* Introducing ViewTypes: `list`, `view`, `form`.
-
-### onChange
-
-```js
-<fieldset onChange={this.props.handleChange("tags")}>
-```
-
-handleChange will be called immediately as soon as render is triggered.
-
-```js
-<fieldset onChange={(e) => this.props.handleChange("tags", e)}>
-```
-
-handleChange will be called when onChange handler is called.
