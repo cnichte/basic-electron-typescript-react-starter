@@ -8,7 +8,7 @@ import { App_Messages } from "../../App_Messages";
 
 import { ArtWorks_Context } from "../../App_Context";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { DOCTYPE_USER } from "../../../common/types/doc-types";
+import { DOCTYPE_CATALOG, DOCTYPE_USER } from "../../../common/types/doc-types";
 import { useNavigate, useParams } from "react-router";
 
 import { DocCatalogType } from "../../../common/types/doc-catalog";
@@ -46,7 +46,7 @@ export function Catalog_View() {
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.target === DOCTYPE_USER && response.view == "view") {
+        if (response.target === DOCTYPE_CATALOG && response.view == "view") {
           console.log("Catalog_View says ACTION: ", response);
           message.info(response.type);
         }
