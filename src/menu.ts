@@ -5,7 +5,7 @@ import {
   BrowserWindow,
   MenuItemConstructorOptions,
 } from "electron";
-import { App_Info } from "./app/App_Info";
+import { App_Info } from "./app/common/app-info";
 
 /**
  * Build up a Menu.

@@ -1,9 +1,10 @@
 import { message } from "antd";
 import { v4 as uuidv4 } from "uuid";
-import { Request, RequestData } from "./common/types/request-types";
-import { DocItentifiable } from "./common/types/doc-types";
-import { UUIDTool } from "./common/uuid-tool";
+import { DB_Request, RequestData } from "../common/types/request-types";
+import { DocItentifiable } from "../common/types/doc-types";
+import { UUIDTool } from "../common/uuid-tool";
 import { Messages } from "./Messages";
+import { IPC_DATABASE } from "../common/types/IPC_Channels";
 
 export class FormTool<T extends DocItentifiable> {
 
@@ -38,7 +39,7 @@ export class FormTool<T extends DocItentifiable> {
         };
 
         window.electronAPI
-          .request_data("ipc-database", [request])
+          .request_data(IPC_DATABASE, [request])
           .then((result: any) => {
             // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
             message.info(Messages.from_request(request.type,''));

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState, forwardRef } from "react";
 import {
   Button,
   Divider,
@@ -10,15 +10,36 @@ import {
   Typography,
   message,
 } from "antd";
-import { Request, RequestData } from "./common/types/request-types";
+import { Action_Request, DB_Request, RequestData } from "../common/types/request-types";
 import { FormTool } from "./FormTool";
-import { FormState } from "./form-types";
+import { FormState } from "./types/form-types";
 import { Messages } from "./Messages";
 
-import { DocUserType } from "./common/types/doc-user";
+import { DocUserType } from "../common/types/doc-user";
 import { View_Modal_Form } from "./View_Modal_Form";
+import { ArtWorks_Context } from "./App_Context";
+import {
+  IPC_ACTIONS,
+  IPC_Channels,
+  IPC_DATABASE,
+} from "../common/types/IPC_Channels";
+import { DOCTYPE_USER } from "../common/types/doc-types";
+
+// Subscribe to listener only on component construction
+// If this is inside the Component
+// You are subscribing to ipcRenderer.on after every button click which is causing multiple subscriptions.
+// Try to define the ipcRenderer.on event handler outside click event and it should work fine.
+window.electronAPI.receive_action((response: Action_Request) => {
+  if(response.module === DOCTYPE_USER){
+    console.log("View_Users says ACTION: ", response);
+    message.info(response.type);
+  }
+
+});
 
 export function View_Users() {
+  const artworks_context = useContext(ArtWorks_Context);
+
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
   const [dataObject, setDataObject] = useState<DocUserType>(null);
@@ -32,14 +53,14 @@ export function View_Users() {
   function load_list(): void {
     // Request data from pouchdb on page load.
     //! Following Pattern 2 for the Database requests
-    const request: Request = {
+    const request: DB_Request = {
       type: "request:list-all",
       module: "user",
       options: {},
     };
 
     window.electronAPI
-      .request_data("ipc-database", [request])
+      .request_data(IPC_DATABASE, [request])
       .then((result: DocUserType[]) => {
         setListData(result);
         message.info(Messages.from_request(request.type, "User"));
@@ -64,10 +85,17 @@ export function View_Users() {
   }
 
   useEffect(() => {
+    console.log("ContextData", artworks_context); 
+
     load_list();
     // form.setFieldsValue(dataOrigin);
     reset_form();
+
+    // TODO Save Button is in Header-Menu, das ersetzt onFinish
+    // https://stackoverflow.com/questions/68937238/electron-js-how-to-call-a-function-rendered-in-index
   }, []);
+
+  // TODO Multiple - see App_Routes
 
   const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {
     // add butten clicked, so create a new record annd save the data.
@@ -105,7 +133,7 @@ export function View_Users() {
     };
 
     window.electronAPI
-      .request_data("ipc-database", [request])
+      .request_data(IPC_DATABASE, [request])
       .then((result: any) => {
         message.info(Messages.from_request(request.type, "User"));
         load_list();
@@ -160,7 +188,9 @@ export function View_Users() {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            {formstate === "create" ? "Add" : "Update"}
+            {formstate === "create"
+              ? `Add ${artworks_context.viewtype}`
+              : `Update ${artworks_context.viewtype}`}
           </Button>
         </Form.Item>
         <Form.Item>

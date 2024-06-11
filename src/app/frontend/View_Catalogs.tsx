@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Button,
   Divider,
@@ -10,14 +10,30 @@ import {
   Typography,
   message,
 } from "antd";
-import { Request, RequestData } from "./common/types/request-types";
+import {
+  Action_Request,
+  DB_Request,
+  RequestData,
+} from "../common/types/request-types";
 import { FormTool } from "./FormTool";
-import { FormState } from "./form-types";
+import { FormState } from "./types/form-types";
 import { Messages } from "./Messages";
 
-import { DocCatalogType } from "./common/types/doc-catalog";
+import { DocCatalogType } from "../common/types/doc-catalog";
+import { ArtWorks_Context } from "./App_Context";
+import { IPC_DATABASE } from "../common/types/IPC_Channels";
+import { DOCTYPE_CATALOG } from "../common/types/doc-types";
+
+window.electronAPI.receive_action((response: Action_Request) => {
+  if (response.module === DOCTYPE_CATALOG) {
+    console.log("View_Catalogs says ACTION: ", response);
+    message.info(response.type);
+  }
+});
 
 export function View_Catalogs() {
+  const artworks_context = useContext(ArtWorks_Context);
+
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
   const [dataObject, setDataObject] = useState<DocCatalogType>(null);
@@ -31,20 +47,18 @@ export function View_Catalogs() {
   function load_list(): void {
     // Request data from pouchdb
     //! Following Pattern 2 for the Database requests
-    const request: Request = {
+    const request: DB_Request = {
       type: "request:list-all",
       module: "catalog",
       options: {},
     };
 
     window.electronAPI
-      .request_data("ipc-database", [request])
+      .request_data(IPC_DATABASE, [request])
       .then((result: DocCatalogType[]) => {
         console.log(result);
         setListData(result);
-        message.info(
-          Messages.from_request(request.type, "Catalog")
-        );
+        message.info(Messages.from_request(request.type, "Catalog"));
       })
       .catch(function (error): any {
         message.error(JSON.stringify(error));
@@ -59,10 +73,11 @@ export function View_Catalogs() {
     };
     setDataObject(data);
     form.resetFields();
-    setFormState('create');
+    setFormState("create");
   }
 
   useEffect(() => {
+    console.log("ContextData", artworks_context);
     load_list();
     // form.setFieldsValue(dataOrigin);
     reset_form();
@@ -104,9 +119,9 @@ export function View_Catalogs() {
     };
 
     window.electronAPI
-      .request_data("ipc-database", [request])
+      .request_data(IPC_DATABASE, [request])
       .then((result: any) => {
-        message.info(Messages.from_request(request.type,'User'));
+        message.info(Messages.from_request(request.type, "User"));
         load_list();
       })
       .catch(function (error): any {
@@ -146,7 +161,9 @@ export function View_Catalogs() {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            {formstate === "create" ? "Add" : "Update"}
+            {formstate === "create"
+              ? `Add ${artworks_context.viewtype}`
+              : `Update ${artworks_context.viewtype}`}
           </Button>
         </Form.Item>
         <Form.Item>

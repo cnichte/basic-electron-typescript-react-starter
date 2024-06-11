@@ -2,6 +2,7 @@ import { ipcMain } from "electron";
 import { Database_Mysql } from "./database-mysql";
 import { Database_Pouchdb } from "./database-pouchdb";
 import { DatabaseCRUD_Interface } from "./database-types";
+import { IPC_DATABASE } from "../common/types/IPC_Channels";
 /**
  * dispatches all the ipc requests from the frontend,
  * to database commands.
@@ -19,7 +20,7 @@ export class IPC_Request_Dispatcher {
 
   public dispatch_ipc_requests(): void {
     //! Pattern 1: Renderer to main (one-way)
-    ipcMain.on("ipc-database", async (event, arg) => {
+    ipcMain.on(IPC_DATABASE, async (event, arg) => {
       // console.log("\n\n######################################################");
       console.log(`MAIN says: Request received from frontend: `, arg);
       // this.mysqldb.test();
@@ -53,7 +54,7 @@ export class IPC_Request_Dispatcher {
     });
 
     //! Following Pattern 2 for the Database requests
-    ipcMain.handle("ipc-database", async (event, arg) => {
+    ipcMain.handle(IPC_DATABASE, async (event, arg) => {
       // console.log("\n\n######################################################");
       console.log(`MAIN says: Request received from frontend: `, arg);
       const request: any = arg[0];

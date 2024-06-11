@@ -40,7 +40,14 @@
     "ts-node": "^10.9.2",
     "typescript": "~5.4.5"
   },
-  "keywords": ["electron", "react", "pouchdb", "antd", "typescript", "conf"],
+  "keywords": [
+    "electron",
+    "react",
+    "pouchdb",
+    "antd",
+    "typescript",
+    "conf"
+  ],
   "author": {
     "name": "Carsten Nichte",
     "email": "c.nichte@t-online.de"
@@ -56,6 +63,8 @@
     "pouchdb-find": "^8.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router": "^6.23.1",
+    "react-router-dom": "^6.23.1",
     "uuid": "^9.0.1"
   }
 }

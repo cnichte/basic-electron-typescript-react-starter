@@ -1,10 +1,7 @@
-import { app } from "electron";
-import { PathLike } from "fs";
-import fs from "fs-extra";
-import { Menu_Links } from "../menu";
+import { Menu_Links } from "../../menu";
 
 /**
- * Basic App-Info, called from Backend, to be initialized.
+ * Basic App-Info, is used in Backend and Frontend.
  */
 export class App_Info {
   
@@ -45,30 +42,4 @@ export class App_Info {
       link: "https://github.com/cnichte/art-works",
     },
   ];
-
-  public static getApp_HomePath(): string {
-    return App_Info.getPath("home");
-  }
-
-  /**
-   * points to 
-   * %APPDATA% on Windows 
-   * $XDG_CONFIG_HOME or ~/.config on Linux
-   * ~/Library/Application Support on macOS
-   * @returns 
-   */
-  public static getApp_UserDataPath(): string {
-    return App_Info.getPath("userData");
-  }
-
-  private static getPath(name: "home" | "appData" | "userData" | "sessionData" | "temp" | "exe" | "module" | "desktop" | "documents" | "downloads" | "music" | "pictures" | "videos" | "recent" | "logs" | "crashDumps"): string{
-
-    const the_path = `${app.getPath(name)}/${App_Info.MY_APP_FOLDER}/`; // `${app.getPath(name)}/.${App_Info.APP_NAME}/`; 
-
-    if (!fs.existsSync(the_path as PathLike)) {
-      fs.ensureDirSync(the_path);
-    }
-
-    return the_path;
-  }
 }

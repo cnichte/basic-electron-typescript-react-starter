@@ -1,18 +1,29 @@
 import { IPC_Channels } from "./IPC_Channels";
 import { DocTypes } from "./doc-types";
 
-export type RequestTypes =
+export type DatabaseRequestTypes =
   | "request:list-all"
   | "request:create"
   | "request:save"
   | "request:delete";
 
-export interface Request {
-  type: RequestTypes;
+export interface DB_Request {
+  type: DatabaseRequestTypes;
   module: DocTypes;
   options: any;
 }
 
-export interface RequestData<T> extends Request {
+export interface RequestData<T> extends DB_Request {
   data: T;
 }
+
+export interface Action_Request {
+  type: ActionRequestTypes;
+  module: DocTypes;
+  options: any;
+}
+
+export type ActionRequestTypes =
+  | "request:save-action"
+  | "request:edit-action"
+  | "request:go-back-action";
