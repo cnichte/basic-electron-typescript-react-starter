@@ -4,7 +4,7 @@ import { IPC_DATABASE } from "../../common/types/IPC_Channels";
 import { App_Context } from "../../frontend/App_Context";
 import { Header_Buttons_IPC } from "../../frontend/Header_Buttons_IPC";
 
-export function IPCTest_View() {
+export function IPC_View() {
   const app_context = useContext(App_Context);
 
   const [count, setCount] = useState(0);

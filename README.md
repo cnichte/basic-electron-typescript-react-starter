@@ -132,12 +132,13 @@ Major   Potentially breaking API changes
 
 ## Customize to your needs in six steps
 
-1. Add your type `mydoctype` to `src/app/common/types/doc-types.ts`
-2. Create a `doc-mydoctype.ts` in `src/app/common/types/`
-3. Create a new module folder in `/src/app/modules/mydoctype`, following the structure oft the example modules.
-4. Add your routes to `src/app/frontend/types/route-names.ts`
-5. Add your routes to `src/app/frontend/App_Routes.tsx`
-6. Add your module to the sidebar `src/app/frontend/Side_NavigationBar.tsx`
+1. Customize `src/app/common/app-info.ts`
+2. Add your type `mydoctype` to `src/app/common/types/doc-types.ts`
+3. Create a `doc-mydoctype.ts` in `src/app/common/types/`
+4. Create a new module folder in `/src/app/modules/mydoctype`, following the structure oft the example modules.
+5. Add your routes to `src/app/frontend/types/route-names.ts`
+6. Add your routes to `src/app/frontend/App_Routes.tsx`
+7. Add your module to the sidebar `src/app/frontend/Side_NavigationBar.tsx`
 
 Dont forget to customize your `list`, `view` and `form`.
 

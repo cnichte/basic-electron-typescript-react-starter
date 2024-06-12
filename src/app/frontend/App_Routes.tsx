@@ -5,7 +5,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Space, Typography, theme } from "antd";
 
 import { App_SideNavigationBar } from "./Side_NavigationBar";
-import { IPCTest_View } from "../modules/ipc/IPCTest_View";
+import { IPC_View } from "../modules/ipc/IPC_View";
 import {
   IPC_ROUTE_VIEW,
   RouteType,
@@ -106,7 +106,7 @@ export function App_Routes() {
               }}
             >
               <Routes>
-                <Route path={IPC_ROUTE_VIEW} Component={IPCTest_View} />
+                <Route path={IPC_ROUTE_VIEW} Component={IPC_View} />
 
                 <Route path={USERS_ROUTE_LIST} Component={User_List} />
                 <Route path={USERS_ROUTE_VIEW} Component={User_View} />
