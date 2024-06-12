@@ -133,12 +133,14 @@ export function Catalog_Form() {
     let formTool: FormTool<DocCatalogType> = new FormTool();
 
     formTool
-      .save_data(id, dataObject, formValues)
+      .save_data(dataObject, formValues)
       .then((result: DocCatalogType) => {
         //! has new _rev from backend
         setDataObject(result);
         load_list();
         setFormState("update");
+        // update header-button-state because uuid has changed from 'new' to uuid.
+        Header_Buttons_IPC.request_buttons("form", "catalog", result._id);
       })
       .catch(function (error) {
         message.error(JSON.stringify(error));

@@ -46,7 +46,7 @@ export function User_Form() {
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("form", "user", id);
+    Header_Buttons_IPC.request_buttons("form", "user", id); // is perhaps id='new'
 
     reset_form();
 
@@ -99,11 +99,13 @@ export function User_Form() {
     let formTool: FormTool<DocUserType> = new FormTool();
 
     formTool
-      .save_data(id, dataObject, formValues)
+      .save_data(dataObject, formValues)
       .then((result: DocUserType) => {
         //! has new _rev from backend
         setDataObject(result);
         setFormState("update");
+        // update header-button-state because uuid has changed from 'new' to uuid.
+        Header_Buttons_IPC.request_buttons("form", "user", result._id);
       })
       .catch(function (error) {
         message.error(JSON.stringify(error));

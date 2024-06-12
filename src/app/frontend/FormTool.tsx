@@ -12,7 +12,6 @@ export class FormTool<T extends DocItentifiable> {
    * transforms the result, sends the altered data-object back.
    *
    * @author Carsten Nichte - //carsten-nichte.de/apps/
-   * @param id
    * @param dataObject
    * @param valuesForm
    * @param force_save skips dataHasChanged check
@@ -20,7 +19,6 @@ export class FormTool<T extends DocItentifiable> {
    * @returns
    */
   public save_data(
-    id: string,
     dataObject: T,
     valuesForm: any,
     force_save: boolean = false
@@ -30,8 +28,8 @@ export class FormTool<T extends DocItentifiable> {
         this.transport(valuesForm, dataObject);
 
         //* Operating modes: new and edit (needed when you have a opened form)
-        if (!UUIDTool.uuidValidateV4(dataObject._id) || id === "new") {
-          console.log(`NEW ID because ${id}`);
+        if (!UUIDTool.uuidValidateV4(dataObject._id)) {
+          console.log(`NEW ID because ${dataObject._id}`);
           dataObject._id = uuidv4();
         }
 
