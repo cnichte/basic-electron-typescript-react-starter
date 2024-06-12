@@ -19,7 +19,7 @@ export interface IElectronAPI {
   counterValue: (value: any) => any;
 
   // ######################################################################
-  // This supports my Applications API, but including send()
+  // This supports my Applications API, but including Pattern 1: send()
   // ######################################################################
 
   //! Following Pattern 2 for the Database requests

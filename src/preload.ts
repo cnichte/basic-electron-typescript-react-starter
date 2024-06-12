@@ -46,7 +46,7 @@ const electronAPI: IElectronAPI = {
   counterValue: (value) => ipcRenderer.send("counter-value", value),
 
   // ######################################################################
-  // This supports my Applications API, but including send()
+  // This supports my Applications API, but including Pattern 1: send()
   // ######################################################################
 
   //! Following Pattern 2 for the Database requests

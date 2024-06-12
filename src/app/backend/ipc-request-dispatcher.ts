@@ -60,7 +60,7 @@ export class IPC_Request_Dispatcher {
     });
 
     // ######################################################################
-    // This supports my Applications API, but including send()
+    // This supports my Applications API, but including Pattern 1: send()
     // ######################################################################
 
     // ----------------------------------------------------------------------
