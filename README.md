@@ -24,11 +24,14 @@ it bundles latest
 
 If you also want to build an app with this setup, this could be a good starting point for you. Please note: I am travelling with Mac OS, but do my builds also an Windows (Linux is untested so far).
 
+## Framework Concepts
+
+* Introducing ViewTypes: `list`, `view`, `form`.
+* Introducing DocTypes, such as `catalog`, `user`, `ipc`, or whatever you need.
+
 ## React Pitfalls
 
 * Trigger Button-Actions from the global Header-Menue, and request actions from the underlying indipendent Components.
-* Introducing DocTypes, such as `catalog`, `user`, `ipc`, or whatever you need.
-* Introducing ViewTypes: `list`, `view`, `form`.
 
 ## How it Looks
 
