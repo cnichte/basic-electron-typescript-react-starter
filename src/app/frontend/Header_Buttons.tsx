@@ -62,13 +62,6 @@ export function Header_Buttons(props: any) {
     };
   }, []);
 
-  /**
-   * Since the buttons in the header cannot communicate
-   * with the content that is displayed via the router,
-   * I use Electron's IPC protocol, following Pattern 4:
-   * https://www.electronjs.org/de/docs/latest/tutorial/ipc#pattern-4-renderer-to-renderer
-   * ...to trigger the actions for Child-Views: list, view and form.
-   */
   const callbackCloseHandler = () => {
     // Close is only some navigation
     switch (viewtype) {
@@ -76,7 +69,11 @@ export function Header_Buttons(props: any) {
         navigate(`/${doctype}/list`); // goto List
         break;
       case "form":
-        navigate(`/${doctype}/view/${id}`); // goto View
+        if (id == "new") {
+          navigate(`/${doctype}/list`); // goto List
+        } else {
+          navigate(`/${doctype}/view/${id}`); // goto View
+        }
         break;
       default:
         navigate(`/${doctype}/list`); // gote  List
@@ -84,37 +81,21 @@ export function Header_Buttons(props: any) {
   };
 
   const callbackAddHandler = () => {
-    // Two-way communication, case 2
-    let request: Action_Request = {
-      type: "request:add-action",
-      target: doctype,
-
-      doctype: doctype,
-      view: viewtype,
-      id: id,
-
-      options: {},
-    };
-
-    window.electronAPI.send(IPC_BUTTON_ACTION, [request]);
+    setID("new");
+    navigate(`/${doctype}/form/new`); // goto Form with id='new'
   };
 
   const callbackEditHandler = () => {
-    // Two-way communication, case 2
-    let request: Action_Request = {
-      type: "request:edit-action",
-      target: artworks_context.doctype,
-
-      doctype: doctype,
-      view: viewtype,
-      id: id,
-
-      options: {},
-    };
-
-    window.electronAPI.send(IPC_BUTTON_ACTION, [request]);
+    navigate(`/${doctype}/form/${id}`); // goto Form
   };
 
+  /**
+   * Since the buttons in the header cannot communicate
+   * with the content that is displayed via the router,
+   * I use Electron's IPC protocol, following Pattern 4:
+   * https://www.electronjs.org/de/docs/latest/tutorial/ipc#pattern-4-renderer-to-renderer
+   * ...to trigger the actions for Child-Views: list, view and form.
+   */
   const callbackSaveHandler = () => {
     // Two-way communication, case 2
     let request: Action_Request = {
@@ -123,7 +104,7 @@ export function Header_Buttons(props: any) {
 
       doctype: doctype,
       view: viewtype,
-      id:id,
+      id: id,
 
       options: {},
     };

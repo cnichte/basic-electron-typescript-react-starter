@@ -110,6 +110,9 @@ export function Catalog_Form() {
       (response: Action_Request) => {
         if (response.target === DOCTYPE_CATALOG && response.view == "form") {
           console.log("Catalog_Form says ACTION: ", response);
+
+          let formTool: FormTool<DocCatalogType> = new FormTool();
+
           message.info(response.type);
         }
       }

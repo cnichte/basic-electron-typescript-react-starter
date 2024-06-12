@@ -31,11 +31,9 @@ export interface Action_Request {
 }
 
 export type ActionRequestType =
-  // Header-Buttons to List- View- Form-Component
-  | "request:add-action"
-  | "request:edit-action"
+  // Header-Buttons to (List | View | Form)-Component
   | "request:save-action"
-  // List- View- Form-Component to Header-Buttons
+  // (List | View | Form)-Component to Header-Buttons
   | "request:show-list-buttons"
   | "request:show-view-buttons"
   | "request:show-form-buttons";
