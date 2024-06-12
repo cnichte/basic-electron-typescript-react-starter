@@ -10,7 +10,7 @@ import {
   RouteType,
   USERS_ROUTE_LIST,
 } from "./types/route-names";
-import { ArtWorks_Context } from "./App_Context";
+import { App_Context } from "./App_Context";
 import {
   DOCTYPE_CATALOG,
   DOCTYPE_IPC,
@@ -34,7 +34,7 @@ export function App_SideNavigationBar({
   onChange,
 }: App_SideNavigationBar_Props) {
   const { doctype, setDoctype, viewtype, setViewtype } =
-    useContext(ArtWorks_Context);
+    useContext(App_Context);
 
   const navigate = useNavigate();
 

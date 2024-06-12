@@ -21,7 +21,7 @@ import { App_Info } from "../common/app-info";
 const { Header, Sider, Content, Footer } = Layout;
 const { Title } = Typography;
 
-import { ArtWorks_Context, ContextData } from "./App_Context";
+import { App_Context, ContextData } from "./App_Context";
 import { Header_Buttons } from "./Header_Buttons";
 
 import { DocType } from "../common/types/doc-types";
@@ -52,7 +52,7 @@ export function App_Routes() {
   };
 
   return (
-    <ArtWorks_Context.Provider value={value}>
+    <App_Context.Provider value={value}>
       <Router>
         <Layout>
           <Sider
@@ -124,6 +124,6 @@ export function App_Routes() {
           </Layout>
         </Layout>
       </Router>
-    </ArtWorks_Context.Provider>
+    </App_Context.Provider>
   );
 }
