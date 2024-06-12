@@ -17,7 +17,7 @@
 - Meist ist das gleich
 - ? IPC_MessageTool.ts, IPC_FormTool.ts
 
-Die Modulnamen sind gleich denen der docTypes. Das unterstreicht den Dokumenten-zentrierten Gedanken dahinter.
+The module names are equal the docTypes ones. This underlines the document-centred idea behind the concept.
 
 Housekeeping - Datenbank löschen.
 Translations

@@ -85,23 +85,25 @@ export function Catalog_Form() {
     reset_form();
 
     //! Request Document from Database
-    const request: DB_Request = {
-      type: "request:data",
-      doctype: "user",
-      id: id,
-      options: {},
-    };
+    if (id != "new") {
+      const request: DB_Request = {
+        type: "request:data",
+        doctype: "user",
+        id: id,
+        options: {},
+      };
 
-    window.electronAPI
-      .request_data(IPC_DATABASE, [request])
-      .then((result: DocCatalogType) => {
-        setDataObject(result);
-        form.setFieldsValue(result);
-        message.info(App_MessagesTool.from_request(request.type, "Catalog"));
-      })
-      .catch(function (error: any) {
-        message.error(JSON.stringify(error));
-      });
+      window.electronAPI
+        .request_data(IPC_DATABASE, [request])
+        .then((result: DocCatalogType) => {
+          setDataObject(result);
+          form.setFieldsValue(result);
+          message.info(App_MessagesTool.from_request(request.type, "Catalog"));
+        })
+        .catch(function (error: any) {
+          message.error(JSON.stringify(error));
+        });
+    }
 
     //! Listen for Header-Button Actions.
     // Register and remove the event listener
@@ -131,7 +133,7 @@ export function Catalog_Form() {
     let formTool: FormTool<DocCatalogType> = new FormTool();
 
     formTool
-      .save_data("new", dataObject, formValues)
+      .save_data(id, dataObject, formValues)
       .then((result: DocCatalogType) => {
         //! has new _rev from backend
         setDataObject(result);
@@ -203,7 +205,12 @@ export function Catalog_Form() {
           <Input />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" ref={triggerSaveRef} style={{display: 'none'}}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            ref={triggerSaveRef}
+            style={{ display: "none" }}
+          >
             {formstate === "create"
               ? `Add ${app_context.viewtype}`
               : `Update ${app_context.viewtype}`}

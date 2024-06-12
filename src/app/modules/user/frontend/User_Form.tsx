@@ -51,23 +51,25 @@ export function User_Form() {
     reset_form();
 
     //! Request Document from Database
-    const request: DB_Request = {
-      type: "request:data",
-      doctype: "user",
-      id: id,
-      options: {},
-    };
+    if (id != "new") {
+      const request: DB_Request = {
+        type: "request:data",
+        doctype: "user",
+        id: id,
+        options: {},
+      };
 
-    window.electronAPI
-      .request_data(IPC_DATABASE, [request])
-      .then((result: DocUserType) => {
-        setDataObject(result);
-        form.setFieldsValue(result);
-        message.info(App_MessagesTool.from_request(request.type, "User"));
-      })
-      .catch(function (error: any) {
-        message.error(JSON.stringify(error));
-      });
+      window.electronAPI
+        .request_data(IPC_DATABASE, [request])
+        .then((result: DocUserType) => {
+          setDataObject(result);
+          form.setFieldsValue(result);
+          message.info(App_MessagesTool.from_request(request.type, "User"));
+        })
+        .catch(function (error: any) {
+          message.error(JSON.stringify(error));
+        });
+    }
 
     //! Listen for Header-Button Actions.
     // Register and remove the event listener
@@ -76,7 +78,7 @@ export function User_Form() {
       (response: Action_Request) => {
         if (response.target === DOCTYPE_USER && response.view == "form") {
           console.log("User_Form says ACTION: ", response);
-          
+
           triggerSaveRef.current?.click();
 
           // message.info(response.type);
@@ -97,7 +99,7 @@ export function User_Form() {
     let formTool: FormTool<DocUserType> = new FormTool();
 
     formTool
-      .save_data("new", dataObject, formValues)
+      .save_data(id, dataObject, formValues)
       .then((result: DocUserType) => {
         //! has new _rev from backend
         setDataObject(result);
@@ -147,7 +149,12 @@ export function User_Form() {
           <Input />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" ref={triggerSaveRef} style={{display: 'none'}}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            ref={triggerSaveRef}
+            style={{ display: "none" }}
+          >
             {formstate === "create"
               ? `Add ${app_context.viewtype}`
               : `Update ${app_context.viewtype}`}

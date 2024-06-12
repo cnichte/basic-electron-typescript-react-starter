@@ -34,19 +34,19 @@ export class IPC_Request_Dispatcher {
     });
 
     ipcMain.on("asyncPing", (event, args) => {
-      console.log("MAIN says: asyncPing received");
-      event.sender.send("asyncPong", "main sends: asyncPong.");
+      console.log("MAIN says: asyncPing received. I send a 'asyncPong'.");
+      event.sender.send("asyncPong", "asyncPong");
       // das landet nur in preload.ts
     });
 
     ipcMain.on("syncPing", (event, args) => {
-      console.log("MAIN says: syncPing received");
-      event.returnValue = "main sends: syncPong.";
+      console.log("MAIN says: syncPing received. I return a 'syncPong'.");
+      event.returnValue = "syncPong";
     });
 
     //! Pattern 2: Renderer to main (two-way)
     ipcMain.handle("handlePing", (event, args) => {
-      console.log("MAIN says: handlePing received.");
+      console.log("MAIN says: handlePing received. I return 'handlePong'");
       return "handlePong";
     });
 

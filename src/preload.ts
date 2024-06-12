@@ -81,7 +81,7 @@ contextBridge.exposeInMainWorld("electronAPI", electronAPI);
 
 // Can only be used here?
 ipcRenderer.on("asyncPong", (event, args) => {
-  console.log("renderer-preload: asyncPong received");
+  console.log("renderer-preload says: asyncPong received.");
 });
 
 console.log("preload complete");
