@@ -129,7 +129,7 @@ export function Catalog_Form() {
   }, []);
 
   const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {
-    // add butten clicked, so create a new record annd save the data.
+    // create a new record and save the data.
     let formTool: FormTool<DocCatalogType> = new FormTool();
 
     formTool
