@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Button, Flex, message } from "antd";
 import { IPC_DATABASE } from "../../common/types/IPC_Channels";
 import { App_Context } from "../../frontend/App_Context";
+import { Header_Buttons_IPC } from "../../frontend/Header_Buttons_IPC";
 
 export function IPCTest_View() {
   const app_context = useContext(App_Context);
@@ -10,17 +11,15 @@ export function IPCTest_View() {
   const [count2, setCount2] = useState(0);
 
   useEffect(() => {
-    console.log("ContextData", app_context); 
+    console.log("ContextData", app_context);
+    Header_Buttons_IPC.request_buttons("list", "ipc", "", true); // No buttons here
   }, []);
 
   //! Pattern 1: Renderer to main (one-way)
   // https://www.electronjs.org/docs/latest/tutorial/ipc#pattern-1-renderer-to-main-one-way
   function handleClick_1(): void {
     setCount(count + 1);
-    window.electronAPI.send(
-      IPC_DATABASE,
-      "A Request from render-process."
-    );
+    window.electronAPI.send(IPC_DATABASE, "A Request from render-process.");
     console.log("renderer says: render -> main. Check log in terminal.");
     message.info("renderer says: render -> main. Check log in terminal.");
   }

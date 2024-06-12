@@ -33,6 +33,7 @@ export function Header_Buttons(props: any) {
   const [viewtype, setViewType] = useState<ViewType>("list");
   const [doctype, setDocType] = useState<DocType>("user");
   const [id, setID] = useState<string>("");
+  const [supress, setSurpress] = useState<boolean>(false);
 
   const {
     token: { colorBgContainer },
@@ -52,6 +53,7 @@ export function Header_Buttons(props: any) {
           setViewType(response.view);
           setDocType(response.doctype);
           setID(response.id);
+          setSurpress(response.surpress);
         }
       }
     );
@@ -107,6 +109,7 @@ export function Header_Buttons(props: any) {
       id: id,
 
       options: {},
+      surpress: false
     };
 
     window.electronAPI.send(IPC_BUTTON_ACTION, [request]);
@@ -118,7 +121,7 @@ export function Header_Buttons(props: any) {
    * Form = "save" | "close";
    */
   function Buttons() {
-    if (viewtype === "list") {
+    if (viewtype === "list" && !supress) {
       return (
         <Space>
           <Button
@@ -131,7 +134,7 @@ export function Header_Buttons(props: any) {
           </Button>
         </Space>
       );
-    } else if (viewtype === "view") {
+    } else if (viewtype === "view" && !supress) {
       return (
         <Space>
           <Button
@@ -154,7 +157,7 @@ export function Header_Buttons(props: any) {
           </Button>
         </Space>
       );
-    } else if (viewtype === "form") {
+    } else if (viewtype === "form" && !supress) {
       return (
         <Space>
           <Button

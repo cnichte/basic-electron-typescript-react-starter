@@ -27,6 +27,8 @@ export interface Action_Request {
   doctype:DocType;
   id:string;
 
+  surpress:boolean;
+
   options: any;
 }
 
