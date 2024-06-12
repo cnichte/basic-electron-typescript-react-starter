@@ -275,7 +275,7 @@ tsconfig.json
 }
 ```
 
-Creates a local `pouchdb-test` Database in the Project-folder, on the first startup with `npm start`.
+Creates a local `pouchdb-test` Database in the users home folder `~/my-electron-app/catalogs/`, on the first startup with `npm start`.
 
 ### Electron Conf
 
@@ -284,6 +284,8 @@ Creates a local `pouchdb-test` Database in the Project-folder, on the first star
 ```bash
 npm install electron-conf
 ```
+
+Creates a local `settings.json` file in the users home folder `~/my-electron-app/`, on the first startup with `npm start`.
 
 ### Issues (so far)
 

@@ -3,6 +3,7 @@ import { Database_Mysql } from "./database-mysql";
 import { Database_Pouchdb } from "./database-pouchdb";
 import { DatabaseCRUD_Interface } from "./database-types";
 import { IPC_BUTTON_ACTION, IPC_DATABASE } from "../common/types/IPC_Channels";
+import { FileTool } from "./file-tool";
 /**
  * dispatches all the ipc requests from the frontend,
  * to database commands.
@@ -16,7 +17,7 @@ export class IPC_Request_Dispatcher {
 
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
-    this.pouchdb = new Database_Pouchdb("pouchdb-test");
+    this.pouchdb = new Database_Pouchdb( FileTool.get_app_datapath() ,"pouchdb-test");
     // this.mysqldb = new Database_Mysql();
   }
 

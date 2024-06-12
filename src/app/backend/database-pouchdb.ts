@@ -3,45 +3,73 @@ import find from "pouchdb-find";
 import { v4 as uuidv4 } from "uuid";
 
 import { DatabaseCRUD_Interface } from "./database-types";
+import { FileTool } from "./file-tool";
 
 export class Database_Pouchdb implements DatabaseCRUD_Interface {
+  serverUri: string;
+
+  databaseName: string;
+
   db: any;
 
-  constructor(name: string) {
+  constructor(serverUri: string, databaseName: string) {
     var self = this;
 
-    this.does_db_exist(name)
-      .then(function (result: boolean) {
-        if (result) {
-          self.db = new PouchDB(name);
-          PouchDB.plugin(find);
-        } else {
-          self.db = new PouchDB(name);
-          PouchDB.plugin(find);
+    this.databaseName = databaseName;
 
-          self
-            .initialize(true, false) //! Fills the DB with saple data on every start.
-            .then(function (response: any) {
-              console.log(
-                "------------------------------------------------------"
-              );
-              console.log("init-then: ", response);
-              console.log(
-                "------------------------------------------------------"
-              );
-            })
-            .catch(function (err: any) {
-              console.log(
-                "------------------------------------------------------"
-              );
-              console.log("init-error: ", err);
-              console.log(
-                "------------------------------------------------------"
-              );
+    this.serverUri = serverUri + (serverUri.endsWith("/") ? "" : "/");
+
+    if (serverUri.length > 0 && serverUri.startsWith("http")) {
+      console.log("create remote store");
+      this.db = new PouchDB(serverUri + databaseName, {
+        skip_setup: false,
+      });
+    } else {
+
+      const localStore = `${serverUri}catalogs/${databaseName}`;
+
+      FileTool.ensure_path_exist(localStore);
+
+      this.does_db_exist(localStore)
+        .then(function (result: boolean) {
+          if (result) {
+            console.log(`local store exists: ${localStore}`);
+            self.db = new PouchDB(localStore, {
+              skip_setup: false,
             });
-        }
-      })
-      .catch(function (error: any) {});
+            PouchDB.plugin(find);
+          } else {
+            console.log(`create local store: ${localStore}`);
+            self.db = new PouchDB(localStore, {
+              skip_setup: false,
+            });
+            PouchDB.plugin(find);
+            self
+              .initialize(true, false) //! Fills the DB with saple data on every start.
+              .then(function (response: any) {
+                console.log(
+                  "------------------------------------------------------"
+                );
+                console.log("init-then: ", response);
+                console.log(
+                  "------------------------------------------------------"
+                );
+              })
+              .catch(function (err: any) {
+                console.log(
+                  "------------------------------------------------------"
+                );
+                console.log("init-error: ", err);
+                console.log(
+                  "------------------------------------------------------"
+                );
+              });
+          }
+        })
+        .catch(function (error: any) {
+          console.log('Fucking ERROR', error);
+        });
+    }
   }
 
   does_db_exist(name: string): Promise<boolean> {
@@ -51,15 +79,13 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
         .info()
         .then(function (details: { doc_count: number; update_seq: number }) {
           if (details.doc_count == 0 && details.update_seq == 0) {
-            console.log("database does not exist");
             resolve(false);
           } else {
-            console.log("database exists");
             resolve(true);
           }
 
           this.db.destroy().then(function () {
-            console.log("test db removed");
+            console.log("db removed");
           });
         })
         .catch(function (err: any) {
