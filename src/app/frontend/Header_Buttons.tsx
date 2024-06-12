@@ -100,7 +100,7 @@ export function Header_Buttons(props: any) {
     // Two-way communication, case 2
     let request: Action_Request = {
       type: "request:save-action",
-      target: artworks_context.doctype,
+      target: doctype,
 
       doctype: doctype,
       view: viewtype,

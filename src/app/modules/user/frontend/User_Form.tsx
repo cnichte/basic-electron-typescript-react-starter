@@ -16,6 +16,7 @@ import { App_Context } from "../../../frontend/App_Context";
 import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import React from "react";
 
 export function User_Form() {
   const { id } = useParams();
@@ -24,6 +25,8 @@ export function User_Form() {
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
   const [dataObject, setDataObject] = useState<DocUserType>(null);
+
+  const triggerSaveRef = React.useRef(null);
 
   type MyForm_FieldType = {
     name: string;
@@ -75,7 +78,10 @@ export function User_Form() {
       (response: Action_Request) => {
         if (response.target === DOCTYPE_USER && response.view == "form") {
           console.log("User_Form says ACTION: ", response);
-          message.info(response.type);
+          
+          triggerSaveRef.current?.click();
+
+          // message.info(response.type);
         }
       }
     );
@@ -143,7 +149,7 @@ export function User_Form() {
           <Input />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" ref={triggerSaveRef}>
             {formstate === "create"
               ? `Add ${app_context.viewtype}`
               : `Update ${app_context.viewtype}`}

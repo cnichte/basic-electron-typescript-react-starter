@@ -6,8 +6,7 @@
 - [ ] Message-Ipc
 - [ ] Realtional pouch Integration über Setting in conf / System
 - [x] Header Button-actions ausführen lassen
-  -[x] close, view, edit
-  -[ ] save
+  -[x] close, view, edit, save
   -[ ] add
 - [ ] Laden der Beispieldaten …
 - [ ] Electron conf Support
