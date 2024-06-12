@@ -16,12 +16,12 @@ import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 export function Catalog_View() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const artworks_context = useContext(App_Context);
+  const app_context = useContext(App_Context);
 
   const [dataObject, setDataObject] = useState<DocCatalogType>(null);
 
   useEffect(() => {
-    console.log("ContextData", artworks_context);
+    console.log("ContextData", app_context);
     Header_Buttons_IPC.request_buttons('view','catalog');
     
     const request: DB_Request = {

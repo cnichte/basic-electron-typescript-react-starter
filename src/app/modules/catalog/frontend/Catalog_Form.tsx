@@ -28,7 +28,7 @@ import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 
 export function Catalog_Form() {
-  const artworks_context = useContext(App_Context);
+  const app_context = useContext(App_Context);
 
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
@@ -75,7 +75,7 @@ export function Catalog_Form() {
   }
 
   useEffect(() => {
-    console.log("ContextData", artworks_context);
+    console.log("ContextData", app_context);
     Header_Buttons_IPC.request_buttons("form", "catalog");
 
     load_list();
@@ -180,8 +180,8 @@ export function Catalog_Form() {
         <Form.Item>
           <Button type="primary" htmlType="submit">
             {formstate === "create"
-              ? `Add ${artworks_context.viewtype}`
-              : `Update ${artworks_context.viewtype}`}
+              ? `Add ${app_context.viewtype}`
+              : `Update ${app_context.viewtype}`}
           </Button>
         </Form.Item>
         <Form.Item>
