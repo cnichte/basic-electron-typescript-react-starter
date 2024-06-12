@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { Menu, MenuProps } from "antd";
 import { UserOutlined, AppstoreOutlined } from "@ant-design/icons";
 import {
-  ROUTE_TEST_IPC_VIEW,
+  IPC_ROUTE_VIEW,
   BOOKS_ROUTE_LIST,
   RouteType,
   USERS_ROUTE_LIST,
@@ -92,10 +92,11 @@ export function App_SideNavigationBar({
 
   /**
    * This is the Sidebar Menu-Structure.
+   * !Add your module here.
    */
   const items: MenuItem[] = [
     getMenuItem("IPC Test", "10", <UserOutlined />, () =>
-      handleChange(ROUTE_TEST_IPC_VIEW, DOCTYPE_IPC, VIEWTYPE_VIEW)
+      handleChange(IPC_ROUTE_VIEW, DOCTYPE_IPC, VIEWTYPE_VIEW)
     ),
     {
       type: "divider",

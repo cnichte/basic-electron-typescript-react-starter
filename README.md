@@ -130,6 +130,17 @@ Major   Potentially breaking API changes
 ❯ ◯ eslint  ^8.0.1  →  ^9.2.0
 ```
 
+## Customize to your needs in six steps
+
+1. Add your type `mydoctype` to `src/app/common/types/doc-types.ts`
+2. Create a `doc-mydoctype.ts` in `src/app/common/types/`
+3. Create a new module folder in `/src/app/modules/mydoctype`, following the structure oft the example modules.
+4. Add your routes to `src/app/frontend/types/route-names.ts`
+5. Add your routes to `src/app/frontend/App_Routes.tsx`
+6. Add your module to the sidebar `src/app/frontend/Side_NavigationBar.tsx`
+
+Dont forget to customize your `list`, `view` and `form`.
+
 ## History
 
 How i set this up...
