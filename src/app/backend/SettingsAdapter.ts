@@ -1,6 +1,6 @@
 import { app } from "electron";
 import { Conf } from "electron-conf/main";
-import { FileTool } from "./file-tool";
+import { FileTool } from "./FileTool";
 
 // Electron config Library: <https://github.com/alex8088/electron-conf>
 // https://json-schema.org/learn/getting-started-step-by-step

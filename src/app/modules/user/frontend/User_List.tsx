@@ -7,14 +7,14 @@ import {
   Action_Request,
   DB_Request,
   RequestData,
-} from "../../../common/types/request-types";
-import { DOCTYPE_USER } from "../../../common/types/doc-types";
-import { IPC_DATABASE } from "../../../common/types/ipc-channels";
-import { DocUserType } from "../../../common/types/doc-user";
+} from "../../../common/types/RequestTypes";
+import { DOCTYPE_USER } from "../../../common/types/DocType";
+import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
+import { DocUserType } from "../../../common/types/DocUser";
 
-import { App_Context } from "../../../frontend/app-context";
-import { App_MessagesTool } from "../../../frontend/app-messages-tool";
-import { Header_Buttons_IPC } from "../../../frontend/header-buttons-ipc";
+import { App_Context } from "../../../frontend/App_Context";
+import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
+import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 
 export function User_List() {
   const navigate = useNavigate();

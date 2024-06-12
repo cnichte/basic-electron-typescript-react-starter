@@ -23,3 +23,6 @@ The module names are equal the docTypes ones. This underlines the document-centr
 
 Housekeeping - Datenbank löschen.
 Translations
+
+
+https://dev.to/kristiyan_velkov/react-js-naming-convention-lcg

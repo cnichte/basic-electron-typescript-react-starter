@@ -16,17 +16,17 @@ import {
   Action_Request,
   DB_Request,
   RequestData,
-} from "../../../common/types/request-types"; //  common/types/request-types";
-import { DocBookType } from "../../../common/types/doc-book";
-import { IPC_DATABASE } from "../../../common/types/ipc-channels";
-import { DOCTYPE_BOOK } from "../../../common/types/doc-types";
+} from "../../../common/types/RequestTypes"; //  common/types/request-types";
+import { DocBookType } from "../../../common/types/DocBook";
+import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
+import { DOCTYPE_BOOK } from "../../../common/types/DocType";
 
-import { FormState } from "../../../frontend/types/form-types";
+import { FormState } from "../../../frontend/types/FormState";
 
-import { App_Context } from "../../../frontend/app-context";
-import { App_MessagesTool } from "../../../frontend/app-messages-tool";
+import { App_Context } from "../../../frontend/App_Context";
+import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { FormTool } from "../../../frontend/FormTool";
-import { Header_Buttons_IPC } from "../../../frontend/header-buttons-ipc";
+import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 
 export function Book_Form() {
   const { id } = useParams();

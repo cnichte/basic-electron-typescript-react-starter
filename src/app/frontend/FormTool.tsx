@@ -1,10 +1,10 @@
 import { message } from "antd";
 import { v4 as uuidv4 } from "uuid";
-import { RequestData } from "../common/types/request-types";
-import { DocItentifiable } from "../common/types/doc-types";
-import { UUIDTool } from "../common/uuid-tool";
-import { IPC_DATABASE } from "../common/types/ipc-channels";
-import { App_MessagesTool } from "./app-messages-tool";
+import { RequestData } from "../common/types/RequestTypes";
+import { DocItentifiable } from "../common/types/DocType";
+import { UUIDTool } from "../common/UUIDTool";
+import { IPC_DATABASE } from "../common/types/IPC_Channels";
+import { App_MessagesTool } from "./App_MessagesTool";
 
 export class FormTool<T extends DocItentifiable> {
   /**

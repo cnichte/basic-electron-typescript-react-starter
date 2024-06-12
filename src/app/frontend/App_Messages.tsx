@@ -1,6 +1,6 @@
 import { message } from "antd";
 import { NoticeType } from "antd/es/message/interface";
-import { DatabaseRequestType } from "../common/types/request-types";
+import { DatabaseRequestType } from "../common/types/RequestTypes";
 
 export interface App_Message_Props {
   type: NoticeType;

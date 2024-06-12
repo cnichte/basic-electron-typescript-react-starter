@@ -1,5 +1,5 @@
 import mysql, { ConnectionOptions } from "mysql2/promise";
-import { DatabaseCRUD_Interface } from "./database-types";
+import { DatabaseCRUD_Interface } from "./DatabaseTypes";
 
 /**
  * https://evertpot.com/executing-a-mysql-query-in-nodejs/

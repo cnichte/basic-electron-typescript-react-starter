@@ -7,19 +7,19 @@ import {
   BOOKS_ROUTE_LIST,
   RouteType,
   USERS_ROUTE_LIST,
-} from "./types/route-names";
-import { App_Context } from "./app-context";
+} from "./types/RouteType";
+import { App_Context } from "./App_Context";
 import {
   DOCTYPE_BOOK,
   DOCTYPE_IPC,
   DOCTYPE_USER,
   DocType,
-} from "../common/types/doc-types";
-import { ViewType, VIEWTYPE_LIST, VIEWTYPE_VIEW } from "./types/view-types";
+} from "../common/types/DocType";
+import { ViewType, VIEWTYPE_LIST, VIEWTYPE_VIEW } from "./types/ViewType";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-export interface App_SideNavigationBar_Props {
+export interface SideNavigationBar_Props {
   onChange: (route: RouteType) => void;
 }
 
@@ -28,9 +28,9 @@ export interface App_SideNavigationBar_Props {
  *
  * @returns The Sidebar.
  */
-export function App_SideNavigationBar({
+export function SideNavigationBar({
   onChange,
-}: App_SideNavigationBar_Props) {
+}: SideNavigationBar_Props) {
   const { doctype, setDoctype, viewtype, setViewtype } =
     useContext(App_Context);
 

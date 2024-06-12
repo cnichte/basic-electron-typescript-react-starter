@@ -1,5 +1,5 @@
-import { ViewType } from "../../frontend/types/view-types"; 
-import { ActionTarget, DocType } from "./doc-types";
+import { ViewType } from "../../frontend/types/ViewType"; 
+import { ActionTarget, DocType } from "./DocType";
 
 export type DatabaseRequestType =
   | "request:list-all"

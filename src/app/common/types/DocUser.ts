@@ -1,4 +1,4 @@
-import { DocItentifiable, DocType } from "./doc-types";
+import { DocItentifiable, DocType } from "./DocType";
 
 export interface DocUserType extends DocItentifiable {
   _id: string;

@@ -4,7 +4,7 @@ import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Space, Typography, theme } from "antd";
 
-import { App_SideNavigationBar } from "./Side_NavigationBar";
+import { SideNavigationBar } from "./Side_NavigationBar";
 import { IPC_View } from "../modules/ipc/IPC_View";
 import {
   IPC_ROUTE_VIEW,
@@ -15,17 +15,17 @@ import {
   BOOKS_ROUTE_LIST,
   BOOKS_ROUTE_VIEW,
   BOOKS_ROUTE_FORM,
-} from "./types/route-names";
-import { App_Info } from "../common/app-info";
+} from "./types/RouteType";
+import { App_Info } from "../common/App_Info";
 
 const { Header, Sider, Content, Footer } = Layout;
 const { Title } = Typography;
 
-import { App_Context, ContextData } from "./app-context";
+import { App_Context, ContextData } from "./App_Context";
 import { Header_Buttons } from "./Header_Buttons";
 
-import { DocType } from "../common/types/doc-types";
-import { ViewType } from "./types/view-types";
+import { DocType } from "../common/types/DocType";
+import { ViewType } from "./types/ViewType";
 
 import { User_List } from "../modules/user/frontend/User_List";
 import { User_View } from "../modules/user/frontend/User_View";
@@ -62,7 +62,7 @@ export function App_Routes() {
             style={{ height: "100vh" }}
           >
             <div className="demo-logo-vertical" />
-            <App_SideNavigationBar
+            <SideNavigationBar
               onChange={function (value: RouteType): void {
                 console.log("App_Routes.tsx says: Route has changed", value);
               }}

@@ -1,5 +1,5 @@
-import { DocType } from "../../common/types/doc-types";
-import { ViewType } from "./view-types";
+import { DocType } from "../../common/types/DocType";
+import { ViewType } from "./ViewType";
 
 // Note the path Structur: A Route starts with the `doctype`
 // Always write all three, even if you don't use them.

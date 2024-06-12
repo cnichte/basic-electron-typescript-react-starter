@@ -1,4 +1,4 @@
-import { DatabaseRequestType } from "../common/types/request-types";
+import { DatabaseRequestType } from "../common/types/RequestTypes";
 
 export class App_MessagesTool{
 

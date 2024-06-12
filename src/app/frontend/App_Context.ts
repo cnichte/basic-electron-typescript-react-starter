@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { DocType } from "../common/types/doc-types";
-import { ViewType } from "./types/view-types";
+import { DocType } from "../common/types/DocType";
+import { ViewType } from "./types/ViewType";
 
 export interface ContextData {
   

@@ -4,14 +4,14 @@ import { Descriptions, message } from "antd";
 import {
   Action_Request,
   DB_Request,
-} from "../../../common/types/request-types";
-import { DocUserType } from "../../../common/types/doc-user";
-import { IPC_DATABASE } from "../../../common/types/ipc-channels";
-import { DOCTYPE_USER } from "../../../common/types/doc-types";
+} from "../../../common/types/RequestTypes";
+import { DocUserType } from "../../../common/types/DocUser";
+import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
+import { DOCTYPE_USER } from "../../../common/types/DocType";
 
-import { App_Context } from "../../../frontend/app-context";
-import { App_MessagesTool } from "../../../frontend/app-messages-tool";
-import { Header_Buttons_IPC } from "../../../frontend/header-buttons-ipc";
+import { App_Context } from "../../../frontend/App_Context";
+import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
+import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 
 export function User_View() {
   const navigate = useNavigate();

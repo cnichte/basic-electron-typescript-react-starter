@@ -1,6 +1,6 @@
 import { PathLike } from "fs";
 import fs from "fs-extra";
-import { App_Info } from "../common/app-info";
+import { App_Info } from "../common/App_Info";
 import { app } from "electron";
 
 export class FileTool {
