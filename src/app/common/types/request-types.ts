@@ -28,7 +28,6 @@ export interface Action_Request {
   id:string;
 
   surpress:boolean;
-
   options: any;
 }
 

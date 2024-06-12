@@ -53,10 +53,10 @@ const electronAPI: IElectronAPI = {
   request_data: (channel: IPC_Channels, ...args: unknown[]) =>
     ipcRenderer.invoke(channel, ...args),
 
+  //! Following Pattern 3 for header-button-actions
   // The request comes via sendMessage from the Header-Buttons
   // runs via the ipc-action-broker and then over here.
   // The Views are listening to this, for actions to perform...
-  //! Following Pattern 3 for header-button-actions
   //! https://berom0227.medium.com/implementing-the-off-method-in-electron-api-a-critical-aspect-of-event-listener-management-189b5232ea2a
   // https://stackoverflow.com/questions/57418499/how-to-unregister-from-ipcrenderer-on-event-listener
   on: (channel: IPC_Channels, callback: (...args: any[]) => void) => {
