@@ -2,7 +2,7 @@ import { BrowserWindow, ipcMain } from "electron";
 import { Database_Mysql } from "./database-mysql";
 import { Database_Pouchdb } from "./database-pouchdb";
 import { DatabaseCRUD_Interface } from "./database-types";
-import { IPC_BUTTON_ACTION, IPC_DATABASE } from "../common/types/IPC_Channels";
+import { IPC_BUTTON_ACTION, IPC_DATABASE } from "../common/types/ipc-channels";
 import { FileTool } from "./file-tool";
 /**
  * dispatches all the ipc requests from the frontend,

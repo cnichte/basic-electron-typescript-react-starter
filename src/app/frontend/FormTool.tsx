@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import { RequestData } from "../common/types/request-types";
 import { DocItentifiable } from "../common/types/doc-types";
 import { UUIDTool } from "../common/uuid-tool";
-import { IPC_DATABASE } from "../common/types/IPC_Channels";
-import { App_MessagesTool } from "./App_MessagesTool";
+import { IPC_DATABASE } from "../common/types/ipc-channels";
+import { App_MessagesTool } from "./app-messages-tool";
 
 export class FormTool<T extends DocItentifiable> {
   /**

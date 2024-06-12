@@ -7,15 +7,15 @@ import {
   DB_Request,
 } from "../../../common/types/request-types";
 import { DocUserType } from "../../../common/types/doc-user";
-import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
+import { IPC_DATABASE } from "../../../common/types/ipc-channels";
 import { DOCTYPE_USER } from "../../../common/types/doc-types";
 
 import { FormState } from "../../../frontend/types/form-types";
 
-import { App_Context } from "../../../frontend/App_Context";
-import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
+import { App_Context } from "../../../frontend/app-context";
+import { App_MessagesTool } from "../../../frontend/app-messages-tool";
 import { FormTool } from "../../../frontend/FormTool";
-import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import { Header_Buttons_IPC } from "../../../frontend/header-buttons-ipc";
 
 export function User_Form() {
   const { id } = useParams();

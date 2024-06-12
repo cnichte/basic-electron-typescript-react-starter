@@ -21,7 +21,7 @@ import { App_Info } from "../common/app-info";
 const { Header, Sider, Content, Footer } = Layout;
 const { Title } = Typography;
 
-import { App_Context, ContextData } from "./App_Context";
+import { App_Context, ContextData } from "./app-context";
 import { Header_Buttons } from "./Header_Buttons";
 
 import { DocType } from "../common/types/doc-types";

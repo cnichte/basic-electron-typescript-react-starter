@@ -8,9 +8,9 @@ import {
 } from "@ant-design/icons";
 
 import { Action_Request } from "../common/types/request-types";
-import { IPC_BUTTON_ACTION } from "../common/types/IPC_Channels";
+import { IPC_BUTTON_ACTION } from "../common/types/ipc-channels";
 import { useContext, useEffect, useState } from "react";
-import { App_Context } from "./App_Context";
+import { App_Context } from "./app-context";
 import { ViewType } from "./types/view-types";
 import { DOCTYPE_HEADER_BUTTONS, DocType } from "../common/types/doc-types";
 

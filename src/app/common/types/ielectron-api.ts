@@ -1,4 +1,4 @@
-import { IPC_Channels } from "./IPC_Channels";
+import { IPC_Channels } from "./ipc-channels";
 
 export interface IElectronAPI {
   // ######################################################################

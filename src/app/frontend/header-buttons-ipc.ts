@@ -1,4 +1,4 @@
-import { IPC_BUTTON_ACTION } from "../common/types/IPC_Channels";
+import { IPC_BUTTON_ACTION } from "../common/types/ipc-channels";
 import { DOCTYPE_HEADER_BUTTONS, DocType } from "../common/types/doc-types";
 import { Action_Request } from "../common/types/request-types";
 import { ViewType } from "./types/view-types";

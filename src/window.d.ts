@@ -1,4 +1,4 @@
-import { IElectronAPI } from "./app/common/types/IElectronAPI"
+import { IElectronAPI } from "./app/common/types/ielectron-api"
 
 /**
  * TypeScript doesn't know that we are extending the Window (see preload.ts) of our renderer process

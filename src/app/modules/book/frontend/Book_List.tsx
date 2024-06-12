@@ -7,12 +7,12 @@ import {
   RequestData,
 } from "../../../common/types/request-types";
 import { DocBookType } from "../../../common/types/doc-book";
-import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
+import { IPC_DATABASE } from "../../../common/types/ipc-channels";
 import { DOCTYPE_BOOK } from "../../../common/types/doc-types";
 
-import { App_Context } from "../../../frontend/App_Context";
-import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
-import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import { App_Context } from "../../../frontend/app-context";
+import { App_MessagesTool } from "../../../frontend/app-messages-tool";
+import { Header_Buttons_IPC } from "../../../frontend/header-buttons-ipc";
 
 export function Book_List() {
   const navigate = useNavigate();

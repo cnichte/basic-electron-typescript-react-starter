@@ -1,9 +1,9 @@
 import { contextBridge, ipcRenderer } from "electron";
-import { IElectronAPI } from "./app/common/types/IElectronAPI";
+import { IElectronAPI } from "./app/common/types/ielectron-api";
 import {
   IPC_BUTTON_ACTION,
   IPC_Channels,
-} from "./app/common/types/IPC_Channels";
+} from "./app/common/types/ipc-channels";
 
 /**
  * See the Electron documentation for details on how to use preload scripts:
