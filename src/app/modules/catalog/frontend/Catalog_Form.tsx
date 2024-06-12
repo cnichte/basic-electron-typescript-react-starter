@@ -84,6 +84,25 @@ export function Catalog_Form() {
     // form.setFieldsValue(dataOrigin);
     reset_form();
 
+    //! Request Document from Database
+    const request: DB_Request = {
+      type: "request:data",
+      doctype: "user",
+      id: id,
+      options: {},
+    };
+
+    window.electronAPI
+      .request_data(IPC_DATABASE, [request])
+      .then((result: DocCatalogType) => {
+        setDataObject(result);
+        form.setFieldsValue(result);
+        message.info(App_MessagesTool.from_request(request.type, "Catalog"));
+      })
+      .catch(function (error: any) {
+        message.error(JSON.stringify(error));
+      });
+
     //! Listen for Header-Button Actions.
     // Register and remove the event listener
     const ocrUnsubscribe = window.electronAPI.on(

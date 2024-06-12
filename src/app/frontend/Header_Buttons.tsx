@@ -73,13 +73,13 @@ export function Header_Buttons(props: any) {
     // Close is only some navigation
     switch (viewtype) {
       case "view":
-        navigate(`/${doctype}/list`); // gehe zur Liste
+        navigate(`/${doctype}/list`); // goto List
         break;
       case "form":
-        navigate(`/${doctype}/view/${id}`); // gehe zum View
+        navigate(`/${doctype}/view/${id}`); // goto View
         break;
       default:
-        navigate(`/${doctype}/list`); // gehe zur Liste
+        navigate(`/${doctype}/list`); // gote  List
     }
   };
 
@@ -146,7 +146,7 @@ export function Header_Buttons(props: any) {
               callbackAddHandler();
             }}
           >
-            Add {artworks_context.doctype}
+            <PlusOutlined /> Add {artworks_context.doctype}
           </Button>
         </Space>
       );

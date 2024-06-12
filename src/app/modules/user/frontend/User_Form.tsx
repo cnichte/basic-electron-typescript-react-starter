@@ -2,7 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Button, Divider, Form, FormProps, Input, message } from "antd";
 
-import { Action_Request } from "../../../common/types/request-types";
+import {
+  Action_Request,
+  DB_Request,
+} from "../../../common/types/request-types";
 import { DocUserType } from "../../../common/types/doc-user";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
 import { DOCTYPE_USER } from "../../../common/types/doc-types";
@@ -42,10 +45,28 @@ export function User_Form() {
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons('form', 'user', id);
-    
-    // form.setFieldsValue(dataOrigin);
+    Header_Buttons_IPC.request_buttons("form", "user", id);
+
     reset_form();
+
+    //! Request Document from Database
+    const request: DB_Request = {
+      type: "request:data",
+      doctype: "user",
+      id: id,
+      options: {},
+    };
+
+    window.electronAPI
+      .request_data(IPC_DATABASE, [request])
+      .then((result: DocUserType) => {
+        setDataObject(result);
+        form.setFieldsValue(result);
+        message.info(App_MessagesTool.from_request(request.type, "User"));
+      })
+      .catch(function (error: any) {
+        message.error(JSON.stringify(error));
+      });
 
     //! Listen for Header-Button Actions.
     // Register and remove the event listener
@@ -58,12 +79,11 @@ export function User_Form() {
         }
       }
     );
-    
+
     // Cleanup function to remove the listener on component unmount
     return () => {
       ocrUnsubscribe();
     };
-
   }, []);
 
   // TODO Multiple - see App_Routes
