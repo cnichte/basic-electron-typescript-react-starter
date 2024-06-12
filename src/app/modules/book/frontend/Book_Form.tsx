@@ -17,9 +17,9 @@ import {
   DB_Request,
   RequestData,
 } from "../../../common/types/request-types"; //  common/types/request-types";
-import { DocCatalogType } from "../../../common/types/doc-catalog";
+import { DocBookType } from "../../../common/types/doc-book";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { DOCTYPE_CATALOG } from "../../../common/types/doc-types";
+import { DOCTYPE_BOOK } from "../../../common/types/doc-types";
 
 import { FormState } from "../../../frontend/types/form-types";
 
@@ -28,20 +28,20 @@ import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 
-export function Catalog_Form() {
+export function Book_Form() {
   const { id } = useParams();
   const app_context = useContext(App_Context);
   const triggerSaveRef = React.useRef(null);
 
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
-  const [dataObject, setDataObject] = useState<DocCatalogType>(null);
+  const [dataObject, setDataObject] = useState<DocBookType>(null);
 
   type MyForm_FieldType = {
     title: string;
   };
 
-  const [listdata, setListData] = useState<DocCatalogType[]>([]);
+  const [listdata, setListData] = useState<DocBookType[]>([]);
 
   const [action_request, setAction] = useState<Action_Request>();
 
@@ -50,16 +50,16 @@ export function Catalog_Form() {
     //! Following Pattern 2 for the Database requests
     const request: DB_Request = {
       type: "request:list-all",
-      doctype: "catalog",
+      doctype: "book",
       options: {},
     };
 
     window.electronAPI
       .request_data(IPC_DATABASE, [request])
-      .then((result: DocCatalogType[]) => {
+      .then((result: DocBookType[]) => {
         console.log(result);
         setListData(result);
-        message.info(App_MessagesTool.from_request(request.type, "Catalog"));
+        message.info(App_MessagesTool.from_request(request.type, "Book"));
       })
       .catch(function (error): any {
         message.error(JSON.stringify(error));
@@ -67,9 +67,9 @@ export function Catalog_Form() {
   }
 
   function reset_form(): void {
-    let data: DocCatalogType = {
+    let data: DocBookType = {
       _id: "",
-      docType: "catalog",
+      docType: "book",
       title: "",
     };
     setDataObject(data);
@@ -79,7 +79,7 @@ export function Catalog_Form() {
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("form", "catalog", id);
+    Header_Buttons_IPC.request_buttons("form", "book", id);
 
     load_list();
     reset_form();
@@ -95,10 +95,10 @@ export function Catalog_Form() {
 
       window.electronAPI
         .request_data(IPC_DATABASE, [request])
-        .then((result: DocCatalogType) => {
+        .then((result: DocBookType) => {
           setDataObject(result);
           form.setFieldsValue(result);
-          message.info(App_MessagesTool.from_request(request.type, "Catalog"));
+          message.info(App_MessagesTool.from_request(request.type, "Book"));
         })
         .catch(function (error: any) {
           message.error(JSON.stringify(error));
@@ -110,8 +110,8 @@ export function Catalog_Form() {
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.target === DOCTYPE_CATALOG && response.view == "form") {
-          console.log("Catalog_Form says ACTION: ", response);
+        if (response.target === DOCTYPE_BOOK && response.view == "form") {
+          console.log("Book_Form says ACTION: ", response);
 
           triggerSaveRef.current?.click();
 
@@ -130,17 +130,17 @@ export function Catalog_Form() {
 
   const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {
     // create a new record and save the data.
-    let formTool: FormTool<DocCatalogType> = new FormTool();
+    let formTool: FormTool<DocBookType> = new FormTool();
 
     formTool
       .save_data(dataObject, formValues)
-      .then((result: DocCatalogType) => {
+      .then((result: DocBookType) => {
         //! has new _rev from backend
         setDataObject(result);
         load_list();
         setFormState("update");
         // update header-button-state because uuid has changed from 'new' to uuid.
-        Header_Buttons_IPC.request_buttons("form", "catalog", result._id);
+        Header_Buttons_IPC.request_buttons("form", "book", result._id);
       })
       .catch(function (error) {
         message.error(JSON.stringify(error));
@@ -157,10 +157,10 @@ export function Catalog_Form() {
     reset_form();
   }
 
-  function onListItemDelete(item: DocCatalogType): any {
-    const request: RequestData<DocCatalogType> = {
+  function onListItemDelete(item: DocBookType): any {
+    const request: RequestData<DocBookType> = {
       type: "request:delete",
-      doctype: "catalog",
+      doctype: "book",
       options: {},
       data: item,
     };
@@ -185,11 +185,11 @@ export function Catalog_Form() {
         requests.
       </p>
 
-      <Divider orientation="left">Catalog Input Form</Divider>
+      <Divider orientation="left">Book Input Form</Divider>
 
       <Form
         form={form}
-        name="catalog-form"
+        name="book-form"
         layout="inline"
         initialValues={{ remember: true }}
         onFinish={onFinish}

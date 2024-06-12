@@ -12,7 +12,8 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 FileTool.get_app_datapath(); // Ensure path exists
-SettingsAdapter.test();
+const settings:SettingsAdapter = new SettingsAdapter();
+settings.dispatch_ipc_requests();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {

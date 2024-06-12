@@ -5,13 +5,13 @@ export type ActionTarget = typeof DOCTYPE_HEADER_BUTTONS;
 
 // custom types
 export const DOCTYPE_USER = "user";
-export const DOCTYPE_CATALOG = "catalog";
+export const DOCTYPE_BOOK = "book";
 export const DOCTYPE_IPC = "ipc";
 
 export type DocType =
   // custom
   | typeof DOCTYPE_USER
-  | typeof DOCTYPE_CATALOG
+  | typeof DOCTYPE_BOOK
   | typeof DOCTYPE_IPC;
 
 // To constrain my generics

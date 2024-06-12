@@ -27,7 +27,7 @@ If you also want to build an app with this setup, this could be a good starting 
 ## Framework Concepts
 
 * Introducing ViewTypes: `list`, `view`, `form`.
-* Introducing DocTypes, such as `catalog`, `user`, `ipc`, or whatever you need.
+* Introducing DocTypes, such as `book`,`user`, `ipc`, or whatever you need.
 
 ## React Pitfalls
 

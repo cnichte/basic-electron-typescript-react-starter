@@ -4,13 +4,13 @@ import { Menu, MenuProps } from "antd";
 import { UserOutlined, AppstoreOutlined } from "@ant-design/icons";
 import {
   ROUTE_TEST_IPC_VIEW,
-  CATALOGS_ROUTE_LIST,
+  BOOKS_ROUTE_LIST,
   RouteType,
   USERS_ROUTE_LIST,
 } from "./types/route-names";
 import { App_Context } from "./App_Context";
 import {
-  DOCTYPE_CATALOG,
+  DOCTYPE_BOOK,
   DOCTYPE_IPC,
   DOCTYPE_USER,
   DocType,
@@ -104,8 +104,8 @@ export function App_SideNavigationBar({
       getMenuItem("User", "30", null, () =>
         handleChange(USERS_ROUTE_LIST, DOCTYPE_USER, VIEWTYPE_LIST)
       ),
-      getMenuItem("Catalog", "40", null, () =>
-        handleChange(CATALOGS_ROUTE_LIST, DOCTYPE_CATALOG, VIEWTYPE_LIST)
+      getMenuItem("Books", "40", null, () =>
+        handleChange(BOOKS_ROUTE_LIST, DOCTYPE_BOOK, VIEWTYPE_LIST)
       ),
     ]),
   ];

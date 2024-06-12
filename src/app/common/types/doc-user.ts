@@ -9,7 +9,7 @@ export interface DocUserType extends DocItentifiable {
 export class DocUser implements DocUserType {
   _id: string = '';
   _rev?: string;
-  docType: DocType = "catalog";
+  docType: DocType = "user";
 
   name: string = '';
 }

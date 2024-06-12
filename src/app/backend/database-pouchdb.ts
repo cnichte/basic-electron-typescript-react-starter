@@ -133,8 +133,8 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
         this.db
           .put({
             _id: uuidv4(),
-            docType: "catalog",
-            title: "Books",
+            docType: "book",
+            title: "Book 2",
           })
           .then(function (response: any) {
             resolve(true);
@@ -146,8 +146,8 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
         this.db
           .put({
             _id: uuidv4(),
-            docType: "catalog",
-            title: "Travel",
+            docType: "book",
+            title: "Book 1",
           })
           .then(function (response: any) {
             resolve(true);

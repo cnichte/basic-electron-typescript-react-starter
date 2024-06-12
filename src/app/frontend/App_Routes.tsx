@@ -12,9 +12,9 @@ import {
   USERS_ROUTE_LIST,
   USERS_ROUTE_VIEW,
   USERS_ROUTE_FORM,
-  CATALOGS_ROUTE_LIST,
-  CATALOGS_ROUTE_VIEW,
-  CATALOGS_ROUTE_FORM,
+  BOOKS_ROUTE_LIST,
+  BOOKS_ROUTE_VIEW,
+  BOOKS_ROUTE_FORM,
 } from "./types/route-names";
 import { App_Info } from "../common/app-info";
 
@@ -31,9 +31,9 @@ import { User_List } from "../modules/user/frontend/User_List";
 import { User_View } from "../modules/user/frontend/User_View";
 import { User_Form } from "../modules/user/frontend/User_Form";
 
-import { Catalog_List } from "../modules/catalog/frontend/Catalog_List";
-import { Catalog_View } from "../modules/catalog/frontend/Catalog_View";
-import { Catalog_Form } from "../modules/catalog/frontend/Catalog_Form";
+import { Book_List } from "../modules/book/frontend/Book_List";
+import { Book_View } from "../modules/book/frontend/Book_View";
+import { Book_Form } from "../modules/book/frontend/Book_Form";
 
 export function App_Routes() {
   const [collapsed, setCollapsed] = useState(false);
@@ -112,9 +112,9 @@ export function App_Routes() {
                 <Route path={USERS_ROUTE_VIEW} Component={User_View} />
                 <Route path={USERS_ROUTE_FORM} Component={User_Form} />
 
-                <Route path={CATALOGS_ROUTE_LIST} Component={Catalog_List} />
-                <Route path={CATALOGS_ROUTE_VIEW} Component={Catalog_View} />
-                <Route path={CATALOGS_ROUTE_FORM} Component={Catalog_Form} />
+                <Route path={BOOKS_ROUTE_LIST} Component={Book_List} />
+                <Route path={BOOKS_ROUTE_VIEW} Component={Book_View} />
+                <Route path={BOOKS_ROUTE_FORM} Component={Book_Form} />
               </Routes>
             </Content>
             <Footer style={{ textAlign: "center" }}>

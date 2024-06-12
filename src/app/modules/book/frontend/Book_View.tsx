@@ -5,37 +5,37 @@ import {
   Action_Request,
   DB_Request,
 } from "../../../common/types/request-types";
-import { DocCatalogType } from "../../../common/types/doc-catalog";
+import { DocBookType } from "../../../common/types/doc-book";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { DOCTYPE_CATALOG } from "../../../common/types/doc-types";
+import { DOCTYPE_BOOK } from "../../../common/types/doc-types";
 
 import { App_Context } from "../../../frontend/App_Context";
 import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 
-export function Catalog_View() {
+export function Book_View() {
   const navigate = useNavigate();
   const { id } = useParams();
   const app_context = useContext(App_Context);
 
-  const [dataObject, setDataObject] = useState<DocCatalogType>(null);
+  const [dataObject, setDataObject] = useState<DocBookType>(null);
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("view", "catalog", id);
+    Header_Buttons_IPC.request_buttons("view", "book", id);
 
     const request: DB_Request = {
       type: "request:data",
-      doctype: "catalog",
+      doctype: "book",
       id: id,
       options: {},
     };
 
     window.electronAPI
       .request_data(IPC_DATABASE, [request])
-      .then((result: DocCatalogType) => {
+      .then((result: DocBookType) => {
         setDataObject(result);
-        message.info(App_MessagesTool.from_request(request.type, "User"));
+        message.info(App_MessagesTool.from_request(request.type, "Book"));
       })
       .catch(function (error: any) {
         message.error(JSON.stringify(error));
@@ -46,8 +46,8 @@ export function Catalog_View() {
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.target === DOCTYPE_CATALOG && response.view == "view") {
-          console.log("Catalog_View says ACTION: ", response);
+        if (response.target === DOCTYPE_BOOK && response.view == "view") {
+          console.log("Book_View says ACTION: ", response);
           message.info(response.type);
         }
       }
@@ -62,7 +62,7 @@ export function Catalog_View() {
   }, []);
 
   return (
-    <Descriptions title="Catalog View">
+    <Descriptions title="Book View">
       <Descriptions.Item label="Name">{dataObject?.title}</Descriptions.Item>
     </Descriptions>
   );

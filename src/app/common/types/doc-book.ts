@@ -1,15 +1,15 @@
 import { DocItentifiable, DocType } from "./doc-types";
 
-export interface DocCatalogType extends DocItentifiable {
+export interface DocBookType extends DocItentifiable {
   _id: string;
   docType: DocType;
   title: string;
 }
 
-export class DocCatalog implements DocCatalogType {
+export class DocBook implements DocBookType {
   _id: string = '';
   _rev?: string;
-  docType: DocType = "catalog";
+  docType: DocType = "book";
 
   title: string = '';
 }

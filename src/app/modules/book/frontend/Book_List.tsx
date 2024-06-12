@@ -6,35 +6,35 @@ import {
   DB_Request,
   RequestData,
 } from "../../../common/types/request-types";
-import { DocCatalogType } from "../../../common/types/doc-catalog";
+import { DocBookType } from "../../../common/types/doc-book";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { DOCTYPE_CATALOG } from "../../../common/types/doc-types";
+import { DOCTYPE_BOOK } from "../../../common/types/doc-types";
 
 import { App_Context } from "../../../frontend/App_Context";
 import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 
-export function Catalog_List() {
+export function Book_List() {
   const navigate = useNavigate();
   const app_context = useContext(App_Context);
 
-  const [listdata, setListData] = useState<DocCatalogType[]>([]);
+  const [listdata, setListData] = useState<DocBookType[]>([]);
 
   function load_list(): void {
     // Request data from pouchdb
     //! Following Pattern 2 for the Database requests
     const request: DB_Request = {
       type: "request:list-all",
-      doctype: "catalog",
+      doctype: "book",
       options: {},
     };
 
     window.electronAPI
       .request_data(IPC_DATABASE, [request])
-      .then((result: DocCatalogType[]) => {
+      .then((result: DocBookType[]) => {
         console.log(result);
         setListData(result);
-        message.info(App_MessagesTool.from_request(request.type, "Catalog"));
+        message.info(App_MessagesTool.from_request(request.type, "Book"));
       })
       .catch(function (error): any {
         message.error(JSON.stringify(error));
@@ -52,8 +52,8 @@ export function Catalog_List() {
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.target === DOCTYPE_CATALOG && response.view == "list") {
-          console.log("Catalog_List says ACTION: ", response);
+        if (response.target === DOCTYPE_BOOK && response.view == "list") {
+          console.log("Book_List says ACTION: ", response);
           message.info(response.type);
         }
       }
@@ -65,10 +65,10 @@ export function Catalog_List() {
     };
   }, []);
 
-  function onListItemDelete(item: DocCatalogType): any {
-    const request: RequestData<DocCatalogType> = {
+  function onListItemDelete(item: DocBookType): any {
+    const request: RequestData<DocBookType> = {
       type: "request:delete",
-      doctype: "catalog",
+      doctype: "book",
       options: {},
       data: item,
     };
@@ -84,11 +84,11 @@ export function Catalog_List() {
       });
   }
 
-  function onListItemEdit(item: DocCatalogType): any {
+  function onListItemEdit(item: DocBookType): any {
     navigate(`/${item.docType}/form/${item._id}`);
   }
 
-  function onListItemView(item: DocCatalogType): any {
+  function onListItemView(item: DocBookType): any {
     navigate(`/${item.docType}/view/${item._id}`);
   }
 
