@@ -20,9 +20,6 @@ import {
  * to pass arbitrary messages between the main and render.
  *
  * https://www.jsgarden.co/blog/how-to-handle-electron-ipc-events-with-typescript
- *
- * See the Electron documentation for details on how to use preload scripts:
- * https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
  */
 const electronAPI: IElectronAPI = {
   // ######################################################################
