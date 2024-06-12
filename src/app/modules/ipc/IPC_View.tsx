@@ -104,7 +104,7 @@ export function IPC_View() {
         </p>
 
         <h3>Pattern 4: Render to renderer</h3>
-        <p>Is implemented via the Header-Buttons and FormViews.s</p>
+        <p>Is implemented via the Header-Buttons and FormViews.</p>
 
       </Flex>
     </>
