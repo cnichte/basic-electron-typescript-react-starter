@@ -2,7 +2,9 @@
 
 - [ ] FormBase, ViewBase, ListBase
 - [ ] Titel von von Conf aus setzen (gewählte db)
+
 - [ ] Message-Ipc
+
 - [ ] Relational-Pouch Integration über Setting in conf / System
 - [ ] Laden der Beispieldaten …
 - [ ] Electron conf Support

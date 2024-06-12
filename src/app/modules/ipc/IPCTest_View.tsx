@@ -102,6 +102,10 @@ export function IPCTest_View() {
         <p>
           Current value is: <strong>{count2}</strong>.
         </p>
+
+        <h3>Pattern 4: Render to renderer</h3>
+        <p>Is implemented via the Header-Buttons and FormViews.s</p>
+
       </Flex>
     </>
   );
