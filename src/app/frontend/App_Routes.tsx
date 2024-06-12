@@ -5,7 +5,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Space, Typography, theme } from "antd";
 
 import { App_SideNavigationBar } from "./Side_NavigationBar";
-import { IPCTest_View } from "./modules/ipc/IPCTest_View";
+import { IPCTest_View } from "../modules/ipc/IPCTest_View";
 import {
   ROUTE_TEST_IPC,
   RouteType,
@@ -27,13 +27,13 @@ import { Header_Buttons } from "./Header_Buttons";
 import { DocType } from "../common/types/doc-types";
 import { ViewType } from "./types/view-types";
 
-import { User_List } from "./modules/user/User_List";
-import { User_View } from "./modules/user/User_View";
-import { User_Form } from "./modules/user/User_Form";
+import { User_List } from "../modules/user/frontend/User_List";
+import { User_View } from "../modules/user/frontend/User_View";
+import { User_Form } from "../modules/user/frontend/User_Form";
 
-import { Catalog_List } from "./modules/catalog/Catalog_List";
-import { Catalog_View } from "./modules/catalog/Catalog_View";
-import { Catalog_Form } from "./modules/catalog/Catalog_Form";
+import { Catalog_List } from "../modules/catalog/frontend/Catalog_List";
+import { Catalog_View } from "../modules/catalog/frontend/Catalog_View";
+import { Catalog_Form } from "../modules/catalog/frontend/Catalog_Form";
 
 export function App_Routes() {
   const [collapsed, setCollapsed] = useState(false);

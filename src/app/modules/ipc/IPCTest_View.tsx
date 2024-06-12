@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Flex, message } from "antd";
-import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { ArtWorks_Context } from "../../App_Context";
+import { IPC_DATABASE } from "../../common/types/IPC_Channels";
+import { App_Context } from "../../frontend/App_Context";
 
 export function IPCTest_View() {
-  const artworks_context = useContext(ArtWorks_Context);
+  const app_context = useContext(App_Context);
 
   const [count, setCount] = useState(0);
   const [count2, setCount2] = useState(0);
 
   useEffect(() => {
-    console.log("ContextData", artworks_context); 
+    console.log("ContextData", app_context); 
   }, []);
 
   //! Pattern 1: Renderer to main (one-way)

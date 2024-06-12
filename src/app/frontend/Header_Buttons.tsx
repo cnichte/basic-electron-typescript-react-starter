@@ -17,9 +17,11 @@ import { DOCTYPE_HEADER_BUTTONS, DocType } from "../common/types/doc-types";
  * These are the buttons in the header.
  * They appear and function depending on the context.
  *
- * You request actions from the underlying component via Electrons IPC-Potocol.
- * This is either a list, view or form.
- *
+ * A two-way communication takes place here:
+ * 
+ * 1. the underlying-content requests that certain buttons are displayed, depending on the ViewType (list, view or form).
+ * 2. the header buttons request the underlying-content to perform actions (load, save, etc)  
+ * 
  * @param props
  * @returns
  */
@@ -35,7 +37,8 @@ export function Header_Buttons(props: any) {
   useEffect(() => {
     console.log("ContextData", artworks_context);
 
-    // Register and remove the event listener
+    // Two-way communication, case 1
+    // Register and remove the event listener.
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
@@ -75,6 +78,7 @@ export function Header_Buttons(props: any) {
   };
 
   const callbackAddHandler = () => {
+    // Two-way communication, case 2
     let request: Action_Request = {
       type: "request:add-action",
       target: doctype,
@@ -89,6 +93,7 @@ export function Header_Buttons(props: any) {
   };
 
   const callbackEditHandler = () => {
+    // Two-way communication, case 2
     let request: Action_Request = {
       type: "request:edit-action",
       target: artworks_context.doctype,
@@ -103,6 +108,7 @@ export function Header_Buttons(props: any) {
   };
 
   const callbackSaveHandler = () => {
+    // Two-way communication, case 2
     let request: Action_Request = {
       type: "request:save-action",
       target: artworks_context.doctype,

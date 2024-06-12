@@ -1,16 +1,16 @@
 # TODO
 
-- [ ] FormBase, ViewBsse, ListBase
-- [ ] Titel von von Conf aus  setzen (gewählte db)
-- [ ] Module eine Ebene höher mit Fronten und backend Verzeichnissen
+- [ ] FormBase, ViewBase, ListBase
+- [ ] Titel von von Conf aus setzen (gewählte db)
+- [x] Module eine Ebene höher mit Fronten und backend Verzeichnissen
 - [ ] Message-Ipc
 - [ ] Realtional pouch Integration über Setting in conf / System
-- [ ] Header Buttons actions ausführen lassen
+- [x] Header Buttons actions ausführen lassen
 - [ ] Laden der Beispieldaten …
 - [ ] Electron conf Support
-  - [ ] Module ein und aus
+  - [ ] Module ein und aus.
   - [ ] Settings für die Datenbank
-- [ ] Pfade für conf und dB abhängig von  dev oder Prod
+- [ ] Pfade für conf und dB abhängig von dev oder Prod
   - [ ] DEV (wie dB) direkt im Arbeitsverzeichnis.  
   - [ ] Prod im User home
   - [ ] teste mal wo die im build abgelegt werden wenn nix weiter definiert ist.
