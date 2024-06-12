@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import {
   Button,
   Divider,
@@ -28,6 +29,7 @@ import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 
 export function Catalog_Form() {
+  const { id } = useParams();
   const app_context = useContext(App_Context);
 
   const [form] = Form.useForm();
@@ -76,12 +78,13 @@ export function Catalog_Form() {
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("form", "catalog");
+    Header_Buttons_IPC.request_buttons("form", "catalog", id);
 
     load_list();
     // form.setFieldsValue(dataOrigin);
     reset_form();
 
+    //! Listen for Header-Button Actions.
     // Register and remove the event listener
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",

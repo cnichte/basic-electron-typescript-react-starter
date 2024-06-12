@@ -1,5 +1,5 @@
 import { ViewType } from "../../frontend/types/view-types"; 
-import { DocType } from "./doc-types";
+import { ActionTarget, DocType } from "./doc-types";
 
 export type DatabaseRequestType =
   | "request:list-all"
@@ -21,17 +21,17 @@ export interface RequestData<T> extends DB_Request {
 
 export interface Action_Request {
   type: ActionRequestType;
-  target: DocType; // Das könnte ich auftrennen?
+  target: DocType | ActionTarget;
 
   view: ViewType;
   doctype:DocType;
+  id:string;
 
   options: any;
 }
 
 export type ActionRequestType =
   // Header-Buttons to List- View- Form-Component
-  | "request:close-action"
   | "request:add-action"
   | "request:edit-action"
   | "request:save-action"

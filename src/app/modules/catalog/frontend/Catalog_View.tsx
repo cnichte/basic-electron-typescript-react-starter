@@ -22,8 +22,8 @@ export function Catalog_View() {
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons('view','catalog');
-    
+    Header_Buttons_IPC.request_buttons("view", "catalog", id);
+
     const request: DB_Request = {
       type: "request:data",
       doctype: "catalog",
@@ -41,6 +41,7 @@ export function Catalog_View() {
         message.error(JSON.stringify(error));
       });
 
+    //! Listen for Header-Button Actions.
     // Register and remove the event listener
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
@@ -52,7 +53,7 @@ export function Catalog_View() {
       }
     );
 
-    console.log('ocrUnsubscribe', ocrUnsubscribe);
+    console.log("ocrUnsubscribe", ocrUnsubscribe);
 
     // Cleanup function to remove the listener on component unmount
     return () => {

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import { Button, Space, theme } from "antd";
 import {
   PlusOutlined,
@@ -18,17 +19,20 @@ import { DOCTYPE_HEADER_BUTTONS, DocType } from "../common/types/doc-types";
  * They appear and function depending on the context.
  *
  * A two-way communication takes place here:
- * 
+ *
  * 1. the underlying-content requests that certain buttons are displayed, depending on the ViewType (list, view or form).
- * 2. the header buttons request the underlying-content to perform actions (load, save, etc)  
- * 
+ * 2. the header buttons request the underlying-content to perform actions (load, save, etc)
+ *
  * @param props
  * @returns
  */
 export function Header_Buttons(props: any) {
+  const navigate = useNavigate();
+
   const artworks_context = useContext(App_Context);
   const [viewtype, setViewType] = useState<ViewType>("list");
   const [doctype, setDocType] = useState<DocType>("user");
+  const [id, setID] = useState<string>("");
 
   const {
     token: { colorBgContainer },
@@ -38,6 +42,7 @@ export function Header_Buttons(props: any) {
     console.log("ContextData", artworks_context);
 
     // Two-way communication, case 1
+    //! Listen for Content-Request.
     // Register and remove the event listener.
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
@@ -46,6 +51,7 @@ export function Header_Buttons(props: any) {
           console.log("App_Buttons says: SHOW Buttons for: ", response);
           setViewType(response.view);
           setDocType(response.doctype);
+          setID(response.id);
         }
       }
     );
@@ -64,17 +70,17 @@ export function Header_Buttons(props: any) {
    * ...to trigger the actions for Child-Views: list, view and form.
    */
   const callbackCloseHandler = () => {
-    let request: Action_Request = {
-      type: "request:close-action",
-      target: doctype,
-
-      doctype: doctype,
-      view: viewtype,
-
-      options: {},
-    };
-
-    window.electronAPI.send(IPC_BUTTON_ACTION, [request]);
+    // Close is only some navigation
+    switch (viewtype) {
+      case "view":
+        navigate(`/${doctype}/list`); // gehe zur Liste
+        break;
+      case "form":
+        navigate(`/${doctype}/view/${id}`); // gehe zum View
+        break;
+      default:
+        navigate(`/${doctype}/list`); // gehe zur Liste
+    }
   };
 
   const callbackAddHandler = () => {
@@ -85,6 +91,7 @@ export function Header_Buttons(props: any) {
 
       doctype: doctype,
       view: viewtype,
+      id: id,
 
       options: {},
     };
@@ -100,6 +107,7 @@ export function Header_Buttons(props: any) {
 
       doctype: doctype,
       view: viewtype,
+      id: id,
 
       options: {},
     };
@@ -115,6 +123,7 @@ export function Header_Buttons(props: any) {
 
       doctype: doctype,
       view: viewtype,
+      id:id,
 
       options: {},
     };

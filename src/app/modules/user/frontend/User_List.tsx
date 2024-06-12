@@ -44,10 +44,11 @@ export function User_List() {
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("list", "user");
+    Header_Buttons_IPC.request_buttons("list", "user", '');
 
     load_list();
 
+    //! Listen for Header-Button Actions.
     // Register and remove the event listener
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",

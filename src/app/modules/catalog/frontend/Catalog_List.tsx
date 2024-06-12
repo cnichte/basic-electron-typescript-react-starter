@@ -43,10 +43,11 @@ export function Catalog_List() {
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons('list','catalog');
+    Header_Buttons_IPC.request_buttons('list','catalog','');
     
     load_list();
 
+    //! Listen for Header-Button Actions.
     // Register and remove the event listener
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",

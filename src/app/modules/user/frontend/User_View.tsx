@@ -22,8 +22,8 @@ export function User_View() {
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons('view', 'user');
-    
+    Header_Buttons_IPC.request_buttons("view", "user", id);
+
     const request: DB_Request = {
       type: "request:data",
       doctype: "user",
@@ -41,6 +41,7 @@ export function User_View() {
         message.error(JSON.stringify(error));
       });
 
+    //! Listen for Header-Button Actions.
     // Register and remove the event listener
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",

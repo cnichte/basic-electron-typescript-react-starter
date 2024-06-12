@@ -8,13 +8,14 @@ export class Header_Buttons_IPC {
    *
    * @param viewtype
    */
-  public static request_buttons(viewtype: ViewType, doctype:DocType) {
+  public static request_buttons(viewtype: ViewType, doctype:DocType, id:string) {
     let request: Action_Request = {
       type: `request:show-${viewtype}-buttons`,
       target: DOCTYPE_HEADER_BUTTONS, //das ist die Zielkomponente / target
 
       view: viewtype,
       doctype: doctype,
+      id:id,
 
       options: {},
     };

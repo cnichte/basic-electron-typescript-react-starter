@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
-import { Menu } from "antd";
-import { UserOutlined, AppstoreOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
-import { MenuProps, Divider } from "antd";
+import { Menu, MenuProps } from "antd";
+import { UserOutlined, AppstoreOutlined } from "@ant-design/icons";
 import {
-  ROUTE_TEST_IPC,
+  ROUTE_TEST_IPC_VIEW,
   CATALOGS_ROUTE_LIST,
-  USERS_ROUTE_VIEW,
   RouteType,
   USERS_ROUTE_LIST,
 } from "./types/route-names";
@@ -97,7 +95,7 @@ export function App_SideNavigationBar({
    */
   const items: MenuItem[] = [
     getMenuItem("IPC Test", "10", <UserOutlined />, () =>
-      handleChange(ROUTE_TEST_IPC, DOCTYPE_IPC, VIEWTYPE_VIEW)
+      handleChange(ROUTE_TEST_IPC_VIEW, DOCTYPE_IPC, VIEWTYPE_VIEW)
     ),
     {
       type: "divider",
