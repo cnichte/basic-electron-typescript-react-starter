@@ -2,12 +2,8 @@
 
 - [ ] FormBase, ViewBase, ListBase
 - [ ] Titel von von Conf aus setzen (gewählte db)
-- [x] Module eine Ebene höher mit Fronten und backend Verzeichnissen
 - [ ] Message-Ipc
 - [ ] Realtional pouch Integration über Setting in conf / System
-- [x] Header Button-actions ausführen lassen
-  -[x] close, view, edit, save
-  -[ ] add
 - [ ] Laden der Beispieldaten …
 - [ ] Electron conf Support
   - [ ] Module ein und aus.

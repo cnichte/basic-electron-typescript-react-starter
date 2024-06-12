@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import {
   Button,
   Divider,
@@ -31,6 +31,7 @@ import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 export function Catalog_Form() {
   const { id } = useParams();
   const app_context = useContext(App_Context);
+  const triggerSaveRef = React.useRef(null);
 
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
@@ -81,7 +82,6 @@ export function Catalog_Form() {
     Header_Buttons_IPC.request_buttons("form", "catalog", id);
 
     load_list();
-    // form.setFieldsValue(dataOrigin);
     reset_form();
 
     //! Request Document from Database
@@ -111,9 +111,9 @@ export function Catalog_Form() {
         if (response.target === DOCTYPE_CATALOG && response.view == "form") {
           console.log("Catalog_Form says ACTION: ", response);
 
-          let formTool: FormTool<DocCatalogType> = new FormTool();
+          triggerSaveRef.current?.click();
 
-          message.info(response.type);
+          // message.info(response.type);
         }
       }
     );
@@ -203,7 +203,7 @@ export function Catalog_Form() {
           <Input />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" ref={triggerSaveRef} style={{display: 'none'}}>
             {formstate === "create"
               ? `Add ${app_context.viewtype}`
               : `Update ${app_context.viewtype}`}

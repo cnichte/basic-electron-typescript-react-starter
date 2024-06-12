@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { Button, Divider, Form, FormProps, Input, message } from "antd";
 
 import {
@@ -16,17 +16,15 @@ import { App_Context } from "../../../frontend/App_Context";
 import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
-import React from "react";
 
 export function User_Form() {
   const { id } = useParams();
   const app_context = useContext(App_Context);
+  const triggerSaveRef = React.useRef(null);
 
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
   const [dataObject, setDataObject] = useState<DocUserType>(null);
-
-  const triggerSaveRef = React.useRef(null);
 
   type MyForm_FieldType = {
     name: string;
@@ -149,7 +147,7 @@ export function User_Form() {
           <Input />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" ref={triggerSaveRef}>
+          <Button type="primary" htmlType="submit" ref={triggerSaveRef} style={{display: 'none'}}>
             {formstate === "create"
               ? `Add ${app_context.viewtype}`
               : `Update ${app_context.viewtype}`}
