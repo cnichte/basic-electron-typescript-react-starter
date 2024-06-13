@@ -2,7 +2,7 @@ import PouchDB from "pouchdb";
 import find from "pouchdb-find";
 import { v4 as uuidv4 } from "uuid";
 
-import { DatabaseCRUD_Interface } from "./DatabaseTypes";
+import { DatabaseCRUD_Interface } from "./Database_Types";
 import { FileTool } from "./FileTool";
 
 export class Database_Pouchdb implements DatabaseCRUD_Interface {

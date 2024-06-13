@@ -1,9 +1,15 @@
 import { BrowserWindow, ipcMain } from "electron";
-import { Database_Mysql } from "./Database_Mysql";
+import { DatabaseCRUD_Interface } from "./Database_Types";
 import { Database_Pouchdb } from "./Database_Pouchdb";
-import { DatabaseCRUD_Interface } from "./DatabaseTypes";
-import { IPC_BUTTON_ACTION, IPC_DATABASE } from "../common/types/IPC_Channels";
+import { Database_Settings } from "./Database_Settings";
+import {
+  IPC_BUTTON_ACTION,
+  IPC_DATABASE,
+  IPC_SETTINGS,
+} from "../common/types/IPC_Channels";
 import { FileTool } from "./FileTool";
+import { Settings_Request } from "../common/types/RequestTypes";
+
 /**
  * dispatches all the ipc requests from the frontend,
  * to database commands.
@@ -13,11 +19,16 @@ import { FileTool } from "./FileTool";
 export class IPC_Request_Dispatcher {
   mainWindow: BrowserWindow;
   pouchdb: DatabaseCRUD_Interface;
-  mysqldb: DatabaseCRUD_Interface;
+  settings: Database_Settings;
 
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
-    this.pouchdb = new Database_Pouchdb( FileTool.get_app_datapath() ,"pouchdb-test");
+    this.pouchdb = new Database_Pouchdb(
+      FileTool.get_app_datapath(),
+      "pouchdb-test"
+    );
+    this.settings = new Database_Settings();
+
     // this.mysqldb = new Database_Mysql();
   }
 
@@ -83,6 +94,32 @@ export class IPC_Request_Dispatcher {
     });
 
     // ----------------------------------------------------------------------
+    // Settings Requests
+    // ----------------------------------------------------------------------
+
+    ipcMain.handle(IPC_SETTINGS, async (event, arg) => {
+      console.log(`MAIN says: Request received from frontend: `, arg);
+      const request: Settings_Request = arg[0];
+
+      let result: Promise<any>;
+
+      switch (request.type) {
+        case `request:get-doctype-setting`:
+          result = new Promise((resolve) => {
+            let setting: any = this.settings.conf.get(request.doctype);
+            resolve(setting);
+          });
+          break;
+        default:
+          result = new Promise((reject) => {
+            reject(`Sorry, this is a unknown request: ${request}`);
+          });
+      }
+
+      return result;
+    });
+
+    // ----------------------------------------------------------------------
     // Database Requests
     // ----------------------------------------------------------------------
 
@@ -90,7 +127,7 @@ export class IPC_Request_Dispatcher {
     ipcMain.handle(IPC_DATABASE, async (event, arg) => {
       // console.log("\n\n######################################################");
       console.log(`MAIN says: Request received from frontend: `, arg);
-      const request: any = arg[0];
+      const request: any = arg[0]; //! DB_Request -> RequestData<T>
 
       let result: Promise<any>;
 

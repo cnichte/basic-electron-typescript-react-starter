@@ -9,7 +9,7 @@ Goals
 * Explore the [Electron Inter-Process Communication](https://www.electronjs.org/de/docs/latest/tutorial/ipc) (IPC), especialy the [Message ports](https://www.electronjs.org/de/docs/latest/tutorial/message-ports).
 * Execute CRUD-Operations via the IPC-Protocol.
 * Take the tour with Andt-Design.
-* Provide a complete basic framework for real-life use cases.
+* Provide a sort of basic framework for real-life use cases.
 * Make the whole process easy as possible to understand and follow.
 
 it bundles latest
@@ -298,6 +298,26 @@ npm install electron-conf
 ```
 
 Creates a local `settings.json` file in the users home folder `~/my-electron-app/`, on the first startup with `npm start`.
+
+### Internationalize localize
+
+```bash
+npm install --save i18next i18next-node-fs-backend
+```
+
+pending
+
+Research:
+
+* <https://github.com/i18next/react-i18next>
+* <https://muhammedcuma.medium.com/complete-guide-to-internationalization-in-react-using-react-i18n-15bfd7d736e8>
+* <https://hygraph.com/blog/react-internationalization>
+* <https://github.com/reZach/secure-electron-template/tree/master/app>
+* <https://phrase.com/blog/posts/building-an-electron-app-with-internationalization-i18n/>
+
+### Sign the App
+
+pending
 
 ### Issues (so far)
 
