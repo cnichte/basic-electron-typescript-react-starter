@@ -145,7 +145,7 @@ export class Database_Settings {
       name: "settings",
       ext: ".json",
       // serializer:
-      schema: schema,
+      // schema: schema,
       defaults: {
         catalog: {
           //! the setting-name is equivalent to the doctype

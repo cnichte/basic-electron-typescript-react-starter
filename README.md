@@ -299,6 +299,19 @@ npm install electron-conf
 
 Creates a local `settings.json` file in the users home folder `~/my-electron-app/`, on the first startup with `npm start`.
 
+### Logger
+
+* Guide: <https://github.com/megahertz/electron-log>
+* <https://www.electronjs.org/de/docs/latest/api/net-log>
+
+```bash
+npm install electron-log
+```
+
+Logs in a logfile at the users home folder `~/my-electron-app/logs/`
+
+works
+
 ### Internationalize localize
 
 ```bash

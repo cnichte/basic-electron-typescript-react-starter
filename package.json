@@ -57,6 +57,7 @@
     "@types/pouchdb": "^6.4.2",
     "antd": "^5.18.1",
     "electron-conf": "^1.1.0",
+    "electron-log": "^5.1.5",
     "electron-squirrel-startup": "^1.0.1",
     "mysql2": "^3.10.0",
     "pouchdb": "^8.0.1",
