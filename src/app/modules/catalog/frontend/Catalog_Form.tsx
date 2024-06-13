@@ -2,10 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Button, Divider, Form, FormProps, Input, message } from "antd";
 
-import { Action_Request, DB_Request } from "../../../common/types/RequestTypes";
-import { DocUserType } from "../../../common/types/DocUser";
-import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { DOCTYPE_USER } from "../../../common/types/DocType";
+import {
+  Action_Request,
+  Settings_Request,
+  Settings_RequestData,
+} from "../../../common/types/RequestTypes";
+import { DocCatalog, DocCatalogType } from "../../../common/types/DocCatalog";
+import { IPC_SETTINGS } from "../../../common/types/IPC_Channels";
+import { DOCTYPE_CATALOG } from "../../../common/types/DocType";
 
 import { FormState } from "../../../frontend/types/FormState";
 
@@ -14,26 +18,44 @@ import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 
-export function User_Form() {
+export function Catalog_Form() {
   const { id } = useParams();
   const app_context = useContext(App_Context);
   const triggerSaveRef = React.useRef(null);
 
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
-  const [dataObject, setDataObject] = useState<DocUserType>(null);
+  const [dataObject, setDataObject] = useState<DocCatalogType>(null);
 
   type MyForm_FieldType = {
     name: string;
+    templateName: string;
+    templateDescription: string;
+    dbOption: string;
+    dbHost: string;
+    dbPort: string;
+    dbName: string;
+    dbUser: string;
+    dbPassword: string;
+    dbTemplate: string;
   };
 
   function reset_form(): void {
     // init form
 
-    let data: DocUserType = {
+    // see src/app/backend/Database_Settings.ts
+    let data: DocCatalogType = {
       _id: "",
-      docType: "user",
-      name: "",
+      docType: "catalog",
+      templateName: "",
+      templateDescription: "",
+      dbOption: "",
+      dbHost: "",
+      dbPort: "",
+      dbName: "",
+      dbUser: "",
+      dbPassword: "",
+      dbTemplate: "",
     };
 
     setDataObject(data);
@@ -43,25 +65,25 @@ export function User_Form() {
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("form", "user", id); // is perhaps id='new'
+    Header_Buttons_IPC.request_buttons("form", "catalog", id); // is perhaps id='new'
 
     reset_form();
 
     //! Request Document from Database
     if (id != "new") {
-      const request: DB_Request = {
-        type: "request:data",
-        doctype: "user",
+      const request: Settings_Request = {
+        type: "request:get-connection",
+        doctype: "catalog",
         id: id,
         options: {},
       };
 
       window.electronAPI
-        .request_data(IPC_DATABASE, [request])
-        .then((result: DocUserType) => {
+        .request_data(IPC_SETTINGS, [request])
+        .then((result: DocCatalogType) => {
           setDataObject(result);
           form.setFieldsValue(result);
-          message.info(App_MessagesTool.from_request(request.type, "User"));
+          message.info("Catalog geladen.");
         })
         .catch(function (error: any) {
           message.error(JSON.stringify(error));
@@ -73,8 +95,8 @@ export function User_Form() {
     const ocrUnsubscribe = window.electronAPI.on(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.target === DOCTYPE_USER && response.view == "form") {
-          console.log("User_Form says ACTION: ", response);
+        if (response.target === DOCTYPE_CATALOG && response.view == "form") {
+          console.log("Catalog_Form says ACTION: ", response);
 
           triggerSaveRef.current?.click();
 
@@ -91,21 +113,31 @@ export function User_Form() {
 
   const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {
     // create a new record and save the data.
-    let formTool: FormTool<DocUserType> = new FormTool();
+    let formTool: FormTool<DocCatalogType> = new FormTool();
+
+    // i do not use the default here
+    let request: Settings_RequestData<DocCatalog> = {
+      type: "request:save-connection",
+      doctype: "catalog",
+      id:id,
+      data: null,
+      options: {},
+    };
 
     formTool
       .save_data({
-        ipcChannel: IPC_DATABASE,
+        ipcChannel: "ipc-settings",
+        request: request,
         dataObject: dataObject,
         valuesForm: formValues,
         force_save: false,
       })
-      .then((result: DocUserType) => {
+      .then((result: DocCatalogType) => {
         //! has new _rev from backend
         setDataObject(result);
         setFormState("update");
         // update header-button-state because uuid has changed from 'new' to uuid.
-        Header_Buttons_IPC.request_buttons("form", "user", result._id);
+        Header_Buttons_IPC.request_buttons("form", "catalog", result._id);
       })
       .catch(function (error) {
         message.error(JSON.stringify(error));
@@ -129,25 +161,52 @@ export function User_Form() {
         requests.
       </p>
 
-      <Divider orientation="left">User Input Form</Divider>
+      <Divider orientation="left">Catalog Input Form</Divider>
 
       <Form
         form={form}
-        name="user-form"
-        layout="inline"
+        name="catalog-form"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        style={{ maxWidth: 600 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        style={{ maxWidth: "none" }}
       >
         <Form.Item<MyForm_FieldType>
           label="Name"
-          name="name"
-          rules={[{ required: true, message: "Your name, please." }]}
-          style={{ maxWidth: "none" }}
-          layout="horizontal"
+          name="templateName"
+          rules={[{ required: true, message: "A name, please." }]}
         >
+          <Input />
+        </Form.Item>
+
+        <Form.Item<MyForm_FieldType>
+          label="Description"
+          name="templateDescription"
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item<MyForm_FieldType> label="Option" name="dbOption">
+          <Input />
+        </Form.Item>
+        <Form.Item<MyForm_FieldType> label="Host" name="dbHost">
+          <Input />
+        </Form.Item>
+        <Form.Item<MyForm_FieldType> label="Port" name="dbPort">
+          <Input />
+        </Form.Item>
+        <Form.Item<MyForm_FieldType> label="Name" name="dbName">
+          <Input />
+        </Form.Item>
+        <Form.Item<MyForm_FieldType> label="User" name="dbUser">
+          <Input />
+        </Form.Item>
+        <Form.Item<MyForm_FieldType> label="Password" name="dbPassword">
+          <Input />
+        </Form.Item>
+        <Form.Item<MyForm_FieldType> label="Template" name="dbTemplate">
           <Input />
         </Form.Item>
         <Form.Item>
@@ -161,9 +220,6 @@ export function User_Form() {
               ? `Add ${app_context.viewtype}`
               : `Update ${app_context.viewtype}`}
           </Button>
-        </Form.Item>
-        <Form.Item>
-          <Button onClick={onFormReset}>reset</Button>
         </Form.Item>
       </Form>
       <ul>

@@ -1,14 +1,11 @@
-import path from "path";
-import { FileTool } from "./app/backend/FileTool";
+import log from "electron-log/renderer";
 
-import log from "electron-log";
-
-export class Logger {
+// import log from 'electron-log/renderer';
+// log.transports.console.format = '{text}';
+// Object.assign(console, log.functions);
+export class Renderer_Logger {
   public static init() {
-    // log.transports.console.format = "{h}:{i}:{s} {text}";
-    log.transports.file.resolvePathFn = () =>
-      path.join(FileTool.get_app_datapath(), "logs/application.log");
-
+/*
     //! https://github.com/megahertz/electron-log/issues/365
     log.hooks.push((message, transport) => {
       let text = null;
@@ -17,8 +14,7 @@ export class Logger {
         return message;
       }
 
-      // Clone message and data because they are shared by the different
-      // transports.
+      // Clone message and data because they are shared by the different transports.
       const newMessage = Object.assign({}, message);
       const { data, date, level } = newMessage;
       const dataClone = [...data];
@@ -46,7 +42,7 @@ export class Logger {
       //   - M: main
       //   - R: renderer
       const processType =
-        newMessage.variables.processType === "main" ? "MAIN" : "RENDER";
+        newMessage.variables.processType === "main" ? "MAIN  " : "RENDER";
 
       // Colorize the beginning of the output
       const prefix = `${formattedTime} ${processType} ${lvl}`;
@@ -60,8 +56,7 @@ export class Logger {
       return newMessage;
     });
 
-    // spyRendererConsole collects logs written by console.log in the renderer process
-    log.initialize({ preload: true, spyRendererConsole: true });
     Object.assign(console, log.functions);
+    */
   }
 }

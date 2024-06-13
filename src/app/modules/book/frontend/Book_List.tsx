@@ -4,7 +4,7 @@ import { List, Tooltip, Typography, message } from "antd";
 import {
   Action_Request,
   DB_Request,
-  RequestData,
+  DB_RequestData,
 } from "../../../common/types/RequestTypes";
 import { DocBookType } from "../../../common/types/DocBook";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
@@ -66,7 +66,7 @@ export function Book_List() {
   }, []);
 
   function onListItemDelete(item: DocBookType): any {
-    const request: RequestData<DocBookType> = {
+    const request: DB_RequestData<DocBookType> = {
       type: "request:delete",
       doctype: "book",
       options: {},

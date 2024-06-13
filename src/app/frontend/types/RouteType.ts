@@ -3,6 +3,10 @@ import { ViewType } from "./ViewType";
 
 // Note the path Structur: A Route starts with the `doctype`
 // Always write all three, even if you don't use them.
+export const CATALOG_ROUTE_LIST = "/catalog/list";
+export const CATALOG_ROUTE_VIEW = "/catalog/view/:id";
+export const CATALOG_ROUTE_FORM = "/catalog/form/:id";
+
 export const IPC_ROUTE_LIST = "/ipc/list";
 export const IPC_ROUTE_VIEW = "/ipc/view/:id";
 export const IPC_ROUTE_FORM = "/ipc/form/:id";
@@ -16,37 +20,42 @@ export const BOOKS_ROUTE_VIEW = "/book/view/:id";
 export const BOOKS_ROUTE_FORM = "/book/form/:id";
 
 export type RouteType =
+  | typeof CATALOG_ROUTE_LIST
+  | typeof CATALOG_ROUTE_VIEW
+  | typeof CATALOG_ROUTE_FORM
+
   | typeof IPC_ROUTE_LIST
   | typeof IPC_ROUTE_VIEW
   | typeof IPC_ROUTE_FORM
-  
-  | typeof USERS_ROUTE_LIST  
+
+  | typeof USERS_ROUTE_LIST
   | typeof USERS_ROUTE_VIEW
   | typeof USERS_ROUTE_FORM
-
+  
   | typeof BOOKS_ROUTE_LIST
   | typeof BOOKS_ROUTE_VIEW
   | typeof BOOKS_ROUTE_FORM;
 
+export class Route_Builder {
+  // Wo du hin willst hängt immer davon ab wo du bist
+  public static get_route_from_doctype(
+    doctype: DocType,
+    viewtype: ViewType,
+    uuid: string
+  ) {
+    let result: RouteType;
 
-  export class Route_Builder {
-    // Wo du hin willst hängt immer davon ab wo du bist
-    public static get_route_from_doctype(doctype:DocType, viewtype:ViewType, uuid:string){
-      let result:RouteType;
-  
-      switch (viewtype) {
-        case "list":
-          result = `/${doctype}/list`;
-          break;
-          result = `/${doctype}/list`;
-        case "view":
-          break;
-  
-        case "form":
-  
-          break;
-        default:
-  
-      }
+    switch (viewtype) {
+      case "list":
+        result = `/${doctype}/list`;
+        break;
+        result = `/${doctype}/list`;
+      case "view":
+        break;
+
+      case "form":
+        break;
+      default:
     }
   }
+}

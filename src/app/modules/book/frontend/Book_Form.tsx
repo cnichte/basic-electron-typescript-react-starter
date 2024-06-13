@@ -15,7 +15,7 @@ import {
 import {
   Action_Request,
   DB_Request,
-  RequestData,
+  DB_RequestData,
 } from "../../../common/types/RequestTypes"; //  common/types/request-types";
 import { DocBookType } from "../../../common/types/DocBook";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
@@ -133,7 +133,12 @@ export function Book_Form() {
     let formTool: FormTool<DocBookType> = new FormTool();
 
     formTool
-      .save_data(dataObject, formValues)
+      .save_data({
+        ipcChannel: IPC_DATABASE,
+        dataObject: dataObject,
+        valuesForm: formValues,
+        force_save: false,
+      })
       .then((result: DocBookType) => {
         //! has new _rev from backend
         setDataObject(result);
@@ -158,7 +163,7 @@ export function Book_Form() {
   }
 
   function onListItemDelete(item: DocBookType): any {
-    const request: RequestData<DocBookType> = {
+    const request: DB_RequestData<DocBookType> = {
       type: "request:delete",
       doctype: "book",
       options: {},

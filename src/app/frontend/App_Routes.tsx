@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
-
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Space, Typography, theme } from "antd";
 
 import { SideNavigationBar } from "./Side_NavigationBar";
-import { IPC_View } from "../modules/ipc/IPC_View";
 import {
-  IPC_ROUTE_VIEW,
   RouteType,
+  CATALOG_ROUTE_VIEW,
+  CATALOG_ROUTE_LIST,
+  CATALOG_ROUTE_FORM,
+  IPC_ROUTE_VIEW,
   USERS_ROUTE_LIST,
   USERS_ROUTE_VIEW,
   USERS_ROUTE_FORM,
@@ -26,6 +27,12 @@ import { Header_Buttons } from "./Header_Buttons";
 
 import { DocType } from "../common/types/DocType";
 import { ViewType } from "./types/ViewType";
+
+import { Catalog_List } from "../modules/catalog/frontend/Catalog_List";
+import { Catalog_View } from "../modules/catalog/frontend/Catalog_View";
+import { Catalog_Form } from "../modules/catalog/frontend/Catalog_Form";
+
+import { IPC_View } from "../modules/ipc/IPC_View";
 
 import { User_List } from "../modules/user/frontend/User_List";
 import { User_View } from "../modules/user/frontend/User_View";
@@ -106,6 +113,11 @@ export function App_Routes() {
               }}
             >
               <Routes>
+                <Route path="/" Component={Catalog_List} />
+                <Route path={CATALOG_ROUTE_LIST} Component={Catalog_List} />
+                <Route path={CATALOG_ROUTE_VIEW} Component={Catalog_View} />
+                <Route path={CATALOG_ROUTE_FORM} Component={Catalog_Form} />
+
                 <Route path={IPC_ROUTE_VIEW} Component={IPC_View} />
 
                 <Route path={USERS_ROUTE_LIST} Component={User_List} />

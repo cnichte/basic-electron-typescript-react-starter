@@ -7,35 +7,39 @@ import {
   Action_Request,
   DB_Request,
   DB_RequestData,
+  Settings_Request,
 } from "../../../common/types/RequestTypes";
+
 import { DOCTYPE_USER } from "../../../common/types/DocType";
-import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { DocUserType } from "../../../common/types/DocUser";
+import { IPC_SETTINGS } from "../../../common/types/IPC_Channels";
+
+import { DocCatalogType } from "../../../common/types/DocCatalog";
 
 import { App_Context } from "../../../frontend/App_Context";
 import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 
-export function User_List() {
+
+export function Catalog_List() {
   const navigate = useNavigate();
   const app_context = useContext(App_Context);
 
-  const [listdata, setListData] = useState<DocUserType[]>([]);
+  const [listdata, setListData] = useState<DocCatalogType[]>([]);
 
   function load_list(): void {
     // Request data from pouchdb on page load.
     //! Following Pattern 2 for the Database requests
-    const request: DB_Request = {
-      type: "request:list-all",
-      doctype: "user",
+    const request: Settings_Request = {
+      type: "request:list-connections",
+      doctype: "catalog",
       options: {},
     };
 
     window.electronAPI
-      .request_data(IPC_DATABASE, [request])
-      .then((result: DocUserType[]) => {
+      .request_data(IPC_SETTINGS, [request])
+      .then((result: DocCatalogType[]) => {
         setListData(result);
-        message.info(App_MessagesTool.from_request(request.type, "User"));
+        message.info('Settings geladen');
       })
       .catch(function (error: any) {
         message.error(JSON.stringify(error));
@@ -44,7 +48,7 @@ export function User_List() {
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("list", "user", '');
+    Header_Buttons_IPC.request_buttons("list", "catalog", '');
 
     load_list();
 
@@ -54,7 +58,7 @@ export function User_List() {
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_USER && response.view == "list") {
-          console.log("User_List says ACTION: ", response);
+          console.log("Catalog_List says ACTION: ", response);
           message.info(response.type);
         }
       }
@@ -66,18 +70,18 @@ export function User_List() {
     };
   }, []);
 
-  function onListItemDelete(item: DocUserType): any {
-    const request: DB_RequestData<DocUserType> = {
-      type: "request:delete",
-      doctype: "user",
+  function onListItemDelete(item: DocCatalogType): any {
+    const request: Settings_Request = {
+      type: "request:delete-connection",
+      id: item._id,
+      doctype: "catalog",
       options: {},
-      data: item,
     };
 
     window.electronAPI
-      .request_data(IPC_DATABASE, [request])
+      .request_data(IPC_SETTINGS, [request])
       .then((result: any) => {
-        message.info(App_MessagesTool.from_request(request.type, "User"));
+        message.info('');
         load_list();
       })
       .catch(function (error): any {
@@ -85,12 +89,12 @@ export function User_List() {
       });
   }
 
-  function onListItemEdit(item: DocUserType): any {
+  function onListItemEdit(item: DocCatalogType): any {
     console.log(`/${item.docType}/form/${item._id}`);
     navigate(`/${item.docType}/form/${item._id}`);
   }
 
-  function onListItemView(item: DocUserType): any {
+  function onListItemView(item: DocCatalogType): any {
     console.log(`/${item.docType}/view/${item._id}`);
     navigate(`/${item.docType}/view/${item._id}`);
   }
@@ -102,7 +106,7 @@ export function User_List() {
         footer={<div>{listdata.length}</div>}
         bordered
         dataSource={listdata}
-        renderItem={(item: DocUserType) => (
+        renderItem={(item: DocCatalogType) => (
           <List.Item
             actions={[
               <Tooltip title="Edit the Item">

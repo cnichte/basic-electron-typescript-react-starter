@@ -8,7 +8,15 @@ import {
   IPC_SETTINGS,
 } from "../common/types/IPC_Channels";
 import { FileTool } from "./FileTool";
-import { Settings_Request } from "../common/types/RequestTypes";
+import {
+  DB_Request,
+  DB_RequestData,
+  Settings_Request,
+  Settings_RequestData,
+} from "../common/types/RequestTypes";
+import { DocBook } from "../common/types/DocBook";
+import { DocCatalog } from "../common/types/DocCatalog";
+import { DocUser } from "../common/types/DocUser";
 
 /**
  * dispatches all the ipc requests from the frontend,
@@ -86,7 +94,7 @@ export class IPC_Request_Dispatcher {
      */
     ipcMain.on(IPC_BUTTON_ACTION, async (event, arg) => {
       console.log(
-        `MAIN says: Button-Action-Request received from frontend: `,
+        `MAIN says: BUTTON-ACTION-Request received from frontend: `,
         arg
       );
       //! Following Pattern 3 for header-button-actions
@@ -98,16 +106,71 @@ export class IPC_Request_Dispatcher {
     // ----------------------------------------------------------------------
 
     ipcMain.handle(IPC_SETTINGS, async (event, arg) => {
-      console.log(`MAIN says: Request received from frontend: `, arg);
-      const request: Settings_Request = arg[0];
+      console.log(`MAIN says: SETTINGS-Request received from frontend: `, arg);
+      const request: Settings_RequestData<DocCatalog> = arg[0];
 
       let result: Promise<any>;
 
       switch (request.type) {
-        case `request:get-doctype-setting`:
+        case "request:list-connections":
           result = new Promise((resolve) => {
-            let setting: any = this.settings.conf.get(request.doctype);
-            resolve(setting);
+            let list: any = this.settings.conf.get("catalog.connections");
+            resolve(list);
+          });
+          break;
+
+        case "request:get-connection":
+          result = new Promise((resolve, reject) => {
+            let list: any = this.settings.conf.get("catalog.connections");
+
+            const newList = list.filter((con: any) => {
+              return con._id == request.id;
+            });
+            console.log("CONNECTION FOUND:", newList);
+            if (newList.length == 0) {
+              reject("Sorry, Connection not found.");
+            } else {
+              resolve(newList[0]);
+            }
+          });
+          break;
+        case "request:save-connection":
+          result = new Promise((resolve, reject) => {
+            let list: any = this.settings.conf.get("catalog.connections");
+            let result: boolean = false;
+
+            // update existing
+            const newList = list.map((item: any) => {
+              if (item._id === request.data._id) {
+                result = true;
+                return request.data;
+              } else {
+                return item;
+              }
+            });
+
+            if (result) {
+              this.settings.conf.set("catalog.connections", newList);
+              resolve("Connection gespeichert.");
+            } else {
+              // not there, then insert
+              list.push(request.data);
+              this.settings.conf.set("catalog.connections", list);
+              resolve("Connection angelegt.");
+            }
+          });
+          break;
+        case "request:delete-connection":
+          result = new Promise((resolve) => {
+            let list: any = this.settings.conf.get("catalog.connections");
+            const newList = list.filter((con: any) => {
+              return con._id != request.data._id;
+            });
+
+            this.settings.conf.set("catalog.connections", newList);
+            // this.settings.conf.delete('foo');
+
+            resolve(true);
           });
           break;
         default:
@@ -126,8 +189,8 @@ export class IPC_Request_Dispatcher {
     //! Following Pattern 2 for the Database requests
     ipcMain.handle(IPC_DATABASE, async (event, arg) => {
       // console.log("\n\n######################################################");
-      console.log(`MAIN says: Request received from frontend: `, arg);
-      const request: any = arg[0]; //! DB_Request -> RequestData<T>
+      console.log(`MAIN says: DATABASE-Request received from frontend: `, arg);
+      const request: DB_RequestData<DocBook | DocUser> = arg[0];
 
       let result: Promise<any>;
 

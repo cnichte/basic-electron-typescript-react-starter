@@ -41,7 +41,7 @@ export class Database_Settings {
                     description: "Name der Option",
                     type: "string",
                   },
-                  id: {
+                  _id: {
                     description: "UUID der Option",
                     type: "string",
                   },
@@ -65,7 +65,7 @@ export class Database_Settings {
               description: "Sammlung von Datenbank Verbindungen.",
               type: "array",
               items: {
-                id: {
+                _id: {
                   description: "Die uuid.",
                   type: "string",
                 },
@@ -144,8 +144,8 @@ export class Database_Settings {
       dir: FileTool.get_app_datapath(),
       name: "settings",
       ext: ".json",
-      // serializer:
-      // schema: schema,
+      // serializer: // i use the default here
+      // schema: schema, // TODO Schema gives an exception
       defaults: {
         catalog: {
           //! the setting-name is equivalent to the doctype
@@ -153,22 +153,23 @@ export class Database_Settings {
           startoptions: [
             {
               name: "Opens a specific catalogue",
-              id: "98673942-8fd5-4d9e-82c3-e24ddf03d9f3",
+              _id: "98673942-8fd5-4d9e-82c3-e24ddf03d9f3",
             },
             {
               name: "Opens the last used catalogue",
-              id: "d0254d49-cf47-45a1-9b66-7ae8ad32f131",
+              _id: "d0254d49-cf47-45a1-9b66-7ae8ad32f131",
             },
             {
               name: "Shows the selection dialogue",
-              id: "335889f5-b05c-4f73-9b4e-403e4bf632a7",
+              _id: "335889f5-b05c-4f73-9b4e-403e4bf632a7",
             },
           ],
           opensOnStartup: "4f44e5f7-3e11-43d9-aed5-0c2b9633a64",
           dbOptions: ["local", "remote"],
           connections: [
             {
-              id: "4f44e5f7-3e11-43d9-aed5-0c2b9633a64f",
+              _id: "4f44e5f7-3e11-43d9-aed5-0c2b9633a64f",
+              docType:"catalog",
               templateName: "Test Database 1",
               templateDescription: "This is database 1",
               dbOption: "local",
@@ -180,7 +181,8 @@ export class Database_Settings {
               dbTemplate: "${dbName}",
             },
             {
-              id: "7bea1ea4-ad6c-4d61-aec9-bdcc35a5030f",
+              _id: "7bea1ea4-ad6c-4d61-aec9-bdcc35a5030f",
+              docType:"catalog",
               templateName: "Test Database 2",
               templateDescription: "This is database 2",
               dbOption: "local",

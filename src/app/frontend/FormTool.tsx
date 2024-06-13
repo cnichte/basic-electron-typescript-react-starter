@@ -1,52 +1,72 @@
 import { message } from "antd";
 import { v4 as uuidv4 } from "uuid";
-import { RequestData } from "../common/types/RequestTypes";
+import {
+  DB_RequestData,
+  Settings_RequestData,
+} from "../common/types/RequestTypes";
 import { DocItentifiable } from "../common/types/DocType";
 import { UUIDTool } from "../common/UUIDTool";
-import { IPC_DATABASE } from "../common/types/IPC_Channels";
+import {
+  IPC_Channels,
+  IPC_DATABASE,
+  IPC_SETTINGS,
+} from "../common/types/IPC_Channels";
 import { App_MessagesTool } from "./App_MessagesTool";
+
+export interface FormTool_Props<T> {
+  ipcChannel: IPC_Channels;
+  request?: any; // DB_RequestData<T> | Settings_RequestData<T> | null
+  dataObject: any;
+  valuesForm: any;
+  force_save: boolean;
+}
 
 export class FormTool<T extends DocItentifiable> {
   /**
    * Check, if data has changed, transport form-data to data-object, makes ipc-request,
    * transforms the result, sends the altered data-object back.
    *
-   * @author Carsten Nichte - //carsten-nichte.de/apps/
-   * @param dataObject
-   * @param valuesForm
-   * @param force_save skips dataHasChanged check
    *
+   *
+   * @author Carsten Nichte - //carsten-nichte.de/apps/
+   * @param props FormTool_Props
    * @returns
    */
-  public save_data(
-    dataObject: T,
-    valuesForm: any,
-    force_save: boolean = false
-  ): Promise<T> {
+  public save_data(props: FormTool_Props<T>): Promise<T> {
     return new Promise((resolve, reject) => {
-      if (this.dataHasChanged(valuesForm, dataObject) || force_save) {
-        this.transport(valuesForm, dataObject);
+      if (
+        this.dataHasChanged(props.valuesForm, props.dataObject) ||
+        props.force_save
+      ) {
+        this.transport(props.valuesForm, props.dataObject);
 
         //* Operating modes: new and edit (needed when you have a opened form)
-        if (!UUIDTool.uuidValidateV4(dataObject._id)) {
-          console.log(`NEW ID because ${dataObject._id}`);
-          dataObject._id = uuidv4();
+        if (!UUIDTool.uuidValidateV4(props.dataObject._id)) {
+          console.log(`NEW ID because ${props.dataObject._id}`);
+          props.dataObject._id = uuidv4();
         }
 
-        let request: RequestData<T> = {
-          type: "request:save",
-          doctype: dataObject.docType,
-          options: {},
-          data: dataObject,
-        };
+        let request: any; // DB_RequestData<T> | Settings_RequestData<T>
+
+        if (props.request == null) {
+          request = {
+            type: "request:save",
+            doctype: props.dataObject.docType,
+            options: {},
+            data: props.dataObject,
+          } as DB_RequestData<T>;
+        } else {
+          request = props.request;
+          request.data = props.dataObject;
+        }
 
         window.electronAPI
-          .request_data(IPC_DATABASE, [request])
+          .request_data(props.ipcChannel, [request])
           .then((result: any) => {
             // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
             message.info(App_MessagesTool.from_request(request.type, ""));
             console.log(result);
-            resolve(this.transform_result(dataObject, result));
+            resolve(this.transform_result(props.dataObject, result));
           })
           .catch(function (error) {
             message.error(JSON.stringify(error));

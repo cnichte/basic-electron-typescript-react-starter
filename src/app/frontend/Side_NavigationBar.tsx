@@ -1,16 +1,18 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router";
 import { Menu, MenuProps } from "antd";
-import { UserOutlined, AppstoreOutlined } from "@ant-design/icons";
+import { HomeOutlined, UserOutlined, AppstoreOutlined } from "@ant-design/icons";
 import {
+  RouteType,
+  CATALOG_ROUTE_LIST,
   IPC_ROUTE_VIEW,
   BOOKS_ROUTE_LIST,
-  RouteType,
   USERS_ROUTE_LIST,
 } from "./types/RouteType";
 import { App_Context } from "./App_Context";
 import {
   DOCTYPE_BOOK,
+  DOCTYPE_CATALOG,
   DOCTYPE_IPC,
   DOCTYPE_USER,
   DocType,
@@ -95,7 +97,10 @@ export function SideNavigationBar({
    * !Add your module here.
    */
   const items: MenuItem[] = [
-    getMenuItem("IPC Test", "10", <UserOutlined />, () =>
+    getMenuItem("Catalogs", "10", <HomeOutlined />, () =>
+      handleChange(CATALOG_ROUTE_LIST, DOCTYPE_CATALOG, VIEWTYPE_VIEW)
+    ),
+    getMenuItem("IPC Test", "20", <UserOutlined />, () =>
       handleChange(IPC_ROUTE_VIEW, DOCTYPE_IPC, VIEWTYPE_VIEW)
     ),
     {
@@ -123,7 +128,7 @@ export function SideNavigationBar({
       <Menu
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={["30"]}
+        defaultSelectedKeys={["10"]}
         defaultOpenKeys={["sub1"]}
         items={items}
       />

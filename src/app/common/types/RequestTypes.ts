@@ -6,6 +6,7 @@ import { ActionTarget, DocType } from "./DocType";
 // ----------------------------------------------------------------------
 
 export type DatabaseRequestType =
+  // database
   | "request:list-all"
   | "request:data"
   | "request:create"
@@ -19,7 +20,28 @@ export interface DB_Request {
   options: any;
 }
 
-export interface RequestData<T> extends DB_Request {
+export interface DB_RequestData<T> extends DB_Request {
+  data: T;
+}
+
+// ----------------------------------------------------------------------
+// Settings Requests
+// ----------------------------------------------------------------------
+
+export type SettingsRequestType =
+  // settings
+  | "request:list-connections"
+  | "request:get-connection"
+  | "request:delete-connection"
+  | "request:save-connection"; // connection
+
+export interface Settings_Request {
+  type: SettingsRequestType;
+  doctype: DocType; // equals a 'module'
+  id?: string;
+  options: any;
+}
+export interface Settings_RequestData<T> extends Settings_Request {
   data: T;
 }
 
@@ -62,15 +84,3 @@ export type MessageRequestType =
   | "request:message-success"
   | "request:message-error"
   | "request:message-warning";
-
-// ----------------------------------------------------------------------
-// Settings Requests
-// ----------------------------------------------------------------------
-
-export type SettingsRequestType = "request:get-doctype-setting";
-
-export interface Settings_Request {
-  type: SettingsRequestType;
-  doctype: DocType; // equals a 'module'
-  options: any;
-}
