@@ -114,14 +114,15 @@ export class IPC_Request_Dispatcher {
       switch (request.type) {
         case "request:list-connections":
           result = new Promise((resolve) => {
-            let list: any = this.settings.conf.get("catalog.connections");
-            resolve(list);
+            let obj: any = this.settings.conf.get("catalog.connection");
+            resolve(obj);
           });
           break;
-
         case "request:get-connection":
           result = new Promise((resolve, reject) => {
-            let list: any = this.settings.conf.get("catalog.connections");
+            let list: any = this.settings.conf.get(
+              "catalog.connection.options"
+            );
 
             const newList = list.filter((con: any) => {
               return con._id == request.id;
@@ -136,7 +137,9 @@ export class IPC_Request_Dispatcher {
           break;
         case "request:save-connection":
           result = new Promise((resolve, reject) => {
-            let list: any = this.settings.conf.get("catalog.connections");
+            let list: any = this.settings.conf.get(
+              "catalog.connection.options"
+            );
             let result: boolean = false;
 
             // update existing
@@ -150,26 +153,39 @@ export class IPC_Request_Dispatcher {
             });
 
             if (result) {
-              this.settings.conf.set("catalog.connections", newList);
+              this.settings.conf.set("catalog.connection.options", newList);
               resolve("Connection gespeichert.");
             } else {
               // not there, then insert
               list.push(request.data);
-              this.settings.conf.set("catalog.connections", list);
+              this.settings.conf.set("catalog.connection.options", list);
               resolve("Connection angelegt.");
             }
           });
           break;
         case "request:delete-connection":
           result = new Promise((resolve) => {
-            let list: any = this.settings.conf.get("catalog.connections");
+            let list: any = this.settings.conf.get("atalog.connection.options");
             const newList = list.filter((con: any) => {
               return con._id != request.data._id;
             });
 
-            this.settings.conf.set("catalog.connections", newList);
+            this.settings.conf.set("catalog.connection.options", newList);
             // this.settings.conf.delete('foo');
 
+            resolve(true);
+          });
+          break;
+        case "request:get-startoptions":
+          result = new Promise((resolve) => {
+            let obj: any = this.settings.conf.get("catalog.startoptions");
+            resolve(obj);
+          });
+          break;
+        case "request:save-startoption-selected":
+          result = new Promise((resolve) => {
+            console.log(`persist 'catalog.startoptions.selected' ${request.id}`)
+            this.settings.conf.set("catalog.startoptions.selected", request.id);
             resolve(true);
           });
           break;

@@ -33,7 +33,10 @@ export type SettingsRequestType =
   | "request:list-connections"
   | "request:get-connection"
   | "request:delete-connection"
-  | "request:save-connection"; // connection
+  | "request:save-connection"
+  | "request:get-startoptions"
+  | "request:save-startoption-selected"
+  | "request:save-catalog-selected";
 
 export interface Settings_Request {
   type: SettingsRequestType;

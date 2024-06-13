@@ -4,6 +4,9 @@ import { useNavigate } from "react-router";
 import {
   Select,
   Table,
+  TableColumnsType,
+  Tooltip,
+  Typography,
   message,
 } from "antd";
 
@@ -243,10 +246,7 @@ export function Catalog_List() {
       />
 
       <Table
-        rowSelection={{
-          type: 'radio',
-          ...rowSelection,
-        }}
+        rowSelection={rowSelection}
         columns={columns}
         dataSource={tabledata}
       />

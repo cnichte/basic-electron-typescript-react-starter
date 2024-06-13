@@ -119,7 +119,7 @@ export function Catalog_Form() {
     let request: Settings_RequestData<DocCatalog> = {
       type: "request:save-connection",
       doctype: "catalog",
-      id:id,
+      id: id,
       data: null,
       options: {},
     };
