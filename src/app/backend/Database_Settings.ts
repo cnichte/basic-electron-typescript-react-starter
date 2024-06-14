@@ -153,18 +153,24 @@ export class Database_Settings {
             selected: "98673942-8fd5-4d9e-82c3-e24ddf03d9f3",
             options: [
               {
-                "name": "Open the last used catalogue on startup.",
-                "_id": "d0254d49-cf47-45a1-9b66-7ae8ad32f131"
+                name: "Open the last used catalogue on startup.",
+                _id: "d0254d49-cf47-45a1-9b66-7ae8ad32f131",
               },
               {
-                "name": "Open a specific catalogue on startup.",
-                "_id": "32fe3517-161c-4146-86c8-8bd5e993d671"
-              }
+                name: "Open a specific catalogue on startup.",
+                _id: "32fe3517-161c-4146-86c8-8bd5e993d671",
+              },
             ],
             opensOnStartup: "4f44e5f7-3e11-43d9-aed5-0c2b9633a64",
           },
-          dbOptions: ["local", "remote"],
 
+          dbOptions: [
+            { type: "local", template: "${dbName}" },
+            {
+              type: "remote",
+              template: "http://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/",
+            },
+          ],
           connection: {
             selected: "4f44e5f7-3e11-43d9-aed5-0c2b9633a64f",
             options: [

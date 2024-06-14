@@ -1,7 +1,7 @@
 import React, { Key, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import { Select, Space, Table, message } from "antd";
+import { Select, Space, Table, message, Popconfirm } from "antd";
 
 import type { ColumnsType } from "antd/es/table";
 import type { TableRowSelection } from "antd/es/table/interface";
@@ -31,8 +31,6 @@ export function Catalog_List() {
 
   const [tabledata, setTableData] = useState<DataType[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-
-  const showRef = React.useRef(null);
 
   useEffect(() => {
     console.log("ContextData", app_context);
@@ -192,10 +190,21 @@ export function Catalog_List() {
   // Table-Actions
   //--------------------------------------------------------------
 
-  function onListItemDelete(item: DocCatalogType): any {
+  const handleView = (record: DataType) => {
+    navigate(`/catalog/view/${record.key}`);
+  };
+  function handleEdit(item: DataType): any {
+    navigate(`/catalog/form/${item.key}`);
+  }
+  function handleBackup(item: DataType): any {
+    console.log("Backup", item);
+  }
+
+  const handleDeletePopconfirmOk = (record: DataType) => {
+    console.log("delete", record);
     const request: Settings_Request = {
       type: "request:delete-connection",
-      id: item._id,
+      id: record.key as string,
       doctype: "catalog",
       options: {},
     };
@@ -203,23 +212,15 @@ export function Catalog_List() {
     window.electronAPI
       .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
-        message.info("");
+        message.info("Datenbank gelöscht.");
         load_list();
       })
       .catch(function (error): any {
         message.error(JSON.stringify(error));
       });
-  }
+  };
 
-  function onListItemEdit(item: DocCatalogType): any {
-    console.log(`/${item.docType}/form/${item._id}`);
-    navigate(`/${item.docType}/form/${item._id}`);
-  }
-
-  function onListItemView(item: DocCatalogType): any {
-    console.log(`/${item.docType}/view/${item._id}`);
-    navigate(`/${item.docType}/view/${item._id}`);
-  }
+  const handleDeletePopconfirmCancel = (record: DataType) => {};
 
   //--------------------------------------------------------------
   // Table
@@ -235,7 +236,9 @@ export function Catalog_List() {
     {
       title: "Name",
       dataIndex: "templateName",
-      render: (text: string) => <a>{text}</a>,
+      render: (text: string, record) => (
+        <a onClick={() => handleView(record)}> {text} </a>
+      ),
     },
     {
       title: "Description",
@@ -244,6 +247,25 @@ export function Catalog_List() {
     {
       title: "Type",
       dataIndex: "dbOption",
+    },
+    {
+      title: "Actions",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <a onClick={() => handleView(record)}>View</a>
+          <a onClick={() => handleEdit(record)}>Edit</a>
+          <a onClick={() => handleBackup(record)}>backup</a>
+          <Popconfirm
+            title="Eintrag löschen!"
+            description="Bist du ganz sicher?"
+            onConfirm={() => handleDeletePopconfirmOk(record)}
+            onCancel={() => handleDeletePopconfirmCancel(record)}
+          >
+            <a>Delete</a>
+          </Popconfirm>
+        </Space>
+      ),
     },
   ];
 
@@ -312,13 +334,3 @@ export function Catalog_List() {
     </>
   );
 }
-
-/**
-       <Select
-        defaultValue={selectedStartoption}
-        value={selectedStartoption}
-        style={{ width: 250 }}
-        onChange={handleStartoptionsChange}
-        options={getStartoptions()}
-      />
- */

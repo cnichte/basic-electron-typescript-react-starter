@@ -47,8 +47,8 @@ export function User_Form() {
 
     reset_form();
 
-    //! Request Document from Database
     if (id != "new") {
+      //! Request Document from Database
       const request: DB_Request = {
         type: "request:data",
         doctype: "user",

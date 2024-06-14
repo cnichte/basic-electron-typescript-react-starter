@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Button, Divider, Form, FormProps, Input, message } from "antd";
-
+import { Button, Divider, Form, FormProps, Input, Select, message, Checkbox } from "antd";
+import type { CheckboxProps } from 'antd';
 import {
   Action_Request,
   Settings_Request,
@@ -10,7 +10,7 @@ import {
 import { DocCatalog, DocCatalogType } from "../../../common/types/DocCatalog";
 import { IPC_SETTINGS } from "../../../common/types/IPC_Channels";
 import { DOCTYPE_CATALOG } from "../../../common/types/DocType";
-
+import { DbOptions_Setting } from "../../../common/types/SettingTypes";
 import { FormState } from "../../../frontend/types/FormState";
 
 import { App_Context } from "../../../frontend/App_Context";
@@ -26,6 +26,11 @@ export function Catalog_Form() {
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
   const [dataObject, setDataObject] = useState<DocCatalogType>(null);
+
+  const [dboptions, setDBOptions] = useState<DbOptions_Setting[]>([
+    { type: "local", template: "${name}" },
+  ]);
+  const [isLocal, setLocal] = useState<boolean>(false);
 
   type MyForm_FieldType = {
     name: string;
@@ -69,8 +74,8 @@ export function Catalog_Form() {
 
     reset_form();
 
-    //! Request Document from Database
     if (id != "new") {
+      //! Request Document from Database
       const request: Settings_Request = {
         type: "request:get-connection",
         doctype: "catalog",
@@ -89,6 +94,24 @@ export function Catalog_Form() {
           message.error(JSON.stringify(error));
         });
     }
+
+    const request_2: Settings_Request = {
+      type: "request:get-dbOptions",
+      doctype: "catalog",
+      id: id,
+      options: {},
+    };
+
+    window.electronAPI
+      .invoke_request(IPC_SETTINGS, [request_2])
+      .then((result: DbOptions_Setting[]) => {
+        setDBOptions(result);
+        changeDBOptions("local");
+        setLocal(true);
+      })
+      .catch(function (error: any) {
+        message.error(JSON.stringify(error));
+      });
 
     //! Listen for Header-Button Actions.
     // Register and remove the event listener
@@ -136,6 +159,9 @@ export function Catalog_Form() {
         //! has new _rev from backend
         setDataObject(result);
         setFormState("update");
+
+        // TODO bei local können einige Felder versteckt werden.
+
         // update header-button-state because uuid has changed from 'new' to uuid.
         Header_Buttons_IPC.request_buttons("form", "catalog", result._id);
       })
@@ -153,6 +179,40 @@ export function Catalog_Form() {
   function onFormReset(): void {
     reset_form();
   }
+
+  function getDBOptions(): Array<any> {
+    return dboptions.map((item: DbOptions_Setting) => {
+      return { value: item.type, label: item.type };
+    });
+  }
+
+  function handleDBOptionsChange(value: string, option: any): void {
+    changeDBOptions(value);
+  }
+
+  function changeDBOptions(type: string): void {
+    if (type === "local") {
+      setLocal(true);
+    } else {
+      setLocal(false);
+    }
+    // TODO dafür noch Settings-Typen oder interfaces definieren.
+    let found_template: DbOptions_Setting = dboptions.find(
+      (item: DbOptions_Setting) => item.type == type
+    );
+
+    form.setFieldValue("dbTemplate", found_template.template);
+  }
+
+  const handleNameChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    form.setFieldValue("dbName", e.target.value);
+  };
+
+  const handleCreateDBChange: CheckboxProps['onChange'] = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
 
   return (
     <>
@@ -179,7 +239,7 @@ export function Catalog_Form() {
           name="templateName"
           rules={[{ required: true, message: "A name, please." }]}
         >
-          <Input />
+          <Input onChange={handleNameChange} />
         </Form.Item>
 
         <Form.Item<MyForm_FieldType>
@@ -189,15 +249,28 @@ export function Catalog_Form() {
           <Input />
         </Form.Item>
         <Form.Item<MyForm_FieldType> label="Option" name="dbOption">
+          <Select
+            defaultValue="local"
+            style={{ width: 120 }}
+            onChange={handleDBOptionsChange}
+            options={getDBOptions()}
+          />
+        </Form.Item>
+        <Form.Item<MyForm_FieldType>
+          style={isLocal ? { display: "none" } : {}}
+          label="Host"
+          name="dbHost"
+        >
           <Input />
         </Form.Item>
-        <Form.Item<MyForm_FieldType> label="Host" name="dbHost">
+        <Form.Item<MyForm_FieldType>
+          style={isLocal ? { display: "none" } : {}}
+          label="Port"
+          name="dbPort"
+        >
           <Input />
         </Form.Item>
-        <Form.Item<MyForm_FieldType> label="Port" name="dbPort">
-          <Input />
-        </Form.Item>
-        <Form.Item<MyForm_FieldType> label="Name" name="dbName">
+        <Form.Item<MyForm_FieldType> label="Datenbank-Name" name="dbName">
           <Input />
         </Form.Item>
         <Form.Item<MyForm_FieldType> label="User" name="dbUser">
@@ -220,6 +293,11 @@ export function Catalog_Form() {
               ? `Add ${app_context.viewtype}`
               : `Update ${app_context.viewtype}`}
           </Button>
+        </Form.Item>
+        <Form.Item>
+          <Checkbox onChange={handleCreateDBChange}>
+            Die Datenbank beim speichern anlegen. Kann auch später erfolgen.
+          </Checkbox>
         </Form.Item>
       </Form>
       <ul>

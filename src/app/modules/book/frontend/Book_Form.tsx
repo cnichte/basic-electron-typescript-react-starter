@@ -16,6 +16,7 @@ import {
   Action_Request,
   DB_Request,
   DB_RequestData,
+  Settings_Request,
 } from "../../../common/types/RequestTypes"; //  common/types/request-types";
 import { DocBookType } from "../../../common/types/DocBook";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
@@ -84,8 +85,8 @@ export function Book_Form() {
     load_list();
     reset_form();
 
-    //! Request Document from Database
     if (id != "new") {
+      //! Request Document from Database
       const request: DB_Request = {
         type: "request:data",
         doctype: "user",

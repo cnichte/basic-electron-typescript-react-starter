@@ -176,6 +176,12 @@ export class IPC_Request_Dispatcher {
             resolve(true);
           });
           break;
+        case "request:get-dbOptions":
+          result = new Promise((resolve) => {
+            let obj: any = this.settings.conf.get("catalog.dbOptions");
+            resolve(obj);
+          });
+          break;
         case "request:get-startoptions":
           result = new Promise((resolve) => {
             let obj: any = this.settings.conf.get("catalog.startoptions");
@@ -184,18 +190,25 @@ export class IPC_Request_Dispatcher {
           break;
         case "request:save-startoption-selected":
           result = new Promise((resolve) => {
-            console.log(`persist 'catalog.startoptions.selected' ${request.id}`)
+            console.log(
+              `persist 'catalog.startoptions.selected' ${request.id}`
+            );
             this.settings.conf.set("catalog.startoptions.selected", request.id);
             resolve(true);
           });
           break;
-          case "request:save-startoption-opensOnStartup":
-            result = new Promise((resolve) => {
-              console.log(`persist 'catalog.startoptions.opensOnStartup' ${request.id}`)
-              this.settings.conf.set("catalog.startoptions.opensOnStartup", request.id);
-              resolve(true);
-            });
-            break;
+        case "request:save-startoption-opensOnStartup":
+          result = new Promise((resolve) => {
+            console.log(
+              `persist 'catalog.startoptions.opensOnStartup' ${request.id}`
+            );
+            this.settings.conf.set(
+              "catalog.startoptions.opensOnStartup",
+              request.id
+            );
+            resolve(true);
+          });
+          break;
         default:
           result = new Promise((reject) => {
             reject(`Sorry, this is a unknown request: ${request}`);
