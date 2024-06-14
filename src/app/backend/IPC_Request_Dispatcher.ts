@@ -5,6 +5,7 @@ import { Database_Settings } from "./Database_Settings";
 import {
   IPC_BUTTON_ACTION,
   IPC_DATABASE,
+  IPC_MESSAGE,
   IPC_SETTINGS,
 } from "../common/types/IPC_Channels";
 import { FileTool } from "./FileTool";
@@ -100,6 +101,19 @@ export class IPC_Request_Dispatcher {
       );
       //! Following Pattern 3 for header-button-actions
       this.mainWindow.webContents.send(IPC_BUTTON_ACTION, arg[0]);
+    });
+
+    // ----------------------------------------------------------------------
+    // Message Action Requests
+    // ----------------------------------------------------------------------
+
+    ipcMain.on(IPC_MESSAGE, async (event, arg) => {
+      console.log(
+        `MAIN says: MESSAGE-ACTION-Request received from frontend: `,
+        arg
+      );
+      //! Following Pattern 3 for message-actions
+      this.mainWindow.webContents.send(IPC_MESSAGE, arg[0]);
     });
 
     // ----------------------------------------------------------------------

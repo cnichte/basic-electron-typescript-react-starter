@@ -1,7 +1,7 @@
 import React, { Key, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import { Select, Space, Table, message, Popconfirm } from "antd";
+import { Select, Space, Table, Popconfirm } from "antd";
 
 import type { ColumnsType } from "antd/es/table";
 import type { TableRowSelection } from "antd/es/table/interface";
@@ -18,6 +18,7 @@ import { DocCatalogType } from "../../../common/types/DocCatalog";
 
 import { App_Context } from "../../../frontend/App_Context";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
 
 export function Catalog_List() {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ export function Catalog_List() {
         setSelectedCatalog(result.opensOnStartup);
       })
       .catch(function (error: any) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
       });
 
     //! Listen for Header-Button Actions.
@@ -65,7 +66,7 @@ export function Catalog_List() {
       (response: Action_Request) => {
         if (response.target === DOCTYPE_USER && response.view == "list") {
           console.log("Catalog_List says ACTION: ", response);
-          message.info(response.type);
+          App_Messages_IPC.request_message("request:message-info", JSON.stringify(response));
         }
       }
     );
@@ -105,10 +106,16 @@ export function Catalog_List() {
 
         setTableData(newList);
 
-        message.info("Settings geladen");
+        App_Messages_IPC.request_message(
+          "request:message-info",
+          "Settings geladen"
+        );
       })
       .catch(function (error: any) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-info",
+          JSON.stringify(error)
+        );
       });
   }
 
@@ -163,7 +170,7 @@ export function Catalog_List() {
         console.log("startoption saved");
       })
       .catch(function (error: any) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
       });
   };
 
@@ -183,7 +190,7 @@ export function Catalog_List() {
         console.log("startoption saved");
       })
       .catch(function (error: any) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
       });
   }
 
@@ -203,7 +210,7 @@ export function Catalog_List() {
       type: "request:database-backup",
       doctype: "catalog",
       options: {
-        dbName: item.dbName
+        dbName: item.dbName,
       },
     };
 
@@ -213,9 +220,8 @@ export function Catalog_List() {
         console.log("Database backup erzeugt.");
       })
       .catch(function (error: any) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
       });
-
   }
 
   const handleDeletePopconfirmOk = (record: DataType) => {
@@ -230,11 +236,11 @@ export function Catalog_List() {
     window.electronAPI
       .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
-        message.info("Datenbank gelöscht.");
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(result));
         load_list();
       })
       .catch(function (error): any {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
       });
   };
 
@@ -247,7 +253,7 @@ export function Catalog_List() {
     key: React.Key;
     templateName: string;
     templateDescription: string;
-    dbName:string;
+    dbName: string;
     dbOption: string;
   }
 
@@ -281,7 +287,7 @@ export function Catalog_List() {
             onConfirm={() => handleDeletePopconfirmOk(record)}
             onCancel={() => handleDeletePopconfirmCancel(record)}
           >
-            <a style={{ color:'red'}}>Delete</a>
+            <a style={{ color: "red" }}>Delete</a>
           </Popconfirm>
         </Space>
       ),
@@ -312,7 +318,7 @@ export function Catalog_List() {
         console.log("Opened Catalog saved");
       })
       .catch(function (error: any) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
       });
   };
 
