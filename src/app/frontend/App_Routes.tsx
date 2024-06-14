@@ -61,6 +61,7 @@ export function App_Routes() {
 
   return (
     <App_Context.Provider value={value}>
+      <App_Messages />
       <Router>
         <Layout>
           <Sider
@@ -77,7 +78,6 @@ export function App_Routes() {
             />
           </Sider>
           <Layout>
-            <App_Messages />
             <Header
               style={{
                 padding: 0,

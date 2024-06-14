@@ -5,6 +5,13 @@ import { message } from "antd";
 export function App_Messages() {
   const [messageApi, contextHolder] = message.useMessage();
 
+  const the_style = {
+    marginTop: "0px",
+    marginRight: "10px",
+    display: "flex",
+    justifyContent: "flex-end",
+  };
+
   useEffect(() => {
     //! Listen for Message-Actions.
     // Register and remove the event listener
@@ -43,10 +50,7 @@ export function App_Messages() {
     messageApi.open({
       type: "loading",
       content: content,
-      style: {
-        marginTop: "20vh",
-        float: "right",
-      },
+      style: the_style,
     });
   };
 
@@ -54,10 +58,7 @@ export function App_Messages() {
     messageApi.open({
       type: "info",
       content: content,
-      style: {
-        marginTop: "20vh",
-        float: "right",
-      },
+      style: the_style,
     });
   };
 
@@ -65,10 +66,7 @@ export function App_Messages() {
     messageApi.open({
       type: "success",
       content: content,
-      style: {
-        marginTop: "20vh",
-        float: "right",
-      },
+      style: the_style,
     });
   };
 
@@ -76,10 +74,7 @@ export function App_Messages() {
     messageApi.open({
       type: "warning",
       content: content,
-      style: {
-        marginTop: "20vh",
-        float: "right",
-      },
+      style: the_style,
     });
   };
 
@@ -87,12 +82,9 @@ export function App_Messages() {
     messageApi.open({
       type: "error",
       content: content,
-      style: {
-        marginTop: "20vh",
-        float: "right",
-      },
+      style: the_style,
     });
   };
-  
+
   return <>{contextHolder}</>;
 }
