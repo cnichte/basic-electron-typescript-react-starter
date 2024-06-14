@@ -82,11 +82,12 @@ export type ActionRequestType =
 export interface Message_Request {
   type: MessageRequestType;
   content: string;
-  dbrequesttype: DatabaseRequestType;
-  options: any;
 }
 
 export type MessageRequestType =
+  | "request:message-loading"
+  | "request:message-info"
   | "request:message-success"
-  | "request:message-error"
-  | "request:message-warning";
+  | "request:message-warning"
+  | "request:message-error";
+

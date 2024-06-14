@@ -7,7 +7,6 @@ import { IPC_DATABASE, IPC_SETTINGS } from "../../../common/types/IPC_Channels";
 import { DOCTYPE_CATALOG } from "../../../common/types/DocType";
 
 import { App_Context } from "../../../frontend/App_Context";
-import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 
 export function Catalog_View() {

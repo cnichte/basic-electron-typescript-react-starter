@@ -1,76 +1,98 @@
+import { Message_Request } from "../common/types/RequestTypes";
+import { useEffect } from "react";
 import { message } from "antd";
-import { NoticeType } from "antd/es/message/interface";
-import { DatabaseRequestType } from "../common/types/RequestTypes";
 
-export interface App_Message_Props {
-  type: NoticeType;
-  content: string;
-  prefix: string;
-  request?: DatabaseRequestType;
-}
-
-export function App_Messages(props: App_Message_Props) {
+export function App_Messages() {
   const [messageApi, contextHolder] = message.useMessage();
 
-  // TODO: Bekommt Nachrichten über IPC ipc-message
+  useEffect(() => {
+    //! Listen for Message-Actions.
+    // Register and remove the event listener
+    const ocrUnsubscribe = window.electronAPI.on(
+      "ipc-message",
+      (response: Message_Request) => {
+        switch (response.type) {
+          case "request:message-loading":
+            loading(response.content);
+            break;
+          case "request:message-info":
+            info(response.content);
+            break;
+          case "request:message-success":
+            success(response.content);
+            break;
+          case "request:message-warning":
+            warning(response.content);
+            break;
+          case "request:message-error":
+            error(response.content);
+            break;
+          default:
+            info(response.content);
+        }
+      }
+    );
 
-  const success = () => {
+    // Cleanup function to remove the listener on component unmount
+    return () => {
+      ocrUnsubscribe();
+    };
+  }, []);
+
+  const loading = (content: string) => {
+    messageApi.open({
+      type: "loading",
+      content: content,
+      style: {
+        marginTop: "20vh",
+        float: "right",
+      },
+    });
+  };
+
+  const info = (content: string) => {
+    messageApi.open({
+      type: "info",
+      content: content,
+      style: {
+        marginTop: "20vh",
+        float: "right",
+      },
+    });
+  };
+
+  const success = (content: string) => {
     messageApi.open({
       type: "success",
-      content: "This is a success message",
+      content: content,
       style: {
-        marginTop: '20vh',
-        float: 'right'
+        marginTop: "20vh",
+        float: "right",
       },
     });
   };
 
-  const error = () => {
-    messageApi.open({
-      type: "error",
-      content: "This is an error message",
-      style: {
-        marginTop: '20vh',
-        float: 'right'
-      },
-    });
-  };
-
-  const warning = () => {
+  const warning = (content: string) => {
     messageApi.open({
       type: "warning",
-      content: "This is a warning message",
+      content: content,
       style: {
-        marginTop: '20vh',
-        float: 'right'
+        marginTop: "20vh",
+        float: "right",
       },
     });
   };
 
-  function get_message_from_request(): string {
-    let result: string = props.content;
-
-    if (props.request != null) {
-      result = `Keine Übersetzung für request ${props.request}`;
-      switch (props.request) {
-        case "request:create":
-          result = `${props.prefix}Dokument angelegt.`;
-          break;
-        case "request:delete":
-          result = `Dokument gelöscht.`;
-          break;
-        case "request:list-all":
-          result = `${props.prefix}Liste geladen.`;
-          break;
-        case "request:save":
-          result = `${props.prefix}Dokument gespeichert.`;
-          break;
-        default:
-      }
-    }
-
-    return result;
-  }
-
-  return { contextHolder };
+  const error = (content: string) => {
+    messageApi.open({
+      type: "error",
+      content: content,
+      style: {
+        marginTop: "20vh",
+        float: "right",
+      },
+    });
+  };
+  
+  return <>{contextHolder}</>;
 }

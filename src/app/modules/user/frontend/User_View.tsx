@@ -1,17 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Descriptions, message } from "antd";
-import {
-  Action_Request,
-  DB_Request,
-} from "../../../common/types/RequestTypes";
+import { Descriptions } from "antd";
+import { Action_Request, DB_Request } from "../../../common/types/RequestTypes";
 import { DocUserType } from "../../../common/types/DocUser";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
 import { DOCTYPE_USER } from "../../../common/types/DocType";
 
 import { App_Context } from "../../../frontend/App_Context";
-import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
 
 export function User_View() {
   const navigate = useNavigate();
@@ -35,10 +32,16 @@ export function User_View() {
       .invoke_request(IPC_DATABASE, [request])
       .then((result: DocUserType) => {
         setDataObject(result);
-        message.info(App_MessagesTool.from_request(request.type, "User"));
+        App_Messages_IPC.request_message(
+          "request:message-info",
+          App_Messages_IPC.get_message_from_request(request.type, "User")
+        );
       })
       .catch(function (error: any) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          JSON.stringify(error)
+        );
       });
 
     //! Listen for Header-Button Actions.
@@ -48,7 +51,7 @@ export function User_View() {
       (response: Action_Request) => {
         if (response.target === DOCTYPE_USER && response.view == "view") {
           console.log("User_View says ACTION: ", response);
-          message.info(response.type);
+          App_Messages_IPC.request_message("request:message-info", JSON.stringify(response));
         }
       }
     );

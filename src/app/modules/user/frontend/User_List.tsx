@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import { List, Tooltip, Typography, message } from "antd";
+import { List, Tooltip, Typography } from "antd";
 
 import {
   Action_Request,
@@ -13,8 +13,8 @@ import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
 import { DocUserType } from "../../../common/types/DocUser";
 
 import { App_Context } from "../../../frontend/App_Context";
-import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
 
 export function User_List() {
   const navigate = useNavigate();
@@ -35,10 +35,10 @@ export function User_List() {
       .invoke_request(IPC_DATABASE, [request])
       .then((result: DocUserType[]) => {
         setListData(result);
-        message.info(App_MessagesTool.from_request(request.type, "User"));
+        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "User"));
       })
       .catch(function (error: any) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-success", JSON.stringify(error));
       });
   }
 
@@ -55,7 +55,7 @@ export function User_List() {
       (response: Action_Request) => {
         if (response.target === DOCTYPE_USER && response.view == "list") {
           console.log("User_List says ACTION: ", response);
-          message.info(response.type);
+          App_Messages_IPC.request_message("request:message-info", JSON.stringify(response));
         }
       }
     );
@@ -77,11 +77,11 @@ export function User_List() {
     window.electronAPI
       .invoke_request(IPC_DATABASE, [request])
       .then((result: any) => {
-        message.info(App_MessagesTool.from_request(request.type, "User"));
+        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "User"));
         load_list();
       })
       .catch(function (error): any {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
       });
   }
 

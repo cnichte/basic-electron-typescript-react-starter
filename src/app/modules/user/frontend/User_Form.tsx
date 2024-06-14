@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Button, Divider, Form, FormProps, Input, message } from "antd";
+import { Button, Divider, Form, FormProps, Input } from "antd";
 
 import { Action_Request, DB_Request } from "../../../common/types/RequestTypes";
 import { DocUserType } from "../../../common/types/DocUser";
@@ -10,9 +10,9 @@ import { DOCTYPE_USER } from "../../../common/types/DocType";
 import { FormState } from "../../../frontend/types/FormState";
 
 import { App_Context } from "../../../frontend/App_Context";
-import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
 
 export function User_Form() {
   const { id } = useParams();
@@ -61,10 +61,10 @@ export function User_Form() {
         .then((result: DocUserType) => {
           setDataObject(result);
           form.setFieldsValue(result);
-          message.info(App_MessagesTool.from_request(request.type, "User"));
+          App_Messages_IPC.request_message("request:message-info", App_Messages_IPC.get_message_from_request(request.type, "User"));
         })
         .catch(function (error: any) {
-          message.error(JSON.stringify(error));
+          App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
         });
     }
 
@@ -108,7 +108,7 @@ export function User_Form() {
         Header_Buttons_IPC.request_buttons("form", "user", result._id);
       })
       .catch(function (error) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
       });
   };
 

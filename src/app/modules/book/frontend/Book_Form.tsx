@@ -9,7 +9,6 @@ import {
   List,
   Tooltip,
   Typography,
-  message,
 } from "antd";
 
 import {
@@ -25,9 +24,9 @@ import { DOCTYPE_BOOK } from "../../../common/types/DocType";
 import { FormState } from "../../../frontend/types/FormState";
 
 import { App_Context } from "../../../frontend/App_Context";
-import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
 
 export function Book_Form() {
   const { id } = useParams();
@@ -60,10 +59,10 @@ export function Book_Form() {
       .then((result: DocBookType[]) => {
         console.log(result);
         setListData(result);
-        message.info(App_MessagesTool.from_request(request.type, "Book"));
+        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "Book"));
       })
       .catch(function (error): any {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
       });
   }
 
@@ -99,10 +98,10 @@ export function Book_Form() {
         .then((result: DocBookType) => {
           setDataObject(result);
           form.setFieldsValue(result);
-          message.info(App_MessagesTool.from_request(request.type, "Book"));
+          App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "Book"));
         })
         .catch(function (error: any) {
-          message.error(JSON.stringify(error));
+          App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
         });
     }
 
@@ -149,7 +148,7 @@ export function Book_Form() {
         Header_Buttons_IPC.request_buttons("form", "book", result._id);
       })
       .catch(function (error) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
       });
   };
 
@@ -174,11 +173,12 @@ export function Book_Form() {
     window.electronAPI
       .invoke_request(IPC_DATABASE, [request])
       .then((result: any) => {
-        message.info(App_MessagesTool.from_request(request.type, "User"));
+        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "Book"));
         load_list();
       })
       .catch(function (error): any {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+
       });
   }
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Button, Layout, Space, Typography, theme } from "antd";
+import { Button, Layout, Space, Typography, theme, message } from "antd";
 
 import { SideNavigationBar } from "./Side_NavigationBar";
 import {
@@ -41,6 +41,7 @@ import { User_Form } from "../modules/user/frontend/User_Form";
 import { Book_List } from "../modules/book/frontend/Book_List";
 import { Book_View } from "../modules/book/frontend/Book_View";
 import { Book_Form } from "../modules/book/frontend/Book_Form";
+import { App_Messages } from "./App_Messages";
 
 export function App_Routes() {
   const [collapsed, setCollapsed] = useState(false);
@@ -76,6 +77,7 @@ export function App_Routes() {
             />
           </Sider>
           <Layout>
+            <App_Messages />
             <Header
               style={{
                 padding: 0,

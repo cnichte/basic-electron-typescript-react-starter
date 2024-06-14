@@ -1,17 +1,9 @@
-import { message } from "antd";
 import { v4 as uuidv4 } from "uuid";
-import {
-  DB_RequestData,
-  Settings_RequestData,
-} from "../common/types/RequestTypes";
+import { DB_RequestData } from "../common/types/RequestTypes";
 import { DocItentifiable } from "../common/types/DocType";
 import { UUIDTool } from "../common/UUIDTool";
-import {
-  IPC_Channels,
-  IPC_DATABASE,
-  IPC_SETTINGS,
-} from "../common/types/IPC_Channels";
-import { App_MessagesTool } from "./App_MessagesTool";
+import { IPC_Channels } from "../common/types/IPC_Channels";
+import { App_Messages_IPC } from "./App_Messages_IPC";
 
 export interface FormTool_Props<T> {
   ipcChannel: IPC_Channels;
@@ -64,12 +56,20 @@ export class FormTool<T extends DocItentifiable> {
           .invoke_request(props.ipcChannel, [request])
           .then((result: any) => {
             // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
-            message.info(App_MessagesTool.from_request(request.type, ""));
+
+            App_Messages_IPC.request_message(
+              "request:message-success",
+              JSON.stringify(result)
+            );
+
             console.log(result);
             resolve(this.transform_result(props.dataObject, result));
           })
           .catch(function (error) {
-            message.error(JSON.stringify(error));
+            App_Messages_IPC.request_message(
+              "request:message-error",
+              JSON.stringify(error)
+            );
             reject(error);
           });
       } else {
