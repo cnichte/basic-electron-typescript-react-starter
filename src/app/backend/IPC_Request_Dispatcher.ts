@@ -17,6 +17,7 @@ import {
 import { DocBook } from "../common/types/DocBook";
 import { DocCatalog } from "../common/types/DocCatalog";
 import { DocUser } from "../common/types/DocUser";
+import { Database_Backup } from "./Database_Backup";
 
 /**
  * dispatches all the ipc requests from the frontend,
@@ -32,7 +33,7 @@ export class IPC_Request_Dispatcher {
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
     this.pouchdb = new Database_Pouchdb(
-      FileTool.get_app_datapath(),
+      FileTool.get_apps_home_path(),
       "pouchdb-test"
     );
     this.settings = new Database_Settings();
@@ -207,6 +208,17 @@ export class IPC_Request_Dispatcher {
               request.id
             );
             resolve(true);
+          });
+          break;
+        case "request:database-backup":
+          result = new Promise((resolve, reject) => {
+            Database_Backup.performBackup(request.options.dbName)
+              .then(function (response) {
+                return resolve(response);
+              })
+              .catch(function (err) {
+                return reject(err);
+              });
           });
           break;
         default:

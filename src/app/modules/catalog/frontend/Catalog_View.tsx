@@ -58,7 +58,7 @@ export function Catalog_View() {
 
   return (
     <Descriptions title="Catalog View">
-      <Descriptions.Item label="Name">
+      <Descriptions.Item label="Bezeichnung">
         {dataObject?.templateName}
       </Descriptions.Item>
       <Descriptions.Item label="Description">

@@ -9,7 +9,7 @@ export class Main_Logger {
     log.initialize({ preload: true, spyRendererConsole: true });
     // log.transports.console.format = "{h}:{i}:{s} {text}";
     log.transports.file.resolvePathFn = () =>
-      path.join(FileTool.get_app_datapath(), "logs/application.log");
+      path.join(FileTool.get_apps_home_path(), "logs/application.log");
 
     if (
       process.env.NODE_ENV === "development" ||

@@ -38,7 +38,8 @@ export type SettingsRequestType =
   | "request:get-dbOptions"
   | "request:save-catalog-selected"
   | "request:save-startoption-selected"
-  | "request:save-startoption-opensOnStartup";
+  | "request:save-startoption-opensOnStartup"
+  | "request:database-backup";
 
 export interface Settings_Request {
   type: SettingsRequestType;

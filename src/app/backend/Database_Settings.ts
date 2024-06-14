@@ -141,7 +141,7 @@ export class Database_Settings {
     };
 
     this.conf = new Conf({
-      dir: FileTool.get_app_datapath(),
+      dir: FileTool.get_apps_home_path(),
       name: "settings",
       ext: ".json",
       // serializer: // i use the default here

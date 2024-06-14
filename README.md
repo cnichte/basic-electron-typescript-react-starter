@@ -328,6 +328,13 @@ Research:
 * <https://github.com/reZach/secure-electron-template/tree/master/app>
 * <https://phrase.com/blog/posts/building-an-electron-app-with-internationalization-i18n/>
 
+### Database backup
+
+```bash
+npm install zip-a-folder
+npm install dayjs
+``´
+
 ### Sign the App
 
 pending

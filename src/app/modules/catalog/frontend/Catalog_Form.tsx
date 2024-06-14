@@ -1,7 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Button, Divider, Form, FormProps, Input, Select, message, Checkbox } from "antd";
-import type { CheckboxProps } from 'antd';
+import {
+  Button,
+  Divider,
+  Form,
+  FormProps,
+  Input,
+  Select,
+  message,
+  Switch,
+} from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+
 import {
   Action_Request,
   Settings_Request,
@@ -17,6 +27,8 @@ import { App_Context } from "../../../frontend/App_Context";
 import { App_MessagesTool } from "../../../frontend/App_MessagesTool";
 import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+
+const { TextArea } = Input;
 
 export function Catalog_Form() {
   const { id } = useParams();
@@ -210,8 +222,8 @@ export function Catalog_Form() {
     form.setFieldValue("dbName", e.target.value);
   };
 
-  const handleCreateDBChange: CheckboxProps['onChange'] = (e) => {
-    console.log(`checked = ${e.target.checked}`);
+  const handleCreateDBChange = (checked: boolean) => {
+    console.log(`switch to ${checked}`);
   };
 
   return (
@@ -229,13 +241,13 @@ export function Catalog_Form() {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
+        initialValues={{ remember: true, dbOption:'local' }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item<MyForm_FieldType>
-          label="Name"
+          label="Bezeichnung"
           name="templateName"
           rules={[{ required: true, message: "A name, please." }]}
         >
@@ -246,11 +258,10 @@ export function Catalog_Form() {
           label="Description"
           name="templateDescription"
         >
-          <Input />
+          <TextArea rows={4} />
         </Form.Item>
         <Form.Item<MyForm_FieldType> label="Option" name="dbOption">
           <Select
-            defaultValue="local"
             style={{ width: 120 }}
             onChange={handleDBOptionsChange}
             options={getDBOptions()}
@@ -294,15 +305,21 @@ export function Catalog_Form() {
               : `Update ${app_context.viewtype}`}
           </Button>
         </Form.Item>
-        <Form.Item>
-          <Checkbox onChange={handleCreateDBChange}>
-            Die Datenbank beim speichern anlegen. Kann auch später erfolgen.
-          </Checkbox>
+        <Form.Item
+          name="dbIsCreated"
+          style={id == "new" ? {} : { display: "none" }}
+          label="Datenbank anlegen"
+          tooltip={{
+            title:
+              "Die Datenbank wird beim speichern angelegt. Das kann aber auch später erfolgen.",
+            icon: <InfoCircleOutlined />,
+          }}
+        >
+          <Switch defaultChecked onChange={handleCreateDBChange} />
         </Form.Item>
       </Form>
       <ul>
         <li>uuid: {dataObject?._id}</li>
-        <li>_ref: {dataObject?._rev}</li>
       </ul>
     </>
   );

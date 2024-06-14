@@ -14,14 +14,30 @@ export class FileTool {
    *
    * @returns
    */
-  public static get_app_datapath(): string {
+  public static get_apps_home_path(): string {
     return FileTool.get_app_path("home");
   }
 
-  public static ensure_path_exist(path:string):void {
+  public static get_app_catalogs_path(): string {
+    const catalogs_path = FileTool.get_app_path("home").concat("catalogs/");
+    FileTool.ensure_path_exist(catalogs_path);
+    return catalogs_path;
+  }
+
+  public static get_app_log_path(): string {
+    const localStore = FileTool.get_app_path("home").concat("logs/");
+    FileTool.ensure_path_exist(localStore);
+    return FileTool.get_app_path("home");
+  }
+
+  public static ensure_path_exist(path: string): void {
     if (!fs.existsSync(path as PathLike)) {
       fs.ensureDirSync(path);
     }
+  }
+
+  public static path_exist(path: string): boolean {
+    return fs.existsSync(path as PathLike);
   }
 
   private static get_app_path(

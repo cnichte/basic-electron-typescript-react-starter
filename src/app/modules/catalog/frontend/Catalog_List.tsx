@@ -97,6 +97,7 @@ export function Catalog_List() {
             key: item._id,
             templateName: item.templateName,
             templateDescription: item.templateDescription,
+            dbName: item.dbName,
             dbOption: item.dbOption,
           };
           return o;
@@ -198,6 +199,23 @@ export function Catalog_List() {
   }
   function handleBackup(item: DataType): any {
     console.log("Backup", item);
+    const request: Settings_Request = {
+      type: "request:database-backup",
+      doctype: "catalog",
+      options: {
+        dbName: item.dbName
+      },
+    };
+
+    window.electronAPI
+      .invoke_request(IPC_SETTINGS, [request])
+      .then((result: any) => {
+        console.log("Database backup erzeugt.");
+      })
+      .catch(function (error: any) {
+        message.error(JSON.stringify(error));
+      });
+
   }
 
   const handleDeletePopconfirmOk = (record: DataType) => {
@@ -229,6 +247,7 @@ export function Catalog_List() {
     key: React.Key;
     templateName: string;
     templateDescription: string;
+    dbName:string;
     dbOption: string;
   }
 
@@ -257,12 +276,12 @@ export function Catalog_List() {
           <a onClick={() => handleEdit(record)}>Edit</a>
           <a onClick={() => handleBackup(record)}>backup</a>
           <Popconfirm
-            title="Eintrag löschen!"
+            title="Datenbank löschen!"
             description="Bist du ganz sicher?"
             onConfirm={() => handleDeletePopconfirmOk(record)}
             onCancel={() => handleDeletePopconfirmCancel(record)}
           >
-            <a>Delete</a>
+            <a style={{ color:'red'}}>Delete</a>
           </Popconfirm>
         </Space>
       ),
