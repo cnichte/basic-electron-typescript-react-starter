@@ -19,7 +19,9 @@ The module names are equal the docTypes ones. This underlines the document-centr
 
 ## Backlog
 
-- [ ]  property für ipc calls: target / source :
+- [ ] Ein Icon basteln
+  - [ ] Icon Auflösung Windows zu niederig.
+- [ ] property für ipc calls: target / source :
   - Meist ist das gleich
   - ? IPC_MessageTool.ts, IPC_FormTool.ts
 - [ ] FormBase, ViewBase, ListBase
