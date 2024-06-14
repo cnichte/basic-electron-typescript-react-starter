@@ -23,7 +23,7 @@ export interface IElectronAPI {
   // ######################################################################
 
   //! Following Pattern 2 for the Database requests
-  request_data: (channel: IPC_Channels, ...args: unknown[]) => Promise<any>;
+  invoke_request: (channel: IPC_Channels, ...args: unknown[]) => Promise<any>;
 
   //! Following Pattern 3 for header-button-actions
   on:  (channel: IPC_Channels, callback:( ...args: any[]) => void) => any;

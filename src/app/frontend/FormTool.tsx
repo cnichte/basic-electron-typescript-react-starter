@@ -61,7 +61,7 @@ export class FormTool<T extends DocItentifiable> {
         }
 
         window.electronAPI
-          .request_data(props.ipcChannel, [request])
+          .invoke_request(props.ipcChannel, [request])
           .then((result: any) => {
             // { ok: true, id: '4983cc2b-27e2-49de-aa2d-3a93f732bc80', rev: '1-96b9cb7d256fd1b29c51b84dc7d59c55'
             message.info(App_MessagesTool.from_request(request.type, ""));

@@ -49,7 +49,7 @@ export function Catalog_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_SETTINGS, [request])
+      .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
         setStartoptions(result.options);
         setSelectedStartoption(result.selected);
@@ -86,7 +86,7 @@ export function Catalog_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_SETTINGS, [request])
+      .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
         let list: DocCatalogType[] = result.options;
         setSelectedRowKeys([result.selected]);
@@ -134,7 +134,7 @@ export function Catalog_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_SETTINGS, [request])
+      .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
         console.log("startoption saved");
       })
@@ -156,7 +156,7 @@ export function Catalog_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_SETTINGS, [request])
+      .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
         message.info("");
         load_list();
@@ -221,7 +221,7 @@ export function Catalog_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_SETTINGS, [request])
+      .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
         console.log("Opened Catalog saved");
       })

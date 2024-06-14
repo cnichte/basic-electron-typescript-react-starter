@@ -29,7 +29,7 @@ export function Catalog_View() {
     };
 
     window.electronAPI
-      .request_data(IPC_SETTINGS, [request])
+      .invoke_request(IPC_SETTINGS, [request])
       .then((result: DocCatalogType) => {
         setDataObject(result);
         message.info("Catalog loaded.");

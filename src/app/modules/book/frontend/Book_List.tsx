@@ -30,7 +30,7 @@ export function Book_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_DATABASE, [request])
+      .invoke_request(IPC_DATABASE, [request])
       .then((result: DocBookType[]) => {
         console.log(result);
         setListData(result);
@@ -74,7 +74,7 @@ export function Book_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_DATABASE, [request])
+      .invoke_request(IPC_DATABASE, [request])
       .then((result: any) => {
         message.info(App_MessagesTool.from_request(request.type, "User"));
         load_list();

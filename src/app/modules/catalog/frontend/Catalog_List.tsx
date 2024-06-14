@@ -1,11 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import React, { Key, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import {
-  Select,
-  Table,
-  message,
-} from "antd";
+import { Select, Space, Table, message } from "antd";
 
 import type { ColumnsType } from "antd/es/table";
 import type { TableRowSelection } from "antd/es/table/interface";
@@ -29,9 +25,14 @@ export function Catalog_List() {
 
   const [startoptions, setStartoptions] = useState([]);
   const [selectedStartoption, setSelectedStartoption] = useState<string>("");
+  const [selectedShowCatalogChooser, setSelectedShowCatalogChooser] =
+    useState<boolean>(false);
+  const [selectedCatalog, setSelectedCatalog] = useState<string>("");
 
   const [tabledata, setTableData] = useState<DataType[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+
+  const showRef = React.useRef(null);
 
   useEffect(() => {
     console.log("ContextData", app_context);
@@ -46,10 +47,14 @@ export function Catalog_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_SETTINGS, [request])
+      .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
         setStartoptions(result.options);
+
         setSelectedStartoption(result.selected);
+        isSelectedShow(result.selected);
+
+        setSelectedCatalog(result.opensOnStartup);
       })
       .catch(function (error: any) {
         message.error(JSON.stringify(error));
@@ -83,7 +88,7 @@ export function Catalog_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_SETTINGS, [request])
+      .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
         let list: DocCatalogType[] = result.options;
         setSelectedRowKeys([result.selected]);
@@ -117,7 +122,30 @@ export function Catalog_List() {
     });
   }
 
+  function getCatalogChooser(): Array<any> {
+    // i get them from the table
+    return tabledata.map((item: { key: any; templateName: any }) => {
+      return { value: item.key, label: item.templateName };
+    });
+  }
+
+  /**
+   * Open a specific catalogue on startup.
+   * 'catalog.startoptions.selected'
+   * 'catalog.startoptions.options'
+   * @param value
+   */
+  function isSelectedShow(value: string) {
+    if (value == "32fe3517-161c-4146-86c8-8bd5e993d671") {
+      setSelectedShowCatalogChooser(true);
+    } else {
+      setSelectedShowCatalogChooser(false);
+    }
+  }
+
   const handleStartoptionsChange = (value: string) => {
+    isSelectedShow(value);
+
     console.log(`setSelectedStartoption(${value})`);
     console.log(`selectedStartoption before:${selectedStartoption}`);
     setSelectedStartoption(value);
@@ -131,7 +159,7 @@ export function Catalog_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_SETTINGS, [request])
+      .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
         console.log("startoption saved");
       })
@@ -139,6 +167,26 @@ export function Catalog_List() {
         message.error(JSON.stringify(error));
       });
   };
+
+  function handleCatalogChooserChange(value: Key, option: any): void {
+    setSelectedCatalog(option);
+
+    const request: Settings_Request = {
+      type: "request:save-startoption-opensOnStartup",
+      doctype: "catalog",
+      id: value as string,
+      options: {},
+    };
+
+    window.electronAPI
+      .invoke_request(IPC_SETTINGS, [request])
+      .then((result: any) => {
+        console.log("startoption saved");
+      })
+      .catch(function (error: any) {
+        message.error(JSON.stringify(error));
+      });
+  }
 
   //--------------------------------------------------------------
   // Table-Actions
@@ -153,7 +201,7 @@ export function Catalog_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_SETTINGS, [request])
+      .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
         message.info("");
         load_list();
@@ -218,7 +266,7 @@ export function Catalog_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_SETTINGS, [request])
+      .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
         console.log("Opened Catalog saved");
       })
@@ -234,17 +282,28 @@ export function Catalog_List() {
 
   return (
     <>
-      <Select
-        defaultValue={selectedStartoption}
-        value={selectedStartoption}
-        style={{ width: 300 }}
-        onChange={handleStartoptionsChange}
-        options={getStartoptions()}
-      />
-
+      <Space>
+        <Select
+          defaultValue={selectedStartoption}
+          value={selectedStartoption}
+          style={{ width: 310 }}
+          onChange={handleStartoptionsChange}
+          options={getStartoptions()}
+        />
+        <Select
+          // defaultValue={selectedRowKeys[0]}
+          value={selectedCatalog}
+          style={{
+            visibility: selectedShowCatalogChooser ? "visible" : "hidden",
+            width: 310,
+          }}
+          onChange={handleCatalogChooserChange}
+          options={getCatalogChooser()}
+        />
+      </Space>
       <Table
         rowSelection={{
-          type: 'radio',
+          type: "radio",
           ...rowSelection,
         }}
         columns={columns}

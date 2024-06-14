@@ -32,7 +32,7 @@ export function Book_View() {
     };
 
     window.electronAPI
-      .request_data(IPC_DATABASE, [request])
+      .invoke_request(IPC_DATABASE, [request])
       .then((result: DocBookType) => {
         setDataObject(result);
         message.info(App_MessagesTool.from_request(request.type, "Book"));

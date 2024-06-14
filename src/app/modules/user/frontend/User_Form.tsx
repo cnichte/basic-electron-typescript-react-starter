@@ -57,7 +57,7 @@ export function User_Form() {
       };
 
       window.electronAPI
-        .request_data(IPC_DATABASE, [request])
+        .invoke_request(IPC_DATABASE, [request])
         .then((result: DocUserType) => {
           setDataObject(result);
           form.setFieldsValue(result);

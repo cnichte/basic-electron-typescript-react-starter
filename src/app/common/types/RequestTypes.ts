@@ -35,8 +35,9 @@ export type SettingsRequestType =
   | "request:delete-connection"
   | "request:save-connection"
   | "request:get-startoptions"
+  | "request:save-catalog-selected"
   | "request:save-startoption-selected"
-  | "request:save-catalog-selected";
+  | "request:save-startoption-opensOnStartup";
 
 export interface Settings_Request {
   type: SettingsRequestType;

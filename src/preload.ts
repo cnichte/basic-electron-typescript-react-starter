@@ -44,7 +44,7 @@ const electronAPI: IElectronAPI = {
   // ######################################################################
 
   //! Following Pattern 2 for the Database requests
-  request_data: (channel: IPC_Channels, ...args: unknown[]) =>
+  invoke_request: (channel: IPC_Channels, ...args: unknown[]) =>
     ipcRenderer.invoke(channel, ...args),
 
   //! Following Pattern 3 for header-button-actions

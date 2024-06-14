@@ -189,6 +189,13 @@ export class IPC_Request_Dispatcher {
             resolve(true);
           });
           break;
+          case "request:save-startoption-opensOnStartup":
+            result = new Promise((resolve) => {
+              console.log(`persist 'catalog.startoptions.opensOnStartup' ${request.id}`)
+              this.settings.conf.set("catalog.startoptions.opensOnStartup", request.id);
+              resolve(true);
+            });
+            break;
         default:
           result = new Promise((reject) => {
             reject(`Sorry, this is a unknown request: ${request}`);

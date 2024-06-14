@@ -32,7 +32,7 @@ export function User_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_DATABASE, [request])
+      .invoke_request(IPC_DATABASE, [request])
       .then((result: DocUserType[]) => {
         setListData(result);
         message.info(App_MessagesTool.from_request(request.type, "User"));
@@ -75,7 +75,7 @@ export function User_List() {
     };
 
     window.electronAPI
-      .request_data(IPC_DATABASE, [request])
+      .invoke_request(IPC_DATABASE, [request])
       .then((result: any) => {
         message.info(App_MessagesTool.from_request(request.type, "User"));
         load_list();
