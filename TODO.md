@@ -9,6 +9,9 @@
   - [ ] Module ein und aus schalten.
   - [x] Settings für die Datenbank.
 
+- [ ] Löschen überall mit Abfrage
+- [ ] Datenbank infos
+
 The module names are equal the docTypes ones. This underlines the document-centred idea behind the concept.
 
 - [x] Message-IPC
