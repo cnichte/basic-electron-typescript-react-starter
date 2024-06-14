@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Flex, message } from "antd";
+import { Button, Flex } from "antd";
 import { IPC_DATABASE } from "../../common/types/IPC_Channels";
 import { App_Context } from "../../frontend/App_Context";
 import { Header_Buttons_IPC } from "../../frontend/Header_Buttons_IPC";
+import { App_Messages_IPC } from "../../frontend/App_Messages_IPC";
 
 export function IPC_View() {
   const app_context = useContext(App_Context);
@@ -21,7 +22,7 @@ export function IPC_View() {
     setCount(count + 1);
     window.electronAPI.send(IPC_DATABASE, "A Request from render-process.");
     console.log("renderer says: render -> main. Check log in terminal.");
-    message.info("renderer says: render -> main. Check log in terminal.");
+    App_Messages_IPC.request_message("request:message-info", "renderer says: render -> main. Check log in terminal.");
   }
 
   function asyncPingButtonClicked() {
@@ -33,7 +34,7 @@ export function IPC_View() {
     console.log("renderer says: Sync Ping Clicked");
     const response = window.electronAPI.syncPing();
     console.log(response);
-    message.info(response);
+    App_Messages_IPC.request_message("request:message-info", response);
   }
 
   //! Pattern 2: Renderer to main (two-way)
@@ -42,7 +43,7 @@ export function IPC_View() {
     console.log("renderer says: Handle Ping Clicked");
     window.electronAPI.handlePing().then((result: any) => {
       console.log(result);
-      message.info(result);
+      App_Messages_IPC.request_message("request:message-info", result);
     });
   }
 
@@ -52,11 +53,11 @@ export function IPC_View() {
       .handlePingWithError()
       .then((result: any) => {
         console.log("then", result);
-        message.info(result);
+        App_Messages_IPC.request_message("request:message-info", result);
       })
-      .catch((err: any) => {
-        console.log("catch", err);
-        message.error(JSON.stringify(err));
+      .catch((error: any) => {
+        console.log("catch", error);
+        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
       });
   }
 
