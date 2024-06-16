@@ -56,24 +56,30 @@ export function Catalog_List() {
         setSelectedCatalog(result.opensOnStartup);
       })
       .catch(function (error: any) {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
 
     //! Listen for Header-Button Actions.
     // Register and remove the event listener
-    const ocrUnsubscribe = window.electronAPI.on(
+    const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_USER && response.view == "list") {
           console.log("Catalog_List says ACTION: ", response);
-          App_Messages_IPC.request_message("request:message-info", JSON.stringify(response));
+          App_Messages_IPC.request_message(
+            "request:message-info",
+            JSON.stringify(response)
+          );
         }
       }
     );
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      ocrUnsubscribe();
+      buaUnsubscribe();
     };
   }, []);
 
@@ -108,13 +114,13 @@ export function Catalog_List() {
 
         App_Messages_IPC.request_message(
           "request:message-info",
-          "Settings geladen"
+          "Settings loaded."
         );
       })
       .catch(function (error: any) {
         App_Messages_IPC.request_message(
-          "request:message-info",
-          JSON.stringify(error)
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
         );
       });
   }
@@ -170,7 +176,10 @@ export function Catalog_List() {
         console.log("startoption saved");
       })
       .catch(function (error: any) {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   };
 
@@ -190,7 +199,10 @@ export function Catalog_List() {
         console.log("startoption saved");
       })
       .catch(function (error: any) {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   }
 
@@ -220,7 +232,10 @@ export function Catalog_List() {
         console.log("Database backup erzeugt.");
       })
       .catch(function (error: any) {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   }
 
@@ -236,11 +251,17 @@ export function Catalog_List() {
     window.electronAPI
       .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(result));
+        App_Messages_IPC.request_message(
+          "request:message-info",
+          JSON.stringify(result)
+        );
         load_list();
       })
       .catch(function (error): any {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   };
 
@@ -306,7 +327,7 @@ export function Catalog_List() {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
 
     const request: Settings_Request = {
-      type: "request:save-catalog-selected",
+      type: "request:switch-catalog",
       doctype: "catalog",
       id: newSelectedRowKeys[0] as string,
       options: {},
@@ -315,10 +336,17 @@ export function Catalog_List() {
     window.electronAPI
       .invoke_request(IPC_SETTINGS, [request])
       .then((result: any) => {
-        console.log("Opened Catalog saved");
+        console.log("Catalog switched.");
+        App_Messages_IPC.request_message(
+          "request:message-info",
+          "Catalog switched."
+        );
       })
       .catch(function (error: any) {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   };
 

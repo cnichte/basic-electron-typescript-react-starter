@@ -16,7 +16,7 @@ import {
   Settings_RequestData,
 } from "../common/types/RequestTypes";
 import { DocBook } from "../common/types/DocBook";
-import { DocCatalog } from "../common/types/DocCatalog";
+import { DocCatalog, DocCatalogType } from "../common/types/DocCatalog";
 import { DocUser } from "../common/types/DocUser";
 import { Database_Backup } from "./Database_Backup";
 
@@ -27,17 +27,28 @@ import { Database_Backup } from "./Database_Backup";
  * @see https://www.electronjs.org/docs/latest/tutorial/ipc
  */
 export class IPC_Request_Dispatcher {
-  mainWindow: BrowserWindow;
+  browserWindow: BrowserWindow;
   pouchdb: DatabaseCRUD_Interface;
   settings: Database_Settings;
 
-  constructor(mainWindow: BrowserWindow) {
-    this.mainWindow = mainWindow;
-    this.pouchdb = new Database_Pouchdb(
-      FileTool.get_apps_home_path(),
-      "pouchdb-test"
-    );
+  constructor(browserWindow: BrowserWindow) {
+    this.browserWindow = browserWindow;
+
     this.settings = new Database_Settings();
+
+    this.pouchdb = new Database_Pouchdb(
+      this.settings.get_database_uri_from_startoptions()
+    );
+
+    browserWindow.webContents.on("did-finish-load", () => {
+      this.browserWindow.setTitle(
+        `Catalog: ${
+          this.settings.get_database_template_from_uuid(
+            this.settings.get_database_uuid_from_startoptions()
+          ).templateName
+        } `
+      );
+    });
 
     // this.mysqldb = new Database_Mysql();
   }
@@ -100,7 +111,7 @@ export class IPC_Request_Dispatcher {
         arg
       );
       //! Following Pattern 3 for header-button-actions
-      this.mainWindow.webContents.send(IPC_BUTTON_ACTION, arg[0]);
+      this.browserWindow.webContents.send(IPC_BUTTON_ACTION, arg[0]);
     });
 
     // ----------------------------------------------------------------------
@@ -113,7 +124,7 @@ export class IPC_Request_Dispatcher {
         arg
       );
       //! Following Pattern 3 for message-actions
-      this.mainWindow.webContents.send(IPC_MESSAGE, arg[0]);
+      this.browserWindow.webContents.send(IPC_MESSAGE, arg[0]);
     });
 
     // ----------------------------------------------------------------------
@@ -234,6 +245,23 @@ export class IPC_Request_Dispatcher {
                 return reject(err);
               });
           });
+          break;
+        case "request:switch-catalog":
+          // save the option
+          this.settings.conf.set("catalog.connection.selected", request.id);
+          // switch to new catalog
+
+          this.pouchdb = new Database_Pouchdb(
+            this.settings.get_database_uri_from_uuid(request.id)
+          );
+
+          this.browserWindow.setTitle(
+            `Catalog: ${
+              this.settings.get_database_template_from_uuid(request.id)
+                .templateName
+            } `
+          );
+
           break;
         default:
           result = new Promise((reject) => {

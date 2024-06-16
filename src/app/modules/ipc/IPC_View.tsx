@@ -22,7 +22,10 @@ export function IPC_View() {
     setCount(count + 1);
     window.electronAPI.send(IPC_DATABASE, "A Request from render-process.");
     console.log("renderer says: render -> main. Check log in terminal.");
-    App_Messages_IPC.request_message("request:message-info", "renderer says: render -> main. Check log in terminal.");
+    App_Messages_IPC.request_message(
+      "request:message-info",
+      "renderer says: render -> main. Check log in terminal."
+    );
   }
 
   function asyncPingButtonClicked() {
@@ -57,7 +60,11 @@ export function IPC_View() {
       })
       .catch((error: any) => {
         console.log("catch", error);
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+        //! you cannot JSON.stringify() errors
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   }
 
@@ -106,7 +113,6 @@ export function IPC_View() {
 
         <h3>Pattern 4: Render to renderer</h3>
         <p>Is implemented via the Header-Buttons and FormViews.</p>
-
       </Flex>
     </>
   );

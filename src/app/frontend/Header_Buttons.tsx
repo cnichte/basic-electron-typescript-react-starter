@@ -45,7 +45,7 @@ export function Header_Buttons(props: any) {
     // Two-way communication, case 1
     //! Listen for Content-Request.
     // Register and remove the event listener.
-    const ocrUnsubscribe = window.electronAPI.on(
+    const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_HEADER_BUTTONS) {
@@ -60,7 +60,7 @@ export function Header_Buttons(props: any) {
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      ocrUnsubscribe();
+      buaUnsubscribe();
     };
   }, []);
 

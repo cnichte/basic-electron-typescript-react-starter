@@ -38,12 +38,12 @@ export function Book_View() {
         App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "Book"));
       })
       .catch(function (error: any) {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", (error instanceof Error ? `Error: ${error.message}` : ""));
       });
 
     //! Listen for Header-Button Actions.
     // Register and remove the event listener
-    const ocrUnsubscribe = window.electronAPI.on(
+    const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_BOOK && response.view == "view") {
@@ -53,11 +53,11 @@ export function Book_View() {
       }
     );
 
-    console.log("ocrUnsubscribe", ocrUnsubscribe);
+    console.log("buaUnsubscribe", buaUnsubscribe);
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      ocrUnsubscribe();
+      buaUnsubscribe();
     };
   }, []);
 

@@ -68,7 +68,7 @@ export class FormTool<T extends DocItentifiable> {
           .catch(function (error) {
             App_Messages_IPC.request_message(
               "request:message-error",
-              JSON.stringify(error)
+              error instanceof Error ? `Error: ${error.message}` : ""
             );
             reject(error);
           });

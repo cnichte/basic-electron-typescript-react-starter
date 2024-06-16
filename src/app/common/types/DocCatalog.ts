@@ -6,6 +6,7 @@ export interface DocCatalogType extends DocItentifiable {
   templateName: string;
   templateDescription: string;
   dbOption: string;
+  protocoll: string;
   dbHost: string;
   dbPort: string;
   dbName: string;
@@ -21,6 +22,7 @@ export class DocCatalog implements DocCatalogType {
   templateName: string = "";
   templateDescription: string = "";
   dbOption: string = "";
+  protocoll: string = "http://";
   dbHost: string = "";
   dbPort: string = "";
   dbName: string = "";

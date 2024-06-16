@@ -4,33 +4,35 @@ import { v4 as uuidv4 } from "uuid";
 
 import { DatabaseCRUD_Interface } from "./Database_Types";
 import { FileTool } from "./FileTool";
+import {
+  PouchDB_Info_Localstore,
+  PouchDB_Info_Remotestore,
+} from "../common/types/PouchDB_InfoTypes";
 
 export class Database_Pouchdb implements DatabaseCRUD_Interface {
-  serverUri: string;
-
-  databaseName: string;
-
+  databaseUri: string;
   db: any;
 
-  constructor(serverUri: string, databaseName: string) {
+  constructor(databaseUri: string) {
     var self = this;
 
-    this.databaseName = databaseName;
+    this.databaseUri = databaseUri;
 
-    this.serverUri = serverUri + (serverUri.endsWith("/") ? "" : "/");
+    this.databaseUri =
+      this.databaseUri + (this.databaseUri.endsWith("/") ? "" : "/");
 
-    if (serverUri.length > 0 && serverUri.startsWith("http")) {
+    if (this.databaseUri.length > 0 && this.databaseUri.startsWith("http")) {
       console.log("create remote store");
-      this.db = new PouchDB(serverUri + databaseName, {
+      this.db = new PouchDB(this.databaseUri, {
         skip_setup: false,
       });
     } else {
-
-      const localStore = `${serverUri}catalogs/${databaseName}`;
+      const home_path: string = FileTool.get_apps_home_path();
+      const localStore = `${home_path}catalogs/${databaseUri}`;
 
       FileTool.ensure_path_exist(localStore);
 
-      this.does_db_exist(localStore)
+      this.does_local_db_exist(localStore)
         .then(function (result: boolean) {
           if (result) {
             console.log(`local store exists: ${localStore}`);
@@ -67,12 +69,12 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
           }
         })
         .catch(function (error: any) {
-          console.log('Fucking ERROR', error);
+          console.log("Fucking ERROR", error);
         });
     }
   }
 
-  does_db_exist(name: string): Promise<boolean> {
+  does_local_db_exist(name: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       let test: any = new PouchDB(name);
       test
@@ -99,6 +101,26 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
           });
       
       */
+  }
+
+  get_info(
+    uri: string
+  ): Promise<PouchDB_Info_Localstore | PouchDB_Info_Remotestore> {
+    return new Promise((resolve, reject) => {
+      let test: any = new PouchDB(uri);
+
+      test
+        .info()
+        .then(function (
+          details: PouchDB_Info_Localstore | PouchDB_Info_Remotestore
+        ) {
+          resolve(details);
+        })
+        .catch(function (err: any) {
+          console.log("error: " + err);
+          reject(err);
+        });
+    });
   }
 
   initialize(exampleData: boolean, createViews: boolean): Promise<any> {

@@ -17,11 +17,13 @@ if (require("electron-squirrel-startup")) {
 
 Main_Logger.init();
 
-console.log('###########################################################');
-console.log(`Welcome to a session with ${App_Info.MY_APP_NAME}, Version ${App_Info.MY_APP_VERSION}`);
-console.log('###########################################################\n\n');
+console.log("###########################################################");
+console.log(
+  `Welcome to a session with ${App_Info.MY_APP_NAME}, Version ${App_Info.MY_APP_VERSION}`
+);
+console.log("###########################################################\n\n");
 
-const createWindow = (): void => {
+const createWindow = (): BrowserWindow => {
   // https://www.electronjs.org/docs/latest/api/screen
   const primaryDisplay = screen.getPrimaryDisplay();
   const size: Electron.Size = primaryDisplay.workAreaSize;
@@ -41,9 +43,6 @@ const createWindow = (): void => {
     },
   });
 
-  const ipcd: IPC_Request_Dispatcher = new IPC_Request_Dispatcher(mainWindow);
-  ipcd.dispatch_ipc_requests();
-
   const menuBuilder = new MenuBuilder(
     mainWindow,
     App_Info.MY_APP_NAME,
@@ -62,15 +61,20 @@ const createWindow = (): void => {
   ) {
     mainWindow.webContents.openDevTools();
   }
+
+  return mainWindow;
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app
-  .on("ready", createWindow)
   .whenReady()
-  .then() // ipcd.dispatch_ipc_requests()
+  .then(() => {
+    let bw: BrowserWindow = createWindow();
+    const ipcd: IPC_Request_Dispatcher = new IPC_Request_Dispatcher(bw);
+    ipcd.dispatch_ipc_requests();
+  })
   .catch((e) => console.error(e));
 
 // Quit when all windows are closed, except on macOS. There, it's common

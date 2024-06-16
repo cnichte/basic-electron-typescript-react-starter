@@ -1,8 +1,8 @@
 # TODO
 
 - [ ] Datenbank
-  - [ ] Datenbank auch wirklich umschalten.
-  - [ ] Den Titel von von conf aus setzen (die gewählte db).
+  - [x] Datenbank auch wirklich umschalten.
+  - [x] Den Titel von von conf aus setzen (die gewählte db).
   - [ ] Relational-Pouch Integration über Setting in conf / System.
   - [ ] Laden der Beispieldaten aus json files.
 - [x] Electron-Conf Support.
@@ -16,8 +16,8 @@ The module names are equal the docTypes ones. This underlines the document-centr
 
 - [x] Message-IPC
 - [x] Housekeeping
-  - [x]  Datenbank löschen.
-  - [x] Datenbank backup
+  - [x] Datenbank löschen.
+  - [x] Datenbank backup.
 - [ ] Translations
 
 ## Backlog
@@ -28,4 +28,4 @@ The module names are equal the docTypes ones. This underlines the document-centr
   - Meist ist das gleich
   - ? IPC_MessageTool.ts, IPC_FormTool.ts
 - [ ] FormBase, ViewBase, ListBase
-- [ ] https://dev.to/kristiyan_velkov/react-js-naming-convention-lcg
+- [ ] <https://dev.to/kristiyan_velkov/react-js-naming-convention-lcg>

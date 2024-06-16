@@ -45,15 +45,56 @@ If you also want to build an app with this setup, this could be a good starting 
 
 node, npm and yarn should be in place:
 
+### Setting up the Dev-Environment on Mac-OS
+
 * Guides:
 * <https://docs.npmjs.com/downloading-and-installing-node-js-and-npm>
 * <https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable>
 
+### Setting up the Dev-Environment on Windows
+
+follows
+
+### Setting up the Dev-Environment on Linux / Ubuntu 24.04
+
 ```bash
+# install VS-Code
+sudo dpkg -i code_1.90.1-1718141439_amd64.deb
+# install git
+sudo apt-get install git
+# install npm, node and yarn
+npm install -g npm
+npm install --global yarn
+# check
 node -v
 npm -v
 yarn -v
+
+# https://github.com/nodesource/distributions?tab=readme-ov-file#debian-and-ubuntu-based-distributions
+sudo apt-get install -y curl
+curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+sudo -E bash nodesource_setup.sh
+sudo apt-get install -y nodejs
+node -v
+
+# install rpmbuild
+sudo apt-get install rpm
+# check dpkg
+dpkg --version
+# install fakeroot
+sudo apt-get update -y
+sudo apt-get install -y fakeroot
+
+# An unhandled rejection has occurred inside Forge:
+# Error: node-gyp failed to rebuild
+# ModuleNotFoundError: No module named 'distutils'
+# https://github.com/electron/rebuild/issues/1116
+
+sudo apt install python3-pip
+pip install setuptools
 ```
+
+runs and makes
 
 ### Clone the git repository
 

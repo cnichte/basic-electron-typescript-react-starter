@@ -15,7 +15,7 @@ export function App_Messages() {
   useEffect(() => {
     //! Listen for Message-Actions.
     // Register and remove the event listener
-    const ocrUnsubscribe = window.electronAPI.on(
+    const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-message",
       (response: Message_Request) => {
         switch (response.type) {
@@ -42,7 +42,7 @@ export function App_Messages() {
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      ocrUnsubscribe();
+      buaUnsubscribe();
     };
   }, []);
 

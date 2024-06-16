@@ -36,7 +36,7 @@ export type SettingsRequestType =
   | "request:save-connection"
   | "request:get-startoptions"
   | "request:get-dbOptions"
-  | "request:save-catalog-selected"
+  | "request:switch-catalog"
   | "request:save-startoption-selected"
   | "request:save-startoption-opensOnStartup"
   | "request:database-backup";

@@ -1,15 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import {
-  Button,
-  Divider,
-  Form,
-  FormProps,
-  Input,
-  Select,
-  message,
-  Switch,
-} from "antd";
+import { Button, Divider, Form, FormProps, Input, Select, Switch } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 
 import {
@@ -26,6 +17,7 @@ import { FormState } from "../../../frontend/types/FormState";
 import { App_Context } from "../../../frontend/App_Context";
 import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
 
 const { TextArea } = Input;
 
@@ -39,14 +31,20 @@ export function Catalog_Form() {
   const [dataObject, setDataObject] = useState<DocCatalogType>(null);
 
   const [dboptions, setDBOptions] = useState<DbOptions_Setting[]>([
-    { type: "local", template: "${name}" },
+    {
+      type: "local",
+      template: "{name}",
+      label: "",
+    },
   ]);
   const [isLocal, setLocal] = useState<boolean>(false);
+  const [uripreview, setUriPreview] = useState<string>("");
 
   type MyForm_FieldType = {
     name: string;
     templateName: string;
     templateDescription: string;
+    protocoll: string;
     dbOption: string;
     dbHost: string;
     dbPort: string;
@@ -66,6 +64,7 @@ export function Catalog_Form() {
       templateName: "",
       templateDescription: "",
       dbOption: "",
+      protocoll: "http://",
       dbHost: "",
       dbPort: "",
       dbName: "",
@@ -99,10 +98,16 @@ export function Catalog_Form() {
         .then((result: DocCatalogType) => {
           setDataObject(result);
           form.setFieldsValue(result);
-          message.info("Catalog geladen.");
+          App_Messages_IPC.request_message(
+            "request:message-info",
+            "Catalog loaded."
+          );
         })
         .catch(function (error: any) {
-          message.error(JSON.stringify(error));
+          App_Messages_IPC.request_message(
+            "request:message-error",
+            error instanceof Error ? `Error: ${error.message}` : ""
+          );
         });
     }
 
@@ -121,12 +126,15 @@ export function Catalog_Form() {
         setLocal(true);
       })
       .catch(function (error: any) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
 
     //! Listen for Header-Button Actions.
     // Register and remove the event listener
-    const ocrUnsubscribe = window.electronAPI.on(
+    const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_CATALOG && response.view == "form") {
@@ -141,7 +149,7 @@ export function Catalog_Form() {
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      ocrUnsubscribe();
+      buaUnsubscribe();
     };
   }, []);
 
@@ -177,7 +185,10 @@ export function Catalog_Form() {
         Header_Buttons_IPC.request_buttons("form", "catalog", result._id);
       })
       .catch(function (error) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   };
 
@@ -193,7 +204,7 @@ export function Catalog_Form() {
 
   function getDBOptions(): Array<any> {
     return dboptions.map((item: DbOptions_Setting) => {
-      return { value: item.type, label: item.type };
+      return { value: item.type, label: item.label };
     });
   }
 
@@ -213,17 +224,70 @@ export function Catalog_Form() {
     );
 
     form.setFieldValue("dbTemplate", found_template.template);
+    buildURIFromTemplate();
   }
 
   const handleNameChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    form.setFieldValue("dbName", e.target.value);
+    buildURIFromTemplate();
+    form.setFieldValue(
+      "dbName",
+      e.target.value.toLowerCase().replace(/ /g, "-")
+    );
   };
 
   const handleCreateDBChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
   };
+
+  function buildURIFromTemplate(): void {
+    let dbTemplate: string = form.getFieldValue("dbTemplate");
+    let db_option: any = {
+      dbHost:
+        form.getFieldValue("dbHost") == null
+          ? ""
+          : form.getFieldValue("dbHost"),
+      dbPort:
+        form.getFieldValue("dbPort") == null
+          ? ""
+          : form.getFieldValue("dbPort"),
+      dbName:
+        form.getFieldValue("dbName") == null
+          ? ""
+          : form.getFieldValue("dbName"),
+      dbUser:
+        form.getFieldValue("dbUser") == null
+          ? ""
+          : form.getFieldValue("dbUser"),
+      dbPassword:
+        form.getFieldValue("dbPassword") == null
+          ? ""
+          : form.getFieldValue("dbPassword"),
+    };
+
+    let result: string = "";
+
+    if (dbTemplate != null) {
+      result = dbTemplate.replace(
+        /{(\w+)}/g,
+        function (_: any, k: string | number) {
+          return db_option[k];
+        }
+      );
+    }
+
+    setUriPreview(result);
+  }
+
+  const { Option } = Select;
+
+  const selectBefore = (
+    <Select defaultValue="http://">
+      <Option value="http://">http://</Option>
+      <Option value="https://">https://</Option>
+    </Select>
+  );
 
   return (
     <>
@@ -240,7 +304,7 @@ export function Catalog_Form() {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
-        initialValues={{ remember: true, dbOption:'local' }}
+        initialValues={{ remember: true, dbOption: "local" }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -259,39 +323,48 @@ export function Catalog_Form() {
         >
           <TextArea rows={4} />
         </Form.Item>
-        <Form.Item<MyForm_FieldType> label="Option" name="dbOption">
-          <Select
-            style={{ width: 120 }}
-            onChange={handleDBOptionsChange}
-            options={getDBOptions()}
-          />
+        <Form.Item<MyForm_FieldType> label="Art der Datenbank" name="dbOption">
+          <Select onChange={handleDBOptionsChange} options={getDBOptions()} />
         </Form.Item>
         <Form.Item<MyForm_FieldType>
           style={isLocal ? { display: "none" } : {}}
           label="Host"
           name="dbHost"
         >
-          <Input />
+          <Input addonBefore={selectBefore} onChange={buildURIFromTemplate} />
         </Form.Item>
         <Form.Item<MyForm_FieldType>
           style={isLocal ? { display: "none" } : {}}
           label="Port"
           name="dbPort"
         >
-          <Input />
+          <Input onChange={buildURIFromTemplate} />
         </Form.Item>
         <Form.Item<MyForm_FieldType> label="Datenbank-Name" name="dbName">
-          <Input />
+          <Input disabled />
         </Form.Item>
-        <Form.Item<MyForm_FieldType> label="User" name="dbUser">
-          <Input />
+        <Form.Item<MyForm_FieldType>
+          label="User"
+          name="dbUser"
+          style={isLocal ? { display: "none" } : {}}
+        >
+          <Input onChange={buildURIFromTemplate} />
         </Form.Item>
-        <Form.Item<MyForm_FieldType> label="Password" name="dbPassword">
-          <Input />
+        <Form.Item<MyForm_FieldType>
+          label="Password"
+          name="dbPassword"
+          style={isLocal ? { display: "none" } : {}}
+        >
+          <Input onChange={buildURIFromTemplate} />
         </Form.Item>
-        <Form.Item<MyForm_FieldType> label="Template" name="dbTemplate">
-          <Input />
+
+        <Form.Item<MyForm_FieldType> label="Template">
+          <Form.Item name="dbTemplate" noStyle>
+            <Input disabled />
+          </Form.Item>{" "}
+          <span>{uripreview}</span>
         </Form.Item>
+
         <Form.Item>
           <Button
             type="primary"

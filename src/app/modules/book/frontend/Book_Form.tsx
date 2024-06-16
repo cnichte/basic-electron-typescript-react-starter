@@ -59,10 +59,16 @@ export function Book_Form() {
       .then((result: DocBookType[]) => {
         console.log(result);
         setListData(result);
-        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "Book"));
+        App_Messages_IPC.request_message(
+          "request:message-success",
+          App_Messages_IPC.get_message_from_request(request.type, "Book")
+        );
       })
       .catch(function (error): any {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   }
 
@@ -98,16 +104,22 @@ export function Book_Form() {
         .then((result: DocBookType) => {
           setDataObject(result);
           form.setFieldsValue(result);
-          App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "Book"));
+          App_Messages_IPC.request_message(
+            "request:message-success",
+            App_Messages_IPC.get_message_from_request(request.type, "Book")
+          );
         })
         .catch(function (error: any) {
-          App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+          App_Messages_IPC.request_message(
+            "request:message-error",
+            error instanceof Error ? `Error: ${error.message}` : ""
+          );
         });
     }
 
     //! Listen for Header-Button Actions.
     // Register and remove the event listener
-    const ocrUnsubscribe = window.electronAPI.on(
+    const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_BOOK && response.view == "form") {
@@ -120,11 +132,11 @@ export function Book_Form() {
       }
     );
 
-    console.log("ocrUnsubscribe", ocrUnsubscribe);
+    console.log("buaUnsubscribe", buaUnsubscribe);
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      ocrUnsubscribe();
+      buaUnsubscribe();
     };
   }, []);
 
@@ -148,7 +160,10 @@ export function Book_Form() {
         Header_Buttons_IPC.request_buttons("form", "book", result._id);
       })
       .catch(function (error) {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   };
 
@@ -173,12 +188,17 @@ export function Book_Form() {
     window.electronAPI
       .invoke_request(IPC_DATABASE, [request])
       .then((result: any) => {
-        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "Book"));
+        App_Messages_IPC.request_message(
+          "request:message-success",
+          App_Messages_IPC.get_message_from_request(request.type, "Book")
+        );
         load_list();
       })
       .catch(function (error): any {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
-
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   }
 

@@ -53,7 +53,7 @@ const electronAPI: IElectronAPI = {
   // The Views are listening to this, for actions to perform...
   //! https://berom0227.medium.com/implementing-the-off-method-in-electron-api-a-critical-aspect-of-event-listener-management-189b5232ea2a
   // https://stackoverflow.com/questions/57418499/how-to-unregister-from-ipcrenderer-on-event-listener
-  on: (channel: IPC_Channels, callback: (...args: any[]) => void) => {
+  listen_to: (channel: IPC_Channels, callback: (...args: any[]) => void) => {
     // _event: Electron.IpcRendererEvent,
     const subscription = (_event: any, ...args: any[]) => callback(...args);
     ipcRenderer.on(channel, subscription);

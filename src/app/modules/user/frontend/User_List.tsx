@@ -38,7 +38,7 @@ export function User_List() {
         App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "User"));
       })
       .catch(function (error: any) {
-        App_Messages_IPC.request_message("request:message-success", JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-success", (error instanceof Error ? `Error: ${error.message}` : ""));
       });
   }
 
@@ -50,7 +50,7 @@ export function User_List() {
 
     //! Listen for Header-Button Actions.
     // Register and remove the event listener
-    const ocrUnsubscribe = window.electronAPI.on(
+    const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_USER && response.view == "list") {
@@ -62,7 +62,7 @@ export function User_List() {
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      ocrUnsubscribe();
+      buaUnsubscribe();
     };
   }, []);
 
@@ -81,7 +81,7 @@ export function User_List() {
         load_list();
       })
       .catch(function (error): any {
-        App_Messages_IPC.request_message("request:message-error", JSON.stringify(error));
+        App_Messages_IPC.request_message("request:message-error", (error instanceof Error ? `Error: ${error.message}` : ""));
       });
   }
 

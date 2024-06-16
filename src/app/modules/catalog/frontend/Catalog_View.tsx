@@ -1,16 +1,19 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import { Descriptions, message } from "antd";
-import { Action_Request, Settings_Request } from "../../../common/types/RequestTypes";
+import { useParams } from "react-router";
+import { Descriptions } from "antd";
+import {
+  Action_Request,
+  Settings_Request,
+} from "../../../common/types/RequestTypes";
 import { DocCatalogType } from "../../../common/types/DocCatalog";
 import { IPC_DATABASE, IPC_SETTINGS } from "../../../common/types/IPC_Channels";
 import { DOCTYPE_CATALOG } from "../../../common/types/DocType";
 
 import { App_Context } from "../../../frontend/App_Context";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
 
 export function Catalog_View() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const app_context = useContext(App_Context);
 
@@ -31,27 +34,36 @@ export function Catalog_View() {
       .invoke_request(IPC_SETTINGS, [request])
       .then((result: DocCatalogType) => {
         setDataObject(result);
-        message.info("Catalog loaded.");
+        App_Messages_IPC.request_message(
+          "request:message-info",
+          "Catalog loaded."
+        );
       })
       .catch(function (error: any) {
-        message.error(JSON.stringify(error));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
 
     //! Listen for Header-Button Actions.
     // Register and remove the event listener
-    const ocrUnsubscribe = window.electronAPI.on(
+    const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_CATALOG && response.view == "view") {
           console.log("Catalog_View says ACTION: ", response);
-          message.info(response.type);
+          App_Messages_IPC.request_message(
+            "request:message-info",
+            "Action required."
+          );
         }
       }
     );
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      ocrUnsubscribe();
+      buaUnsubscribe();
     };
   }, []);
 
@@ -63,7 +75,7 @@ export function Catalog_View() {
       <Descriptions.Item label="Description">
         {dataObject?.templateDescription}
       </Descriptions.Item>
-      <Descriptions.Item label="Option">
+      <Descriptions.Item label="Art der Datenbank">
         {dataObject?.dbOption}
       </Descriptions.Item>
       <Descriptions.Item label="Host">{dataObject?.dbHost}</Descriptions.Item>

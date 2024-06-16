@@ -1,5 +1,6 @@
 import { Conf } from "electron-conf/main";
 import { FileTool } from "./FileTool";
+import { DocCatalogType } from "../common/types/DocCatalog";
 
 /**
  * this.conf.set("foo", "🌈");
@@ -17,6 +18,7 @@ export class Database_Settings {
   public conf: Conf;
 
   constructor() {
+    // TODO schema
     let schema: any = {
       $schema: "https://json-schema.org/draft/2020-12/schema",
       $id: "https://example.com/product.schema.json",
@@ -78,7 +80,7 @@ export class Database_Settings {
                   type: "string",
                 },
                 dbOption: {
-                  description: "lokal oder remote.",
+                  description: "Art der Datenbank",
                   type: "string",
                 },
                 dbHost: {
@@ -165,10 +167,16 @@ export class Database_Settings {
           },
 
           dbOptions: [
-            { type: "local", template: "${dbName}" },
+            {
+              type: "local",
+              label: "Ich nutze eine lokale Datenbank",
+              template: "{dbName}",
+            },
             {
               type: "remote",
-              template: "http://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/",
+              label: "Ich nutze einen Datenbank-Server",
+              template:
+                "{protocoll}://{dbUser}:{dbPassword}@{dbHost}:{dbPort}/{dbName}",
             },
           ],
           connection: {
@@ -177,15 +185,17 @@ export class Database_Settings {
               {
                 _id: "4f44e5f7-3e11-43d9-aed5-0c2b9633a64f",
                 docType: "catalog",
-                templateName: "Test Database 1",
-                templateDescription: "This is database 1",
+                templateName: "Pouchdb Test",
+                templateDescription:
+                  "This is database Number one. The real existing one.",
                 dbOption: "local",
+                protocoll: "",
                 dbHost: "",
                 dbPort: "",
-                dbName: "test-database-1",
+                dbName: "pouchdb-test",
                 dbUser: "",
                 dbPassword: "",
-                dbTemplate: "${dbName}",
+                dbTemplate: "{dbName}",
               },
               {
                 _id: "7bea1ea4-ad6c-4d61-aec9-bdcc35a5030f",
@@ -193,12 +203,13 @@ export class Database_Settings {
                 templateName: "Test Database 2",
                 templateDescription: "This is database 2",
                 dbOption: "local",
+                protocoll: "",
                 dbHost: "",
                 dbPort: "",
                 dbName: "test-database-2",
                 dbUser: "",
                 dbPassword: "",
-                dbTemplate: "${dbName}",
+                dbTemplate: "{dbName}",
               },
             ],
           },
@@ -214,6 +225,61 @@ export class Database_Settings {
         },
       }, // defaults
     });
+  }
+
+  get_database_uri_from_startoptions(): string {
+    return this.get_database_uri_from_uuid(
+      this.get_database_uuid_from_startoptions()
+    );
+  }
+
+  get_database_template_from_uuid(db_uuid: string): DocCatalogType {
+    let options: DocCatalogType[] = this.conf.get(
+      "catalog.connection.options"
+    ) as DocCatalogType[];
+
+    const db_options: DocCatalogType[] = options.filter((item) => {
+      if (item._id === db_uuid) {
+        return item;
+      }
+    });
+
+    return db_options[0];
+  }
+
+  get_database_uri_from_uuid(db_uuid: string): string {
+    const db_option: any = this.get_database_template_from_uuid(db_uuid);
+
+    let result = db_option.dbTemplate.replace(
+      /{(\w+)}/g,
+      function (_: any, k: string | number) {
+        return db_option[k];
+      }
+    );
+
+    return result;
+  }
+
+  get_database_uuid_from_startoptions(): string {
+    let db_uuid: string = "";
+
+    const so_selected: string = this.conf.get(
+      "catalog.startoptions.selected"
+    ) as string;
+
+    switch (so_selected) {
+      case "d0254d49-cf47-45a1-9b66-7ae8ad32f131": // "Open the last used catalogue on startup."
+        db_uuid = this.conf.get("catalog.connection.selected") as string;
+        break;
+      case "32fe3517-161c-4146-86c8-8bd5e993d671": // "Open a specific catalogue on startup."
+        db_uuid = this.conf.get(
+          "catalog.startoptions.opensOnStartup"
+        ) as string;
+        break;
+      default:
+        db_uuid = this.conf.get("catalog.connection.selected") as string;
+    }
+    return db_uuid;
   }
 }
 
