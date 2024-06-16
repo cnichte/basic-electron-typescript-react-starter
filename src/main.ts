@@ -81,7 +81,7 @@ app
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on("window-all-closed", () => {
-  // TODO remove Test-Database, and configs in testmode.
+  // TODO remove Test-Database, and configs in testmode (a sort of deinstallation)
   if (process.platform !== "darwin") {
     app.quit();
   }
