@@ -3,8 +3,9 @@
 - [ ] Datenbank
   - [x] Datenbank auch wirklich umschalten.
   - [x] Den Titel von von conf aus setzen (die gewählte db).
-  - [ ] Relational-Pouch Integration über Setting in conf / System.
-  - [ ] Laden der Beispieldaten aus json files.
+  - [x] Relational-Pouch Integration
+  - [ ] Relational-Pouch Integration über Setting in conf.
+  - [ ] Laden der Beispieldaten aus json files (import).
 - [x] Electron-Conf Support.
   - [ ] Module ein und aus schalten.
   - [x] Settings für die Datenbank.
@@ -24,6 +25,7 @@ The module names are equal the docTypes ones. This underlines the document-centr
 
 - [ ] Ein Icon basteln
   - [ ] Icon Auflösung Windows zu niederig.
+  - [ ] Icons are missing for Linux
 - [ ] property für ipc calls: target / source :
   - Meist ist das gleich
   - ? IPC_MessageTool.ts, IPC_FormTool.ts
