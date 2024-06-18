@@ -171,6 +171,19 @@ Major   Potentially breaking API changes
 ❯ ◯ eslint  ^8.0.1  →  ^9.2.0
 ```
 
+## make a release
+
+```bash
+# first build
+npm run build
+# then commit all changes to git, and then...
+# create a version: major,minor,patch 
+# patch: 1.0.0 -> 1.0.1
+npm version major
+npm version minor
+npm version patch
+```
+
 ## Customize to your needs in six steps
 
 1. Customize `src/app/common/app-info.ts`

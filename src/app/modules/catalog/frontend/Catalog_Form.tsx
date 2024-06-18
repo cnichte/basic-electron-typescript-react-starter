@@ -377,18 +377,6 @@ export function Catalog_Form() {
               : `Update ${app_context.viewtype}`}
           </Button>
         </Form.Item>
-        <Form.Item
-          name="dbIsCreated"
-          style={id == "new" ? {} : { display: "none" }}
-          label="Datenbank anlegen"
-          tooltip={{
-            title:
-              "Die Datenbank wird beim speichern angelegt. Das kann aber auch später erfolgen.",
-            icon: <InfoCircleOutlined />,
-          }}
-        >
-          <Switch defaultChecked onChange={handleCreateDBChange} />
-        </Form.Item>
       </Form>
       <ul>
         <li>uuid: {dataObject?._id}</li>

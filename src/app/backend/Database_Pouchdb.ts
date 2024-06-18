@@ -8,15 +8,17 @@ import {
   PouchDB_Info_Localstore,
   PouchDB_Info_Remotestore,
 } from "../common/types/PouchDB_InfoTypes";
+import { pouchdb_relations } from "./Database_Pouchdb_Relations";
 
 export class Database_Pouchdb implements DatabaseCRUD_Interface {
   databaseUri: string;
   db: any;
-
-  constructor(databaseUri: string) {
+  useRelations: boolean;
+  constructor(databaseUri: string, useRelations: boolean = false) {
     var self = this;
 
     this.databaseUri = databaseUri;
+    this.useRelations = useRelations;
 
     this.databaseUri =
       this.databaseUri + (this.databaseUri.endsWith("/") ? "" : "/");
@@ -40,12 +42,15 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
               skip_setup: false,
             });
             PouchDB.plugin(find);
+            if (useRelations) this.db.setSchema(pouchdb_relations);
           } else {
             console.log(`create local store: ${localStore}`);
             self.db = new PouchDB(localStore, {
               skip_setup: false,
             });
             PouchDB.plugin(find);
+            if (useRelations) this.db.setSchema(pouchdb_relations);
+
             self
               .initialize(true, false) //! Fills the DB with saple data on every start.
               .then(function (response: any) {
@@ -184,32 +189,62 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
     });
   }
   create(data: any): Promise<any> {
-    return this.db.put(data);
+    if (this.useRelations) {
+      return this.db.rel.save(data.docType, data);
+    } else {
+      return this.db.put(data);
+    }
   }
   readFromQuery(query: Object): Promise<any> {
-    return this.db.find(query);
+    if (this.useRelations) {
+      return this.db.find(query);
+    } else {
+      return this.db.find(query);
+    }
   }
 
   readFromID(uuid: string, options: any): Promise<any> {
-    return this.db.get(uuid, options);
+    if (this.useRelations) {
+      return this.db.get(uuid, options);
+    } else {
+      return this.db.get(uuid, options);
+    }
   }
+
   readFromRelations(type: string, options: Object): Promise<any> {
-    return new Promise((resolve) => {
-      resolve(true);
-    });
+    if (this.useRelations) {
+      return this.db.rel.find(type, options);
+    } else {
+      return new Promise((reject) => {
+        reject("Please use Relational Pouch...");
+      });
+    }
   }
   readFromRelationsID(type: string, id: string): Promise<any> {
-    return new Promise((resolve) => {
-      resolve(true);
-    });
+    if (this.useRelations) {
+      return this.db.rel.find(type, id);
+    } else {
+      return new Promise((reject) => {
+        reject("Please use Relational Pouch...");
+      });
+    }
   }
+
   update(type: string, data: any): Promise<any> {
-    return this.db.put(data);
+    if (this.useRelations) {
+      this.db.rel.save(type, data);
+    } else {
+      return this.db.put(data);
+    }
   }
 
   //? https://pouchdb.com/api.html#delete_document
   delete(type: string, data: any): Promise<any> {
-    return this.db.remove(data);
+    if (this.useRelations) {
+      return this.db.rel.del(type, data);
+    } else {
+      return this.db.remove(data);
+    }
   }
 
   //? https://stackoverflow.com/questions/29877607/pouchdb-delete-alldocs-javascript
