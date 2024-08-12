@@ -28,19 +28,11 @@ import { Header_Buttons } from "./Header_Buttons";
 import { DocType } from "../common/types/DocType";
 import { ViewType } from "./types/ViewType";
 
-import { Catalog_List } from "../modules/catalog/frontend/Catalog_List";
-import { Catalog_View } from "../modules/catalog/frontend/Catalog_View";
-import { Catalog_Form } from "../modules/catalog/frontend/Catalog_Form";
+import { Catalog_List, Catalog_View, Catalog_Form } from "../modules/catalog/frontend";
+import { IPC_View } from "../modules/ipc/frontend/IPC_View";
+import { User_List, User_View, User_Form } from "../modules/user/frontend";
+import { Book_List, Book_View, Book_Form } from "../modules/book/frontend";
 
-import { IPC_View } from "../modules/ipc/IPC_View";
-
-import { User_List } from "../modules/user/frontend/User_List";
-import { User_View } from "../modules/user/frontend/User_View";
-import { User_Form } from "../modules/user/frontend/User_Form";
-
-import { Book_List } from "../modules/book/frontend/Book_List";
-import { Book_View } from "../modules/book/frontend/Book_View";
-import { Book_Form } from "../modules/book/frontend/Book_Form";
 import { App_Messages } from "./App_Messages";
 
 export function App_Routes() {

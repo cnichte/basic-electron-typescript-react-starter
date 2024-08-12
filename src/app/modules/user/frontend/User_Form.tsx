@@ -1,27 +1,27 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Button, Divider, Form, FormProps, Input } from "antd";
 
 import { Action_Request, DB_Request } from "../../../common/types/RequestTypes";
 import { DocUserType } from "../../../common/types/DocUser";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { DOCTYPE_USER } from "../../../common/types/DocType";
+import { DocType } from "../../../common/types/DocType";
 
-import { FormState } from "../../../frontend/types/FormState";
-
-import { App_Context } from "../../../frontend/App_Context";
 import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
+import { modul_props } from "../modul_props";
 
 export function User_Form() {
   const { id } = useParams();
-  const app_context = useContext(App_Context);
   const triggerSaveRef = React.useRef(null);
 
   const [form] = Form.useForm();
-  const [formstate, setFormState] = useState<FormState>("create");
   const [dataObject, setDataObject] = useState<DocUserType>(null);
+
+  const doclabel: string = modul_props.doclabel;
+  const doctype: DocType = modul_props.doctype;
+  const segment: string = modul_props.segment;
 
   type MyForm_FieldType = {
     name: string;
@@ -32,18 +32,23 @@ export function User_Form() {
 
     let data: DocUserType = {
       _id: "",
-      docType: "user",
+      docType: doctype,
       name: "",
     };
 
     setDataObject(data);
     form.resetFields();
-    setFormState("create");
   }
 
   useEffect(() => {
-    console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("form", "user", id); // is perhaps id='new'
+    Header_Buttons_IPC.request_buttons({
+      viewtype: "form",
+      doctype: doctype,
+      doclabel: doclabel,
+      id: id, // is perhaps id='new'
+      surpress: false,
+      options: {},
+    });
 
     reset_form();
 
@@ -61,10 +66,16 @@ export function User_Form() {
         .then((result: DocUserType) => {
           setDataObject(result);
           form.setFieldsValue(result);
-          App_Messages_IPC.request_message("request:message-info", App_Messages_IPC.get_message_from_request(request.type, "User"));
+          App_Messages_IPC.request_message(
+            "request:message-info",
+            App_Messages_IPC.get_message_from_request(request.type, "User")
+          );
         })
         .catch(function (error: any) {
-          App_Messages_IPC.request_message("request:message-error", (error instanceof Error ? `Error: ${error.message}` : ""));
+          App_Messages_IPC.request_message(
+            "request:message-error",
+            error instanceof Error ? `Error: ${error.message}` : ""
+          );
         });
     }
 
@@ -73,7 +84,7 @@ export function User_Form() {
     const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.target === DOCTYPE_USER && response.view == "form") {
+        if (response.target === doctype && response.view == "form") {
           console.log("User_Form says ACTION: ", response);
 
           triggerSaveRef.current?.click();
@@ -103,12 +114,21 @@ export function User_Form() {
       .then((result: DocUserType) => {
         //! has new _rev from backend
         setDataObject(result);
-        setFormState("update");
         // update header-button-state because uuid has changed from 'new' to uuid.
-        Header_Buttons_IPC.request_buttons("form", "user", result._id);
+        Header_Buttons_IPC.request_buttons({
+          viewtype: "form",
+          doctype: doctype,
+          doclabel: doclabel,
+          id: result._id, // is perhaps id='new'
+          surpress: false,
+          options: {},
+        });
       })
       .catch(function (error) {
-        App_Messages_IPC.request_message("request:message-error", (error instanceof Error ? `Error: ${error.message}` : ""));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   };
 
@@ -141,6 +161,15 @@ export function User_Form() {
         autoComplete="off"
         style={{ maxWidth: "none" }}
       >
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            ref={triggerSaveRef}
+            style={{ display: "none" }}
+          />
+        </Form.Item>
+
         <Form.Item<MyForm_FieldType>
           label="Name"
           name="name"
@@ -149,21 +178,6 @@ export function User_Form() {
           layout="horizontal"
         >
           <Input />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            ref={triggerSaveRef}
-            style={{ display: "none" }}
-          >
-            {formstate === "create"
-              ? `Add ${app_context.viewtype}`
-              : `Update ${app_context.viewtype}`}
-          </Button>
-        </Form.Item>
-        <Form.Item>
-          <Button onClick={onFormReset}>reset</Button>
         </Form.Item>
       </Form>
       <ul>

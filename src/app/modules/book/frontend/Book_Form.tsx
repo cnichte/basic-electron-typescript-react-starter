@@ -15,18 +15,16 @@ import {
   Action_Request,
   DB_Request,
   DB_RequestData,
-  Settings_Request,
 } from "../../../common/types/RequestTypes"; //  common/types/request-types";
 import { DocBookType } from "../../../common/types/DocBook";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { DOCTYPE_BOOK } from "../../../common/types/DocType";
-
-import { FormState } from "../../../frontend/types/FormState";
+import { DocType } from "../../../common/types/DocType";
 
 import { App_Context } from "../../../frontend/App_Context";
 import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
+import { modul_props } from "../modul_props";
 
 export function Book_Form() {
   const { id } = useParams();
@@ -34,8 +32,11 @@ export function Book_Form() {
   const triggerSaveRef = React.useRef(null);
 
   const [form] = Form.useForm();
-  const [formstate, setFormState] = useState<FormState>("create");
   const [dataObject, setDataObject] = useState<DocBookType>(null);
+
+  const doclabel: string = modul_props.doclabel;
+  const doctype: DocType = modul_props.doctype;
+  const segment: string = modul_props.segment;
 
   type MyForm_FieldType = {
     title: string;
@@ -50,7 +51,7 @@ export function Book_Form() {
     //! Following Pattern 2 for the Database requests
     const request: DB_Request = {
       type: "request:list-all",
-      doctype: "book",
+      doctype: doctype,
       options: {},
     };
 
@@ -61,7 +62,7 @@ export function Book_Form() {
         setListData(result);
         App_Messages_IPC.request_message(
           "request:message-success",
-          App_Messages_IPC.get_message_from_request(request.type, "Book")
+          App_Messages_IPC.get_message_from_request(request.type, doclabel)
         );
       })
       .catch(function (error): any {
@@ -75,17 +76,23 @@ export function Book_Form() {
   function reset_form(): void {
     let data: DocBookType = {
       _id: "",
-      docType: "book",
+      docType: doctype,
       title: "",
     };
     setDataObject(data);
     form.resetFields();
-    setFormState("create");
   }
 
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("form", "book", id);
+    Header_Buttons_IPC.request_buttons({
+      viewtype: "form",
+      doctype: doctype,
+      doclabel: doclabel,
+      id: id, // is perhaps id='new'
+      surpress: false,
+      options: {},
+    });
 
     load_list();
     reset_form();
@@ -122,7 +129,7 @@ export function Book_Form() {
     const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.target === DOCTYPE_BOOK && response.view == "form") {
+        if (response.target === doctype && response.view == "form") {
           console.log("Book_Form says ACTION: ", response);
 
           triggerSaveRef.current?.click();
@@ -155,9 +162,15 @@ export function Book_Form() {
         //! has new _rev from backend
         setDataObject(result);
         load_list();
-        setFormState("update");
         // update header-button-state because uuid has changed from 'new' to uuid.
-        Header_Buttons_IPC.request_buttons("form", "book", result._id);
+        Header_Buttons_IPC.request_buttons({
+          viewtype: "form",
+          doctype: doctype,
+          doclabel: doclabel,
+          id: result._id,
+          surpress: false,
+          options: {},
+        });
       })
       .catch(function (error) {
         App_Messages_IPC.request_message(
@@ -180,7 +193,7 @@ export function Book_Form() {
   function onListItemDelete(item: DocBookType): any {
     const request: DB_RequestData<DocBookType> = {
       type: "request:delete",
-      doctype: "book",
+      doctype: doctype,
       options: {},
       data: item,
     };
@@ -223,6 +236,15 @@ export function Book_Form() {
         autoComplete="off"
         style={{ maxWidth: "none" }}
       >
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            ref={triggerSaveRef}
+            style={{ display: "none" }}
+          />
+        </Form.Item>
+
         <Form.Item<MyForm_FieldType>
           label="Title"
           name="title"
@@ -231,18 +253,6 @@ export function Book_Form() {
           layout="horizontal"
         >
           <Input />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            ref={triggerSaveRef}
-            style={{ display: "none" }}
-          >
-            {formstate === "create"
-              ? `Add ${app_context.viewtype}`
-              : `Update ${app_context.viewtype}`}
-          </Button>
         </Form.Item>
         <Form.Item>
           <Button onClick={onFormReset}>reset</Button>

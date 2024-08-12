@@ -32,6 +32,7 @@ export function Header_Buttons(props: any) {
   const artworks_context = useContext(App_Context);
   const [viewtype, setViewType] = useState<ViewType>("list");
   const [doctype, setDocType] = useState<DocType>("user");
+  const [doclabel, setDocLabel] = useState<string>("User");
   const [id, setID] = useState<string>("");
   const [supress, setSurpress] = useState<boolean>(false);
 
@@ -52,6 +53,7 @@ export function Header_Buttons(props: any) {
           console.log("App_Buttons says: SHOW Buttons for: ", response);
           setViewType(response.view);
           setDocType(response.doctype);
+          setDocLabel(response.doclabel);
           setID(response.id);
           setSurpress(response.surpress);
         }
@@ -105,6 +107,7 @@ export function Header_Buttons(props: any) {
       target: doctype,
 
       doctype: doctype,
+      doclabel:doclabel,
       view: viewtype,
       id: id,
 
@@ -138,13 +141,26 @@ export function Header_Buttons(props: any) {
       return (
         <Space>
           <Button
+            id="add-action"
+            onClick={(e) => {
+              callbackAddHandler();
+            }}
+          >
+            <PlusOutlined /> {doclabel} hinzufügen
+          </Button>
+        </Space>
+      );
+    } else if (viewtype === "view" && !supress) {
+      return (
+        <Space>
+          <Button
             id="close-action"
             type="dashed"
             onClick={(e) => {
               callbackCloseHandler();
             }}
           >
-            <CloseCircleOutlined /> Close {artworks_context.doctype}
+            <CloseCircleOutlined /> {doclabel} schließen
           </Button>
           <Button
             id="edit-action"
@@ -153,7 +169,7 @@ export function Header_Buttons(props: any) {
             }}
           >
             <EditOutlined />
-            Edit {artworks_context.doctype}
+            {doclabel} bearbeiten
           </Button>
         </Space>
       );
@@ -167,7 +183,7 @@ export function Header_Buttons(props: any) {
               callbackCloseHandler();
             }}
           >
-            <CloseCircleOutlined /> Close {artworks_context.doctype}
+            <CloseCircleOutlined /> {doclabel} schließen
           </Button>
           <Button
             id="save-action"
@@ -178,7 +194,7 @@ export function Header_Buttons(props: any) {
             style={{ color: colorBgContainer }}
           >
             <UploadOutlined />
-            Save {artworks_context.doctype}
+            {doclabel} {id == "new" ? "erzeugen" : "aktualisieren"}
           </Button>
         </Space>
       );

@@ -61,6 +61,7 @@ export interface Action_Request {
 
   view: ViewType;
   doctype: DocType;
+  doclabel: string;
   id: string;
 
   surpress: boolean;
@@ -75,6 +76,25 @@ export type ActionRequestType =
   | "request:show-view-buttons"
   | "request:show-form-buttons";
 
+  export interface Action_Request_Props_I {
+    viewtype: ViewType;
+    doctype: DocType;
+    doclabel: string;
+    id: string;
+  
+    surpress: boolean;
+    options: any;
+  }
+  
+  export class Action_Request_Props implements Action_Request_Props_I {
+    viewtype: ViewType = "list";
+    doctype: DocType = "catalog";
+    doclabel: string = "Catlaog";
+    id: string = "";
+    surpress: boolean = false;
+    options: any = {};
+  }
+  
 // ----------------------------------------------------------------------
 // Message Requests
 // ----------------------------------------------------------------------

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 import { List, Tooltip, Typography } from "antd";
@@ -8,19 +8,23 @@ import {
   DB_Request,
   DB_RequestData,
 } from "../../../common/types/RequestTypes";
-import { DOCTYPE_USER } from "../../../common/types/DocType";
+import { DocType } from "../../../common/types/DocType";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
 import { DocUserType } from "../../../common/types/DocUser";
 
 import { App_Context } from "../../../frontend/App_Context";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
+import { modul_props } from "../modul_props";
 
 export function User_List() {
   const navigate = useNavigate();
-  const app_context = useContext(App_Context);
 
   const [listdata, setListData] = useState<DocUserType[]>([]);
+
+  const doclabel: string = modul_props.doclabel;
+  const doctype: DocType = modul_props.doctype;
+  const segment: string = modul_props.segment;
 
   function load_list(): void {
     // Request data from pouchdb on page load.
@@ -43,9 +47,16 @@ export function User_List() {
   }
 
   useEffect(() => {
-    console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("list", "user", '');
-
+    Header_Buttons_IPC.request_buttons({
+      viewtype: "list",
+      doctype: doctype,
+      doclabel: doclabel,
+      id: "",
+      surpress: false,
+      options: {},
+    });
+      
+      
     load_list();
 
     //! Listen for Header-Button Actions.
@@ -53,7 +64,7 @@ export function User_List() {
     const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.target === DOCTYPE_USER && response.view == "list") {
+        if (response.target === doctype && response.view == "list") {
           console.log("User_List says ACTION: ", response);
           App_Messages_IPC.request_message("request:message-info", JSON.stringify(response));
         }
@@ -69,7 +80,7 @@ export function User_List() {
   function onListItemDelete(item: DocUserType): any {
     const request: DB_RequestData<DocUserType> = {
       type: "request:delete",
-      doctype: "user",
+      doctype: doctype,
       options: {},
       data: item,
     };
@@ -77,7 +88,7 @@ export function User_List() {
     window.electronAPI
       .invoke_request(IPC_DATABASE, [request])
       .then((result: any) => {
-        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "User"));
+        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, doclabel));
         load_list();
       })
       .catch(function (error): any {

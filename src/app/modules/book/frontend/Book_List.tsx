@@ -8,15 +8,18 @@ import {
 } from "../../../common/types/RequestTypes";
 import { DocBookType } from "../../../common/types/DocBook";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { DOCTYPE_BOOK } from "../../../common/types/DocType";
+import { DocType, DOCTYPE_BOOK } from "../../../common/types/DocType";
 
-import { App_Context } from "../../../frontend/App_Context";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
+import { modul_props } from "../modul_props";
 
 export function Book_List() {
   const navigate = useNavigate();
-  const app_context = useContext(App_Context);
+
+  const doclabel: string = modul_props.doclabel;
+  const doctype: DocType = modul_props.doctype;
+  const segment: string =  modul_props.segment;
 
   const [listdata, setListData] = useState<DocBookType[]>([]);
 
@@ -25,7 +28,7 @@ export function Book_List() {
     //! Following Pattern 2 for the Database requests
     const request: DB_Request = {
       type: "request:list-all",
-      doctype: "book",
+      doctype: doctype,
       options: {},
     };
 
@@ -42,8 +45,14 @@ export function Book_List() {
   }
 
   useEffect(() => {
-    console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons('list','ipc','');
+    Header_Buttons_IPC.request_buttons({
+        viewtype: "list",
+        doctype: doctype,
+        doclabel: doclabel,
+        id: "",
+        surpress: false,
+        options: {},
+      });
     
     load_list();
 
@@ -68,7 +77,7 @@ export function Book_List() {
   function onListItemDelete(item: DocBookType): any {
     const request: DB_RequestData<DocBookType> = {
       type: "request:delete",
-      doctype: "book",
+      doctype: doctype,
       options: {},
       data: item,
     };

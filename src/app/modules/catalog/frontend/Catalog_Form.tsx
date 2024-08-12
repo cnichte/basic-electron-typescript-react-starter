@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Button, Divider, Form, FormProps, Input, Select, Switch } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { Button, Divider, Form, FormProps, Input, Select } from "antd";
 
 import {
   Action_Request,
@@ -10,7 +9,7 @@ import {
 } from "../../../common/types/RequestTypes";
 import { DocCatalog, DocCatalogType } from "../../../common/types/DocCatalog";
 import { IPC_SETTINGS } from "../../../common/types/IPC_Channels";
-import { DOCTYPE_CATALOG } from "../../../common/types/DocType";
+import { DocType, DOCTYPE_CATALOG } from "../../../common/types/DocType";
 import { DbOptions_Setting } from "../../../common/types/SettingTypes";
 import { FormState } from "../../../frontend/types/FormState";
 
@@ -18,6 +17,7 @@ import { App_Context } from "../../../frontend/App_Context";
 import { FormTool } from "../../../frontend/FormTool";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
+import { modul_props } from "../modul_props";
 
 const { TextArea } = Input;
 
@@ -29,6 +29,10 @@ export function Catalog_Form() {
   const [form] = Form.useForm();
   const [formstate, setFormState] = useState<FormState>("create");
   const [dataObject, setDataObject] = useState<DocCatalogType>(null);
+
+  const doclabel: string = modul_props.doclabel;
+  const doctype: DocType = modul_props.doctype;
+  const segment: string = modul_props.segment;
 
   const [dboptions, setDBOptions] = useState<DbOptions_Setting[]>([
     {
@@ -60,7 +64,7 @@ export function Catalog_Form() {
     // see src/app/backend/Database_Settings.ts
     let data: DocCatalogType = {
       _id: "",
-      docType: "catalog",
+      docType: doctype,
       templateName: "",
       templateDescription: "",
       dbOption: "",
@@ -79,8 +83,14 @@ export function Catalog_Form() {
   }
 
   useEffect(() => {
-    console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("form", "catalog", id); // is perhaps id='new'
+    Header_Buttons_IPC.request_buttons({
+      viewtype: "form",
+      doctype: doctype,
+      doclabel: doclabel,
+      id: id, // is perhaps id='new'
+      surpress: false,
+      options: {},
+    });
 
     reset_form();
 
@@ -182,7 +192,14 @@ export function Catalog_Form() {
         // TODO bei local können einige Felder versteckt werden.
 
         // update header-button-state because uuid has changed from 'new' to uuid.
-        Header_Buttons_IPC.request_buttons("form", "catalog", result._id);
+        Header_Buttons_IPC.request_buttons({
+          viewtype: "form",
+          doctype: doctype,
+          doclabel: doclabel,
+          id: result._id,
+          surpress: false,
+          options: {},
+        });
       })
       .catch(function (error) {
         App_Messages_IPC.request_message(
@@ -309,6 +326,19 @@ export function Catalog_Form() {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            ref={triggerSaveRef}
+            style={{ display: "none" }}
+          >
+            {formstate === "create"
+              ? `Add ${app_context.viewtype}`
+              : `Update ${app_context.viewtype}`}
+          </Button>
+        </Form.Item>
+
         <Form.Item<MyForm_FieldType>
           label="Bezeichnung"
           name="templateName"
@@ -363,19 +393,6 @@ export function Catalog_Form() {
             <Input disabled />
           </Form.Item>{" "}
           <span>{uripreview}</span>
-        </Form.Item>
-
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            ref={triggerSaveRef}
-            style={{ display: "none" }}
-          >
-            {formstate === "create"
-              ? `Add ${app_context.viewtype}`
-              : `Update ${app_context.viewtype}`}
-          </Button>
         </Form.Item>
       </Form>
       <ul>

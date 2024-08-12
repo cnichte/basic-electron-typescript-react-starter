@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Flex } from "antd";
-import { IPC_DATABASE } from "../../common/types/IPC_Channels";
-import { App_Context } from "../../frontend/App_Context";
-import { Header_Buttons_IPC } from "../../frontend/Header_Buttons_IPC";
-import { App_Messages_IPC } from "../../frontend/App_Messages_IPC";
+import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
+import { App_Context } from "../../../frontend/App_Context";
+import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
+import { modul_props } from "../modul_props";
+import { DocType } from "../../../common/types/DocType";
 
 export function IPC_View() {
   const app_context = useContext(App_Context);
@@ -11,9 +13,20 @@ export function IPC_View() {
   const [count, setCount] = useState(0);
   const [count2, setCount2] = useState(0);
 
+  const doclabel: string = modul_props.doclabel;
+  const doctype: DocType = modul_props.doctype;
+  const segment: string =  modul_props.segment;
+  
   useEffect(() => {
     console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("list", "ipc", "", true); // No buttons here
+    Header_Buttons_IPC.request_buttons({
+      viewtype: "list",
+      doctype: doctype,
+      doclabel: doclabel,
+      id: "",
+      surpress: true,
+      options: {},
+    }); // No buttons here
   }, []);
 
   //! Pattern 1: Renderer to main (one-way)

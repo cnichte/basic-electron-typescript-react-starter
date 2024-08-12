@@ -1,5 +1,32 @@
 # Changelog
 
+## Release 1.3.0
+
+* Labels for Header-Buttons.
+* removed `useContext(App_Context)`
+* `index.ts` for modules
+
+## Release 1.2.0
+
+Updating Dependencies
+
+```bash
+ @types/node       ^20.14.2  →   ^22.1.0
+ @types/uuid         ^9.0.8  →   ^10.0.0
+ antd               ^5.18.1  →   ^5.20.0
+ dayjs             ^1.11.11  →  ^1.11.12
+ electron            31.0.0  →    31.3.1
+ 
+ electron-log        ^5.1.5  →    ^5.1.7
+ mysql2             ^3.10.0  →   ^3.11.0
+ pouchdb             ^8.0.1  →    ^9.0.0
+ pouchdb-find        ^8.0.1  →    ^9.0.0
+ react-router       ^6.23.1  →   ^6.26.0
+ react-router-dom   ^6.23.1  →   ^6.26.0
+ typescript          ~5.4.5  →    ~5.5.4
+ zip-a-folder        ^3.1.6  →    ^3.1.7
+```
+
 ## Release 1.1.0
 
 ### Dependencies

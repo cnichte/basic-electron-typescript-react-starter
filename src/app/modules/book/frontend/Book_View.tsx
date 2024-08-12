@@ -1,32 +1,37 @@
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { Descriptions } from "antd";
-import {
-  Action_Request,
-  DB_Request,
-} from "../../../common/types/RequestTypes";
+import { Action_Request, DB_Request } from "../../../common/types/RequestTypes";
 import { DocBookType } from "../../../common/types/DocBook";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { DOCTYPE_BOOK } from "../../../common/types/DocType";
+import { DocType, DOCTYPE_BOOK } from "../../../common/types/DocType";
 
-import { App_Context } from "../../../frontend/App_Context";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
+import { modul_props } from "../modul_props";
 
 export function Book_View() {
-  const navigate = useNavigate();
   const { id } = useParams();
-  const app_context = useContext(App_Context);
 
   const [dataObject, setDataObject] = useState<DocBookType>(null);
 
+  const doclabel: string = modul_props.doclabel;
+  const doctype: DocType = modul_props.doctype;
+  const segment: string =  modul_props.segment;
+  
   useEffect(() => {
-    console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("view", "book", id);
+    Header_Buttons_IPC.request_buttons({
+      viewtype: "view",
+      doctype: doctype,
+      doclabel: doclabel,
+      id: id,
+      surpress: false,
+      options: {},
+    });
 
     const request: DB_Request = {
       type: "request:data",
-      doctype: "book",
+      doctype: doctype,
       id: id,
       options: {},
     };
@@ -35,10 +40,16 @@ export function Book_View() {
       .invoke_request(IPC_DATABASE, [request])
       .then((result: DocBookType) => {
         setDataObject(result);
-        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "Book"));
+        App_Messages_IPC.request_message(
+          "request:message-success",
+          App_Messages_IPC.get_message_from_request(request.type, doclabel)
+        );
       })
       .catch(function (error: any) {
-        App_Messages_IPC.request_message("request:message-error", (error instanceof Error ? `Error: ${error.message}` : ""));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
 
     //! Listen for Header-Button Actions.
@@ -48,7 +59,10 @@ export function Book_View() {
       (response: Action_Request) => {
         if (response.target === DOCTYPE_BOOK && response.view == "view") {
           console.log("Book_View says ACTION: ", response);
-          App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "Book"));
+          App_Messages_IPC.request_message(
+            "request:message-success",
+            App_Messages_IPC.get_message_from_request(request.type, doclabel)
+          );
         }
       }
     );

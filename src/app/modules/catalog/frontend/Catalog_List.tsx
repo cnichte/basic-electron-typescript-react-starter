@@ -11,18 +11,21 @@ import {
   Settings_Request,
 } from "../../../common/types/RequestTypes";
 
-import { DOCTYPE_USER } from "../../../common/types/DocType";
+import { DocType } from "../../../common/types/DocType";
 import { IPC_SETTINGS } from "../../../common/types/IPC_Channels";
 
 import { DocCatalogType } from "../../../common/types/DocCatalog";
 
-import { App_Context } from "../../../frontend/App_Context";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
+import { modul_props } from "../modul_props";
 
 export function Catalog_List() {
   const navigate = useNavigate();
-  const app_context = useContext(App_Context);
+
+  const doclabel: string = modul_props.doclabel;
+  const doctype: DocType = modul_props.doctype;
+  const segment: string =  modul_props.segment;
 
   const [startoptions, setStartoptions] = useState([]);
   const [selectedStartoption, setSelectedStartoption] = useState<string>("");
@@ -34,8 +37,14 @@ export function Catalog_List() {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   useEffect(() => {
-    console.log("ContextData", app_context);
-    Header_Buttons_IPC.request_buttons("list", "catalog", "");
+    Header_Buttons_IPC.request_buttons({
+      viewtype: "list",
+      doctype: doctype,
+      doclabel: doclabel,
+      id: "",
+      surpress: false,
+      options: {},
+    });
 
     load_list();
 
@@ -67,7 +76,7 @@ export function Catalog_List() {
     const buaUnsubscribe = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
-        if (response.target === DOCTYPE_USER && response.view == "list") {
+        if (response.target === doctype && response.view == "list") {
           console.log("Catalog_List says ACTION: ", response);
           App_Messages_IPC.request_message(
             "request:message-info",

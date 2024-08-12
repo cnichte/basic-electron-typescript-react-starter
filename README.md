@@ -368,8 +368,16 @@ works
 
 ### Internationalize localize
 
+* <https://phrase.com/blog/posts/building-an-electron-app-with-internationalization-i18n/>
+* <https://www.christianengvall.se/electron-localization/>
+* <https://en.wikipedia.org/wiki/Internationalization_and_localization>
+
+* <https://www.npmjs.com/package/typesafe-i18n>
+* <https://formatjs.io/docs/getting-started/installation/>
+
 ```bash
 npm install --save i18next i18next-node-fs-backend
+
 ```
 
 pending
