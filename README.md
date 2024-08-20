@@ -44,7 +44,7 @@ Screenshot Database Settings and Switch. This is an example for a `List`:
 
 ![Screenshot Database Settings and Switch](readme-images/screenshot-001.png)
 
-Screenshot IPC Ping-Pong:
+Screenshot IPC Ping-Pong. Note that the header buttons can also be hidden/deactivated.
 
 ![Screenshot IPC Ping-Pong](readme-images/screenshot-002.png)
 
