@@ -40,9 +40,20 @@ If you also want to build an app with this setup, this could be a good starting 
 
 ## How it Looks
 
+Screenshot Database Settings and Switch. This is an example for a `List`:
+
 ![Screenshot Database Settings and Switch](readme-images/screenshot-001.png)
+
+Screenshot IPC Ping-Pong:
+
 ![Screenshot IPC Ping-Pong](readme-images/screenshot-002.png)
+
+Screenshot Example-Module User-`View`:
+
 ![Screenshot Example-Module User-View](readme-images/screenshot-003.png)
+
+Screenshot Example-Module User-`Form`:
+
 ![Screenshot Example-Module User-Form](readme-images/screenshot-004.png)
 
 ## Use the Repo
