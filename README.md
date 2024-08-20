@@ -57,7 +57,7 @@ follows
 
 ### Recomended VisualStudioCode Plugins
 
-I love to use these long with [VS-Code](https://code.visualstudio.com/download):
+I love to use these along with [VS-Code](https://code.visualstudio.com/download):
 
 * [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
 * [Project Manager](https://marketplace.visualstudio.com/items?itemName=alefragnani.project-manager)
