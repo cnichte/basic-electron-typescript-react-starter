@@ -40,19 +40,19 @@ If you also want to build an app with this setup, this could be a good starting 
 
 ## How it Looks
 
-Screenshot Database Settings and Switch. This is an example for a `List`:
+Database Settings and Switch. This is an example for a `List`:
 
 ![Screenshot Database Settings and Switch](readme-images/screenshot-001.png)
 
-Screenshot IPC Ping-Pong. Note that the header buttons can also be hidden/deactivated.
+IPC Ping-Pong. Note that the header buttons can also be hidden/deactivated.
 
 ![Screenshot IPC Ping-Pong](readme-images/screenshot-002.png)
 
-Screenshot Example-Module User-`View`. THis is a non-editable view of a single entry from the list.
+Example-Module User-`View`. THis is a non-editable view of a single entry from the list.
 
 ![Screenshot Example-Module User-View](readme-images/screenshot-003.png)
 
-Screenshot Example-Module User-`Form`. A Formular, to create, or update Data:
+Example-Module User-`Form`. A Formular, to create, or update Data:
 
 ![Screenshot Example-Module User-Form](readme-images/screenshot-004.png)
 
