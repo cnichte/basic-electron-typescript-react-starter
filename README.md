@@ -48,11 +48,11 @@ Screenshot IPC Ping-Pong:
 
 ![Screenshot IPC Ping-Pong](readme-images/screenshot-002.png)
 
-Screenshot Example-Module User-`View`:
+Screenshot Example-Module User-`View`. THis is a non-editable view of a single entry from the list.
 
 ![Screenshot Example-Module User-View](readme-images/screenshot-003.png)
 
-Screenshot Example-Module User-`Form`:
+Screenshot Example-Module User-`Form`. A Formular, to create, or update Data:
 
 ![Screenshot Example-Module User-Form](readme-images/screenshot-004.png)
 
