@@ -406,9 +406,9 @@ Research:
 ```bash
 npm install zip-a-folder
 npm install dayjs
-``´
+```
 
-### Sign the App 
+### Sign the App
 
 pending
 
