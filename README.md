@@ -55,6 +55,17 @@ node, npm and yarn should be in place:
 
 follows
 
+### Recomended VisualStudioCode Plugins
+
+I love to use these long with [VS-Code](https://code.visualstudio.com/download):
+
+* [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
+* [Project Manager](https://marketplace.visualstudio.com/items?itemName=alefragnani.project-manager)
+* [Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree)
+* [WakaTime](https://marketplace.visualstudio.com/items?itemName=WakaTime.vscode-wakatime)
+  * with self hosted [wakapi](https://github.com/muety/wakapi)
+* [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
 ### Setting up the Dev-Environment on Linux / Ubuntu 24.04
 
 ```bash
@@ -397,7 +408,7 @@ npm install zip-a-folder
 npm install dayjs
 ``´
 
-### Sign the App
+### Sign the App 
 
 pending
 
