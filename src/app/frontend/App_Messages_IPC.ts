@@ -3,6 +3,7 @@ import {
   DatabaseRequestType,
   MessageRequestType,
   Message_Request,
+  SettingsRequestType,
 } from "../common/types/RequestTypes";
 
 export class App_Messages_IPC {
@@ -27,7 +28,7 @@ export class App_Messages_IPC {
    * @param prefix 
    * @returns 
    */
-  public static get_message_from_request(request: DatabaseRequestType, prefix: string) {
+  public static get_message_from_request(request: DatabaseRequestType | SettingsRequestType, prefix: string) {
     let result: string = `Keine Übersetzung für request ${request}`;
 
     if (request != null) {

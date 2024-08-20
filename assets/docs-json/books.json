@@ -1,0 +1,18 @@
+[
+    {
+        "_id": "ea8a3a0b-b19a-4436-a2b7-9076887570b8",
+        "title": "Book 1"
+    },
+    {
+        "_id": "5a99aa4f-ff94-485d-b9af-d2425b710d93",
+        "name": "Book 2"
+    },
+    {
+        "_id": "59df677f-9b00-4b71-8ff2-c4ef2d3fd71d",
+        "name": "Book 3"
+    },
+    {
+        "_id": "e0995345-864b-4858-949d-d8b1c4d005a4",
+        "name": "Book 4"
+    }
+]

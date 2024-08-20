@@ -2,15 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Button, Divider, Form, FormProps, Input } from "antd";
 
+import { modul_props } from "../modul_props";
+
 import { Action_Request, DB_Request } from "../../../common/types/RequestTypes";
 import { DocUserType } from "../../../common/types/DocUser";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
 import { DocType } from "../../../common/types/DocType";
-
-import { FormTool } from "../../../frontend/FormTool";
-import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
-import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
-import { modul_props } from "../modul_props";
+import { FormTool_IPC } from "../../../frontend/FormTool_IPC";
 
 export function User_Form() {
   const { id } = useParams();
@@ -41,95 +39,52 @@ export function User_Form() {
   }
 
   useEffect(() => {
-    Header_Buttons_IPC.request_buttons({
-      viewtype: "form",
-      doctype: doctype,
-      doclabel: doclabel,
-      id: id, // is perhaps id='new'
-      surpress: false,
-      options: {},
-    });
-
     reset_form();
 
-    if (id != "new") {
-      //! Request Document from Database
-      const request: DB_Request = {
-        type: "request:data",
-        doctype: "user",
-        id: id,
-        options: {},
-      };
+    const request: DB_Request = {
+      type: "request:data",
+      doctype: modul_props.doctype,
+      id: id,
+      options: {},
+    };
 
-      window.electronAPI
-        .invoke_request(IPC_DATABASE, [request])
-        .then((result: DocUserType) => {
-          setDataObject(result);
-          form.setFieldsValue(result);
-          App_Messages_IPC.request_message(
-            "request:message-info",
-            App_Messages_IPC.get_message_from_request(request.type, "User")
-          );
-        })
-        .catch(function (error: any) {
-          App_Messages_IPC.request_message(
-            "request:message-error",
-            error instanceof Error ? `Error: ${error.message}` : ""
-          );
-        });
-    }
+    const buaUnsubscribe_func = FormTool_IPC.init_and_load_data<DocUserType>({
+      viewtype: "form",
+      modul_props: modul_props,
 
-    //! Listen for Header-Button Actions.
-    // Register and remove the event listener
-    const buaUnsubscribe = window.electronAPI.listen_to(
-      "ipc-button-action",
-      (response: Action_Request) => {
-        if (response.target === doctype && response.view == "form") {
-          console.log("User_Form says ACTION: ", response);
+      request: request,
+      ipc_channel: "ipc-database",
 
+      surpress_buttons: false,
+      setDataCallback: function (result: DocUserType): void {
+        setDataObject(result);
+        form.setFieldsValue(result);
+      },
+      doButtonActionCallback: function (response: Action_Request): void {
+        if (response.type === "request:save-action") {
           triggerSaveRef.current?.click();
-
-          // message.info(response.type);
         }
-      }
-    );
+      },
+    });
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      buaUnsubscribe();
+      buaUnsubscribe_func();
     };
   }, []);
 
   const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {
     // create a new record and save the data.
-    let formTool: FormTool<DocUserType> = new FormTool();
-
-    formTool
-      .save_data({
-        ipcChannel: IPC_DATABASE,
-        dataObject: dataObject,
-        valuesForm: formValues,
-        force_save: false,
-      })
-      .then((result: DocUserType) => {
-        //! has new _rev from backend
-        setDataObject(result);
-        // update header-button-state because uuid has changed from 'new' to uuid.
-        Header_Buttons_IPC.request_buttons({
-          viewtype: "form",
-          doctype: doctype,
-          doclabel: doclabel,
-          id: result._id, // is perhaps id='new'
-          surpress: false,
-          options: {},
-        });
-      })
-      .catch(function (error) {
-        App_Messages_IPC.request_message(
-          "request:message-error",
-          error instanceof Error ? `Error: ${error.message}` : ""
-        );
-      });
+    FormTool_IPC.save_data<DocUserType>({
+      ipcChannel: IPC_DATABASE,
+      dataObject: dataObject,
+      valuesForm: formValues,
+      force_save: false,
+      modul_props: modul_props,
+    }).then((result: DocUserType) => {
+      //! has new _rev from backend
+      setDataObject(result);
+    });
   };
 
   const onFinishFailed: FormProps<MyForm_FieldType>["onFinishFailed"] = (
@@ -138,9 +93,6 @@ export function User_Form() {
     console.log("Failed:", errorInfo);
   };
 
-  function onFormReset(): void {
-    reset_form();
-  }
 
   return (
     <>

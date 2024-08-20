@@ -11,11 +11,9 @@ import {
 import { DocType } from "../../../common/types/DocType";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
 import { DocUserType } from "../../../common/types/DocUser";
-
-import { App_Context } from "../../../frontend/App_Context";
-import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
 import { modul_props } from "../modul_props";
+import { RequestData_IPC } from "../../../frontend/RequestData_IPC";
 
 export function User_List() {
   const navigate = useNavigate();
@@ -26,54 +24,55 @@ export function User_List() {
   const doctype: DocType = modul_props.doctype;
   const segment: string = modul_props.segment;
 
-  function load_list(): void {
+  function reload_list(): void {
     // Request data from pouchdb on page load.
     //! Following Pattern 2 for the Database requests
     const request: DB_Request = {
       type: "request:list-all",
-      doctype: "user",
+      doctype: modul_props.doctype,
       options: {},
     };
 
-    window.electronAPI
-      .invoke_request(IPC_DATABASE, [request])
-      .then((result: DocUserType[]) => {
+    RequestData_IPC.load_data<DocUserType[]>({
+      modul_props: modul_props,
+      ipc_channel: "ipc-database",
+      request: request,
+      setDataCallback: function (result: DocUserType[]): void {
         setListData(result);
-        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "User"));
-      })
-      .catch(function (error: any) {
-        App_Messages_IPC.request_message("request:message-success", (error instanceof Error ? `Error: ${error.message}` : ""));
-      });
+      },
+    });
   }
 
   useEffect(() => {
-    Header_Buttons_IPC.request_buttons({
-      viewtype: "list",
-      doctype: doctype,
-      doclabel: doclabel,
-      id: "",
-      surpress: false,
-      options: {},
-    });
-      
-      
-    load_list();
 
-    //! Listen for Header-Button Actions.
-    // Register and remove the event listener
-    const buaUnsubscribe = window.electronAPI.listen_to(
-      "ipc-button-action",
-      (response: Action_Request) => {
-        if (response.target === doctype && response.view == "list") {
-          console.log("User_List says ACTION: ", response);
-          App_Messages_IPC.request_message("request:message-info", JSON.stringify(response));
-        }
-      }
-    );
+    const request: DB_Request = {
+      type: "request:list-all",
+      doctype: modul_props.doctype,
+      options: {},
+    };
+
+    const buaUnsubscribe_func = RequestData_IPC.init_and_load_data<
+      DocUserType[]
+    >({
+      viewtype: "list",
+      modul_props: modul_props,
+
+      request: request,
+      ipc_channel: "ipc-database",
+
+      surpress_buttons: false,
+      setDataCallback: function (result: DocUserType[]): void {
+        //! Zeige nur die nicht verlinkten
+        setListData(result);
+      },
+      doButtonActionCallback: function (response: Action_Request): void {
+        // only used in form so far.
+      },
+    });
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      buaUnsubscribe();
+      buaUnsubscribe_func();
     };
   }, []);
 
@@ -89,7 +88,7 @@ export function User_List() {
       .invoke_request(IPC_DATABASE, [request])
       .then((result: any) => {
         App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, doclabel));
-        load_list();
+        reload_list();
       })
       .catch(function (error): any {
         App_Messages_IPC.request_message("request:message-error", (error instanceof Error ? `Error: ${error.message}` : ""));

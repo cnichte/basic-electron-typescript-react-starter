@@ -28,6 +28,8 @@ If you also want to build an app with this setup, this could be a good starting 
 
 * Introducing ViewTypes: `list`, `view`, `form`.
 * Introducing DocTypes, such as `book`,`user`, `ipc`, or whatever you need.
+* loading `json` Example-Data to couchdb to initialize a database.
+  * see `assets/docs-json/`, `src/app/backend/Database_Pouchdb.ts` and `src/app/backend/DocumentCreator.ts`.
 
 ## React Pitfalls
 

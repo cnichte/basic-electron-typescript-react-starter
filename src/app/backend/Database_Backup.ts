@@ -28,7 +28,7 @@ export class Database_Backup {
             return reject(err);
           });
 
-        reject(`Backup angelegt:${target}`);
+        resolve(`Backup angelegt:${target}`);
       } else {
         console.log("db_path doesnt exists", db_path);
         reject(`db_path ${db_path} doesnt exists.`);

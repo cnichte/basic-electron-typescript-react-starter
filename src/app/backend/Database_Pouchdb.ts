@@ -9,6 +9,9 @@ import {
   PouchDB_Info_Remotestore,
 } from "../common/types/PouchDB_InfoTypes";
 import { pouchdb_relations } from "./Database_Pouchdb_Relations";
+import { DocumentCreator } from "./DocumentCreator";
+import { DocUser } from "../common/types/DocUser";
+import { DocBook } from "../common/types/DocBook";
 
 export class Database_Pouchdb implements DatabaseCRUD_Interface {
   databaseUri: string;
@@ -131,60 +134,12 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
   initialize(exampleData: boolean, createViews: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
       if (exampleData) {
-        this.db
-          .put({
-            _id: uuidv4(),
-            docType: "user",
-            name: "Fritz",
-          })
-          .then(function (response: any) {
-            resolve(true);
-          })
-          .catch(function (err: any) {
-            reject(err);
-          });
-
-        this.db
-          .put({
-            _id: uuidv4(),
-            docType: "user",
-            name: "Hugo",
-          })
-          .then(function (response: any) {
-            resolve(true);
-          })
-          .catch(function (err: any) {
-            reject(err);
-          });
-
-        this.db
-          .put({
-            _id: uuidv4(),
-            docType: "book",
-            title: "Book 2",
-          })
-          .then(function (response: any) {
-            resolve(true);
-          })
-          .catch(function (err: any) {
-            reject(err);
-          });
-
-        this.db
-          .put({
-            _id: uuidv4(),
-            docType: "book",
-            title: "Book 1",
-          })
-          .then(function (response: any) {
-            resolve(true);
-          })
-          .catch(function (err: any) {
-            reject(err);
-          });
+        DocumentCreator.loadTo<DocUser>(this, "./docs-json/users.json", DocUser);
+        DocumentCreator.loadTo<DocBook>(this, "./docs-json/books.json", DocBook);
       }
 
       if (createViews) {
+        
       }
     });
   }

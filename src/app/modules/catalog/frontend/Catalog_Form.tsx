@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Button, Divider, Form, FormProps, Input, Select } from "antd";
 
+import { modul_props } from "../modul_props";
 import {
   Action_Request,
   Settings_Request,
@@ -9,21 +10,16 @@ import {
 } from "../../../common/types/RequestTypes";
 import { DocCatalog, DocCatalogType } from "../../../common/types/DocCatalog";
 import { IPC_SETTINGS } from "../../../common/types/IPC_Channels";
-import { DocType, DOCTYPE_CATALOG } from "../../../common/types/DocType";
+import { DocType } from "../../../common/types/DocType";
 import { DbOptions_Setting } from "../../../common/types/SettingTypes";
 import { FormState } from "../../../frontend/types/FormState";
-
-import { App_Context } from "../../../frontend/App_Context";
-import { FormTool } from "../../../frontend/FormTool";
-import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
-import { modul_props } from "../modul_props";
+import { FormTool_IPC } from "../../../frontend/FormTool_IPC";
 
 const { TextArea } = Input;
 
 export function Catalog_Form() {
   const { id } = useParams();
-  const app_context = useContext(App_Context);
   const triggerSaveRef = React.useRef(null);
 
   const [form] = Form.useForm();
@@ -83,43 +79,33 @@ export function Catalog_Form() {
   }
 
   useEffect(() => {
-    Header_Buttons_IPC.request_buttons({
-      viewtype: "form",
-      doctype: doctype,
-      doclabel: doclabel,
-      id: id, // is perhaps id='new'
-      surpress: false,
-      options: {},
-    });
-
     reset_form();
 
-    if (id != "new") {
-      //! Request Document from Database
-      const request: Settings_Request = {
-        type: "request:get-connection",
-        doctype: "catalog",
-        id: id,
-        options: {},
-      };
+    const request: Settings_Request = {
+      type: "request:get-connection",
+      doctype: modul_props.doctype,
+      id: id,
+      options: {},
+    };
 
-      window.electronAPI
-        .invoke_request(IPC_SETTINGS, [request])
-        .then((result: DocCatalogType) => {
-          setDataObject(result);
-          form.setFieldsValue(result);
-          App_Messages_IPC.request_message(
-            "request:message-info",
-            "Catalog loaded."
-          );
-        })
-        .catch(function (error: any) {
-          App_Messages_IPC.request_message(
-            "request:message-error",
-            error instanceof Error ? `Error: ${error.message}` : ""
-          );
-        });
-    }
+    const buaUnsubscribe_func = FormTool_IPC.init_and_load_data<DocCatalog>({
+      viewtype: "form",
+      modul_props: modul_props,
+
+      request: request,
+      ipc_channel: "ipc-settings",
+
+      surpress_buttons: false,
+      setDataCallback: function (result: DocCatalog): void {
+        setDataObject(result);
+        form.setFieldsValue(result);
+      },
+      doButtonActionCallback: function (response: Action_Request): void {
+        if (response.type === "request:save-action") {
+          triggerSaveRef.current?.click();
+        }
+      },
+    });
 
     const request_2: Settings_Request = {
       type: "request:get-dbOptions",
@@ -142,71 +128,33 @@ export function Catalog_Form() {
         );
       });
 
-    //! Listen for Header-Button Actions.
-    // Register and remove the event listener
-    const buaUnsubscribe = window.electronAPI.listen_to(
-      "ipc-button-action",
-      (response: Action_Request) => {
-        if (response.target === DOCTYPE_CATALOG && response.view == "form") {
-          console.log("Catalog_Form says ACTION: ", response);
-
-          triggerSaveRef.current?.click();
-
-          // message.info(response.type);
-        }
-      }
-    );
-
     // Cleanup function to remove the listener on component unmount
     return () => {
-      buaUnsubscribe();
+      buaUnsubscribe_func();
     };
   }, []);
 
   const onFinish: FormProps<MyForm_FieldType>["onFinish"] = (formValues) => {
     // create a new record and save the data.
-    let formTool: FormTool<DocCatalogType> = new FormTool();
-
-    // i do not use the default here
     let request: Settings_RequestData<DocCatalog> = {
       type: "request:save-connection",
-      doctype: "catalog",
+      doctype: modul_props.doctype,
       id: id,
       data: null,
       options: {},
     };
 
-    formTool
-      .save_data({
-        ipcChannel: "ipc-settings",
-        request: request,
-        dataObject: dataObject,
-        valuesForm: formValues,
-        force_save: false,
-      })
-      .then((result: DocCatalogType) => {
-        //! has new _rev from backend
-        setDataObject(result);
-        setFormState("update");
-
-        // TODO bei local können einige Felder versteckt werden.
-
-        // update header-button-state because uuid has changed from 'new' to uuid.
-        Header_Buttons_IPC.request_buttons({
-          viewtype: "form",
-          doctype: doctype,
-          doclabel: doclabel,
-          id: result._id,
-          surpress: false,
-          options: {},
-        });
-      })
-      .catch(function (error) {
-        App_Messages_IPC.request_message(
-          "request:message-error",
-          error instanceof Error ? `Error: ${error.message}` : ""
-        );
-      });
+    FormTool_IPC.save_data<DocCatalog>({
+      ipcChannel: "ipc-settings",
+      request: request,
+      dataObject: dataObject,
+      valuesForm: formValues,
+      force_save: false,
+      modul_props: modul_props,
+    }).then((result: DocCatalogType) => {
+      //! has new _rev from backend
+      setDataObject(result);
+    });
   };
 
   const onFinishFailed: FormProps<MyForm_FieldType>["onFinishFailed"] = (
@@ -252,10 +200,6 @@ export function Catalog_Form() {
       "dbName",
       e.target.value.toLowerCase().replace(/ /g, "-")
     );
-  };
-
-  const handleCreateDBChange = (checked: boolean) => {
-    console.log(`switch to ${checked}`);
   };
 
   function buildURIFromTemplate(): void {
@@ -332,10 +276,7 @@ export function Catalog_Form() {
             htmlType="submit"
             ref={triggerSaveRef}
             style={{ display: "none" }}
-          >
-            {formstate === "create"
-              ? `Add ${app_context.viewtype}`
-              : `Update ${app_context.viewtype}`}
+          > Save
           </Button>
         </Form.Item>
 

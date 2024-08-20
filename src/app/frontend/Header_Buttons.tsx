@@ -9,8 +9,7 @@ import {
 
 import { Action_Request } from "../common/types/RequestTypes";
 import { IPC_BUTTON_ACTION } from "../common/types/IPC_Channels";
-import { useContext, useEffect, useState } from "react";
-import { App_Context } from "./App_Context";
+import { useEffect, useState } from "react";
 import { ViewType } from "./types/ViewType";
 import { DOCTYPE_HEADER_BUTTONS, DocType } from "../common/types/DocType";
 
@@ -29,7 +28,6 @@ import { DOCTYPE_HEADER_BUTTONS, DocType } from "../common/types/DocType";
 export function Header_Buttons(props: any) {
   const navigate = useNavigate();
 
-  const artworks_context = useContext(App_Context);
   const [viewtype, setViewType] = useState<ViewType>("list");
   const [doctype, setDocType] = useState<DocType>("user");
   const [doclabel, setDocLabel] = useState<string>("User");
@@ -41,16 +39,14 @@ export function Header_Buttons(props: any) {
   } = theme.useToken();
 
   useEffect(() => {
-    console.log("ContextData", artworks_context);
-
     // Two-way communication, case 1
     //! Listen for Content-Request.
     // Register and remove the event listener.
-    const buaUnsubscribe = window.electronAPI.listen_to(
+    const buaUnsubscribe_func = window.electronAPI.listen_to(
       "ipc-button-action",
       (response: Action_Request) => {
         if (response.target === DOCTYPE_HEADER_BUTTONS) {
-          console.log("App_Buttons says: SHOW Buttons for: ", response);
+          console.log("Header_Buttons says: SHOW Buttons for: ", response);
           setViewType(response.view);
           setDocType(response.doctype);
           setDocLabel(response.doclabel);
@@ -62,7 +58,7 @@ export function Header_Buttons(props: any) {
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      buaUnsubscribe();
+      buaUnsubscribe_func();
     };
   }, []);
 
@@ -133,20 +129,7 @@ export function Header_Buttons(props: any) {
               callbackAddHandler();
             }}
           >
-            <PlusOutlined /> Add {artworks_context.doctype}
-          </Button>
-        </Space>
-      );
-    } else if (viewtype === "view" && !supress) {
-      return (
-        <Space>
-          <Button
-            id="add-action"
-            onClick={(e) => {
-              callbackAddHandler();
-            }}
-          >
-            <PlusOutlined /> {doclabel} hinzufügen
+            <PlusOutlined /> Add {doclabel}
           </Button>
         </Space>
       );
@@ -160,7 +143,7 @@ export function Header_Buttons(props: any) {
               callbackCloseHandler();
             }}
           >
-            <CloseCircleOutlined /> {doclabel} schließen
+            <CloseCircleOutlined /> Close {doclabel}
           </Button>
           <Button
             id="edit-action"
@@ -169,7 +152,7 @@ export function Header_Buttons(props: any) {
             }}
           >
             <EditOutlined />
-            {doclabel} bearbeiten
+            Edit {doclabel}
           </Button>
         </Space>
       );
@@ -183,7 +166,7 @@ export function Header_Buttons(props: any) {
               callbackCloseHandler();
             }}
           >
-            <CloseCircleOutlined /> {doclabel} schließen
+            <CloseCircleOutlined /> Close {doclabel}
           </Button>
           <Button
             id="save-action"
@@ -194,7 +177,7 @@ export function Header_Buttons(props: any) {
             style={{ color: colorBgContainer }}
           >
             <UploadOutlined />
-            {doclabel} {id == "new" ? "erzeugen" : "aktualisieren"}
+              {id == "new" ? "Create" : "Update"} {doclabel}
           </Button>
         </Space>
       );

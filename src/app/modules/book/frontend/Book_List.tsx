@@ -1,6 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+
 import { List, Tooltip, Typography } from "antd";
+
+import { modul_props } from "../modul_props";
 import {
   Action_Request,
   DB_Request,
@@ -8,22 +11,20 @@ import {
 } from "../../../common/types/RequestTypes";
 import { DocBookType } from "../../../common/types/DocBook";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { DocType, DOCTYPE_BOOK } from "../../../common/types/DocType";
-
-import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
+import { DocType } from "../../../common/types/DocType";
 import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
-import { modul_props } from "../modul_props";
+import { RequestData_IPC } from "../../../frontend/RequestData_IPC";
 
 export function Book_List() {
   const navigate = useNavigate();
 
   const doclabel: string = modul_props.doclabel;
   const doctype: DocType = modul_props.doctype;
-  const segment: string =  modul_props.segment;
+  const segment: string = modul_props.segment;
 
   const [listdata, setListData] = useState<DocBookType[]>([]);
 
-  function load_list(): void {
+  function reload_list(): void {
     // Request data from pouchdb
     //! Following Pattern 2 for the Database requests
     const request: DB_Request = {
@@ -32,45 +33,44 @@ export function Book_List() {
       options: {},
     };
 
-    window.electronAPI
-      .invoke_request(IPC_DATABASE, [request])
-      .then((result: DocBookType[]) => {
-        console.log(result);
+    RequestData_IPC.load_data<DocBookType[]>({
+      modul_props: modul_props,
+      ipc_channel: "ipc-database",
+      request: request,
+      setDataCallback: function (result: DocBookType[]): void {
         setListData(result);
-        App_Messages_IPC.request_message("request:message-info", App_Messages_IPC.get_message_from_request(request.type, "Book"));
-      })
-      .catch(function (error): any {
-        App_Messages_IPC.request_message("request:message-error", (error instanceof Error ? `Error: ${error.message}` : ""));
-      });
+      },
+    });
   }
 
   useEffect(() => {
-    Header_Buttons_IPC.request_buttons({
-        viewtype: "list",
-        doctype: doctype,
-        doclabel: doclabel,
-        id: "",
-        surpress: false,
-        options: {},
-      });
-    
-    load_list();
+    const request: DB_Request = {
+      type: "request:list-all",
+      doctype: doctype,
+      options: {},
+    };
 
-    //! Listen for Header-Button Actions.
-    // Register and remove the event listener
-    const buaUnsubscribe = window.electronAPI.listen_to(
-      "ipc-button-action",
-      (response: Action_Request) => {
-        if (response.target === DOCTYPE_BOOK && response.view == "list") {
-          console.log("Book_List says ACTION: ", response);
-          App_Messages_IPC.request_message("request:message-info", JSON.stringify(response));
-        }
-      }
-    );
+    const buaUnsubscribe_func = RequestData_IPC.init_and_load_data<
+      DocBookType[]
+    >({
+      viewtype: "list",
+      modul_props: modul_props,
+
+      request: request,
+      ipc_channel: "ipc-database",
+
+      surpress_buttons: false,
+      setDataCallback: function (result: DocBookType[]): void {
+        setListData(result);
+      },
+      doButtonActionCallback: function (response: Action_Request): void {
+        // only used in form so far.
+      },
+    });
 
     // Cleanup function to remove the listener on component unmount
     return () => {
-      buaUnsubscribe();
+      buaUnsubscribe_func();
     };
   }, []);
 
@@ -85,11 +85,17 @@ export function Book_List() {
     window.electronAPI
       .invoke_request(IPC_DATABASE, [request])
       .then((result: any) => {
-        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, "User"));
-        load_list();
+        App_Messages_IPC.request_message(
+          "request:message-success",
+          App_Messages_IPC.get_message_from_request(request.type, "User")
+        );
+        reload_list();
       })
       .catch(function (error): any {
-        App_Messages_IPC.request_message("request:message-error", (error instanceof Error ? `Error: ${error.message}` : ""));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   }
 
