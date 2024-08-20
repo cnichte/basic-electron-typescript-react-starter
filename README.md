@@ -40,7 +40,7 @@ If you also want to build an app with this setup, this could be a good starting 
 
 ## How it Looks
 
-Database Settings and Switch. This is an example for a `List`:
+Database. Settings and switch. This is an example for a `List`. The Name of the active catalog shows up in the Application-Title.
 
 ![Screenshot Database Settings and Switch](readme-images/screenshot-001.png)
 
