@@ -1,10 +1,10 @@
 import {
-    version as uuidVersion,
-    validate as uuidValidate,
-    v4 as uuidv4,
-  } from 'uuid';
+  version as uuidVersion,
+  validate as uuidValidate,
+  v4 as uuidv4,
+} from "uuid";
 
-  export class UUIDTool {
+export class UUIDTool {
   /**
    * Checks a string to see if it is a valid uuid.
    *
@@ -14,5 +14,4 @@ import {
   public static uuidValidateV4(theString: string): boolean {
     return uuidValidate(theString) && uuidVersion(theString) === 4;
   }
-
-  }
+}
