@@ -1,14 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Flex } from "antd";
 import { IPC_DATABASE } from "../../../common/types/IPC_Channels";
-import { App_Context } from "../../../frontend/App_Context";
 import { Header_Buttons_IPC } from "../../../frontend/Header_Buttons_IPC";
 import { App_Messages_IPC } from "../../../frontend/App_Messages_IPC";
 import { modul_props } from "../modul_props";
 import { DocType } from "../../../common/types/DocType";
 
 export function IPC_View() {
-  const app_context = useContext(App_Context);
 
   const [count, setCount] = useState(0);
   const [count2, setCount2] = useState(0);
@@ -18,7 +16,6 @@ export function IPC_View() {
   const segment: string =  modul_props.segment;
   
   useEffect(() => {
-    console.log("ContextData", app_context);
     Header_Buttons_IPC.request_buttons({
       viewtype: "list",
       doctype: doctype,

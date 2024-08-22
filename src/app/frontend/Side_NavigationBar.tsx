@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useNavigate } from "react-router";
 import { Menu, MenuProps } from "antd";
 import { HomeOutlined, UserOutlined, AppstoreOutlined } from "@ant-design/icons";
@@ -9,7 +9,7 @@ import {
   BOOKS_ROUTE_LIST,
   USERS_ROUTE_LIST,
 } from "./types/RouteType";
-import { App_Context } from "./App_Context";
+
 import {
   DOCTYPE_BOOK,
   DOCTYPE_CATALOG,
@@ -33,8 +33,6 @@ export interface SideNavigationBar_Props {
 export function SideNavigationBar({
   onChange,
 }: SideNavigationBar_Props) {
-  const { doctype, setDoctype, viewtype, setViewtype } =
-    useContext(App_Context);
 
   const navigate = useNavigate();
 
@@ -52,8 +50,6 @@ export function SideNavigationBar({
     // Ich gehe hier immer zu einer liste.
     // Sollte sich das mal ändern braucht es hier einen callback
     // damit ich in APP_Routes.tsx den Context neu setzen kann.
-    setDoctype(doctype);
-    setViewtype(viewtype);
     triggerChange(route);
     navigate(route);
   };
