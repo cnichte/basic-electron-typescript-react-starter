@@ -429,6 +429,23 @@ npm install dayjs
 
 pending
 
+### Electron DevTools
+
+Two new tabs in your Chrome DevTools: "⚛️ Components" and "⚛️ Profiler".
+
+* <https://github.com/MarshallOfSound/electron-devtools-installer>
+* <https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi>
+
+```bash
+npm install electron-devtools-installer --save-dev
+```
+
+* <https://nodejs.org/docs/latest-v16.x/api/cli.html#--enable-source-maps>
+
+```bash
+--enable-source-maps
+```
+
 ### Issues (so far)
 
 Multiple warnings during `npm run make` under Mac OS of this type:

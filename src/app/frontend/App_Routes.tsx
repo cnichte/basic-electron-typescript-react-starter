@@ -60,7 +60,7 @@ export function App_Routes() {
             trigger={null}
             collapsible
             collapsed={collapsed}
-            style={{ height: "100vh" }}
+            style={{ height: "100vh", position: "sticky", top: 0  }}
           >
             <div className="demo-logo-vertical" />
             <SideNavigationBar
@@ -73,7 +73,7 @@ export function App_Routes() {
             <Header
               style={{
                 padding: 0,
-                // position: "sticky",
+                position: "sticky",
                 // background: colorBgContainer,
                 top: 0,
                 zIndex: 1,
