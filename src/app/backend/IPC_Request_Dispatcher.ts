@@ -368,7 +368,7 @@ export class IPC_Request_Dispatcher {
       let result: Promise<any>;
 
       switch (request.type) {
-        case `request:list-all`:
+        case "request:list-all":
           result = new Promise((resolve, reject) => {
             this.pouchdb
               .readFromQuery({

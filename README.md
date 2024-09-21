@@ -62,7 +62,7 @@ Example-Module User-`List`. THis is a non-editable list of a bunch of enties.
 
 ![Screenshot Example-Module User-List](readme-images/screenshot-004.png)
 
-Example-Module User-`View`. THis is a non-editable view of a single entry from the list.
+Example-Module User-`View`. This is a non-editable view of a single entry from the list.
 
 ![Screenshot Example-Module User-View](readme-images/screenshot-005.png)
 
@@ -174,8 +174,9 @@ npm run make
 
 ## Login
 
-Login with username = `f_mueller` and password `f_mueller`.
-Example Users with different roles have username quals password.
+* Login with username = `f_mueller` and password `f_mueller`.
+* Example Users with different roles have username quals password.
+* See `assets/docs-json/users.json`
 
 ## Update outdated packages
 
