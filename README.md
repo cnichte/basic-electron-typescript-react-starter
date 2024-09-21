@@ -54,7 +54,7 @@ Database. Settings and switch. This is an example for a `List`. The Name of the 
 
 ![Screenshot Database Settings and Switch](readme-images/screenshot-002.png)
 
-IPC Ping-Pong. Note that the header buttons can also be hidden/deactivated.
+IPC Ping-Pong. Observe the behavior in the VS code terminal and in the browser-log of the developer-tools. Note that the header buttons can also be hidden/deactivated.
 
 ![Screenshot IPC Ping-Pong](readme-images/screenshot-003.png)
 
