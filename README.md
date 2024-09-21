@@ -58,7 +58,7 @@ IPC Ping-Pong. Observe the behavior in the VS code terminal and in the browser-l
 
 ![Screenshot IPC Ping-Pong](readme-images/screenshot-003.png)
 
-Example-Module User-`List`. THis is a non-editable list of a bunch of enties.
+Example-Module User-`List`. This is a non-editable list of a bunch of enties.
 
 ![Screenshot Example-Module User-List](readme-images/screenshot-004.png)
 
