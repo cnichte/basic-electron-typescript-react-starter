@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router";
 import { Menu, MenuProps } from "antd";
-import { HomeOutlined, UserOutlined, AppstoreOutlined } from "@ant-design/icons";
+import { HomeOutlined, UserOutlined, AppstoreOutlined, PoweroffOutlined } from "@ant-design/icons";
 import {
   RouteType,
   CATALOG_ROUTE_LIST,
@@ -18,6 +18,7 @@ import {
   DocType,
 } from "../common/types/DocType";
 import { ViewType, VIEWTYPE_LIST, VIEWTYPE_VIEW } from "./types/ViewType";
+import { App_Context } from "./App_Context";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -35,7 +36,8 @@ export function SideNavigationBar({
 }: SideNavigationBar_Props) {
 
   const navigate = useNavigate();
-
+  const app_context = useContext(App_Context);
+  
   const triggerChange = (changedValue: RouteType) => {
     // https://www.mediaevent.de/javascript/spread-operator.html
     // mixe das geänderte Objekt zusammen...
@@ -52,6 +54,15 @@ export function SideNavigationBar({
     // damit ich in APP_Routes.tsx den Context neu setzen kann.
     triggerChange(route);
     navigate(route);
+  };
+
+  const handleLogout = () => {
+    // Problem: Schiefstand zwischen Navigator und Header+Content beim abmelden.
+    // Navigator=Dasboard, Header+Content = letzter Stand
+    // Lösung: Gehe zum Dashboard vor dem Logout.
+    handleChange(CATALOG_ROUTE_LIST, DOCTYPE_CATALOG, VIEWTYPE_LIST);
+    // TODO Vor dem Abmelden auch den gespeicherten user löschen? oder das als Option anbieten?
+    app_context.setCurrentUser(null); // abmelden
   };
 
   /**
@@ -110,6 +121,12 @@ export function SideNavigationBar({
         handleChange(BOOKS_ROUTE_LIST, DOCTYPE_BOOK, VIEWTYPE_LIST)
       ),
     ]),
+        //! Abmelden: conditional show or hide
+        app_context.currentUser != null
+        ? getMenuItem("Abmelden", "50", <PoweroffOutlined />, () =>
+            handleLogout()
+          )
+        : null,
   ];
 
   return (

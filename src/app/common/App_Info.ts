@@ -5,6 +5,8 @@ import { Menu_Links } from "../../menu";
  */
 export class App_Info {
   static MY_APP_NAME = "My Electron App";
+  static MY_APP_TITLE = "";
+  static MY_APP_SUBTITLE = "";
   // TODO use https://www.npmjs.com/package/genversion
   static MY_APP_VERSION = "0.1.0"; // Semantic Versioning: https://de.wikipedia.org/wiki/Version_(Software)
   static MY_APP_FOLDER = "my-electron-app";

@@ -12,6 +12,9 @@ import { DatabaseCRUD_Interface } from "./Database_Types";
  */
 export class Database_Mysql implements DatabaseCRUD_Interface {
   constructor() {}
+  export_all(): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
   initialize(exampleData: boolean, createViews: boolean): Promise<any> {
     throw new Error("Method not implemented.");
   }

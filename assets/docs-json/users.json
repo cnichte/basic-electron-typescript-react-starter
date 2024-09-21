@@ -1,18 +1,30 @@
 [
     {
         "_id": "e0c9b078-3782-444a-baf7-6ac1e7873313",
-        "name": "Fritz Schmitz"
+        "name": "Fritz Müller-Admin",
+        "userid": "f_mueller",
+        "password":"$2a$10$vN6Wg9ilv2pohqd5WKpAHOYDJ7AOgc72wmvl7iHzxM8JBPuNpsHbi",
+        "userrights": "admin"
     },
     {
         "_id": "4e6969dd-a75c-40fb-a6c7-7c722fc5cdde",
-        "name": "Hugo Roundup"
+        "name": "Hugo ReadWrite",
+        "userid": "h_readwrite",
+        "password":"$2a$10$.lMO1kE/uwAtNYpmR7wZF.GQ.65gdfksOLu1.N8nS11LmXSDEG3Su",
+        "userrights": "read-write"
     },
     {
         "_id": "6d41e4f0-13a6-4a5a-9db5-2fab339fc430",
-        "name": "Margarete Marksman"
+        "name": "Margarete Readonly",
+        "userid": "m_readonly",
+        "password":"$2a$10$s6c0UcOi1WwrERcXmZhsB.0eMUdVEBN6U4KZZ3cQIZ5KREb1RdGx2",
+        "userrights": "read-only"
     },
     {
         "_id": "fcf301fe-e098-42a2-9b67-3d0ec1b74379",
-        "name": "Heribert Nothingnes"
+        "name": "Heribert None",
+        "userid": "h_none",
+        "password":"$2a$10$EL8me4QUmeCWSAmLUJLsOOR/HYwDLui8X3MxFv66v/cTe6cODqy9K",
+        "userrights": "none"
     }
 ]

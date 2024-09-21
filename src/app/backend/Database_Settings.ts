@@ -149,6 +149,7 @@ export class Database_Settings {
       // serializer: // i use the default here
       // schema: schema, // TODO Schema gives an exception
       defaults: {
+        currentuser: "", // encrypted
         catalog: {
           //! the setting-name is equivalent to the doctype
           startoptions: {

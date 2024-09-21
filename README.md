@@ -3,6 +3,7 @@
 * A minimalistic (as possible) startingpoint, following the official guides, and avoiding some pitfalls.
 * It was important to me that all dependent packages are up to date.
 * I didn't test the app for all possible and impossible scenarios, only for my very specific requirements.
+* It ist my public playground, where i test out concepts and implementations for my apps.
 
 Goals
 
@@ -33,6 +34,11 @@ If you also want to build an app with this setup, this could be a good starting 
 * Catalog-Module for local and remote pouchdb stores.
   * local stores can be backuped to zip archives.
   * switch between stores on the fly.
+* User-Management and Login
+  * Provide a Login-form
+  * Provide User-Management / Users and Roles (add, remove)
+  * Encrypt and decrypt data to store them localy via Elecron-Conf
+  * persist current user, for automatic login.
 
 ## React Pitfalls
 
@@ -42,19 +48,23 @@ If you also want to build an app with this setup, this could be a good starting 
 
 Database. Settings and switch. This is an example for a `List`. The Name of the active catalog shows up in the Application-Title.
 
-![Screenshot Database Settings and Switch](readme-images/screenshot-001.png)
+![login Screen](readme-images/screenshot-001.png)
+
+Session stays open if you with so,  so you will logged in automatically on next startup.
+
+![Screenshot Database Settings and Switch](readme-images/screenshot-002.png)
 
 IPC Ping-Pong. Note that the header buttons can also be hidden/deactivated.
 
-![Screenshot IPC Ping-Pong](readme-images/screenshot-002.png)
+![Screenshot IPC Ping-Pong](readme-images/screenshot-003.png)
 
 Example-Module User-`View`. THis is a non-editable view of a single entry from the list.
 
-![Screenshot Example-Module User-View](readme-images/screenshot-003.png)
+![Screenshot Example-Module User-View](readme-images/screenshot-004.png)
 
 Example-Module User-`Form`. A Formular, to create, or update Data:
 
-![Screenshot Example-Module User-Form](readme-images/screenshot-004.png)
+![Screenshot Example-Module User-Form](readme-images/screenshot-005.png)
 
 ## Use the Repo
 
@@ -140,7 +150,7 @@ git init
 # restore the backuped .gitignore
 ```
 
-run the commands:
+### run the commands
 
 ```bash
 #start the app
@@ -157,6 +167,11 @@ npm run make
 * Should run without errors.
 * Inspect the code for further reference.
 * Have fun and success with your project.
+
+## Login
+
+Login with username = `f_mueller` and password `f_mueller`.
+Example Users with different roles have username quals password.
 
 ## Update outdated packages
 
@@ -424,6 +439,20 @@ Research:
 npm install zip-a-folder
 npm install dayjs
 ```
+
+### User Management and Login
+
+* Encrypt and decrypt data to store them localy via Elecron-Conf
+* Users and Roles
+
+### SVG Support
+
+Display an SVG Image in this environment - used on the Login Page.
+
+* `npm install @svgr/webpack --save-dev`
+* add to `webpack.rules.ts`
+* create `custom.d.ts`
+* add to `tsconfig.json`
 
 ### Sign the App
 

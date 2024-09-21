@@ -8,6 +8,17 @@ export const DOCTYPE_CATALOG = "catalog";
 //* custom types
 
 export const DOCTYPE_USER = "user";
+export const TYPE_USERRIGHT_SUPERADMIN = "superadmin";
+export const TYPE_USERRIGHT_ADMIN = "admin";
+export const TYPE_USERRIGHT_READ_ONLY = "read-only";
+export const TYPE_USERRIGHT_READ_WRITE = "read-write";
+export const TYPE_USERRIGHT_NONE = "none";
+
+export type DocUserRights =
+  | typeof TYPE_USERRIGHT_ADMIN
+  | typeof TYPE_USERRIGHT_READ_ONLY
+  | typeof TYPE_USERRIGHT_READ_WRITE
+  | typeof TYPE_USERRIGHT_NONE;
 export const DOCTYPE_BOOK = "book";
 export const DOCTYPE_IPC = "ipc";
 

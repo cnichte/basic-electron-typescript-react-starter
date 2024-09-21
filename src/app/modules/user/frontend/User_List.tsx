@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import { List, Tooltip, Typography } from "antd";
+import { List, Popconfirm, Tooltip, Typography } from "antd";
 
 import {
   Action_Request,
@@ -76,7 +76,7 @@ export function User_List() {
     };
   }, []);
 
-  function onListItemDelete(item: DocUserType): any {
+  function handleDeletePopconfirmOk(item: DocUserType): any {
     const request: DB_RequestData<DocUserType> = {
       type: "request:delete",
       doctype: doctype,
@@ -87,13 +87,21 @@ export function User_List() {
     window.electronAPI
       .invoke_request(IPC_DATABASE, [request])
       .then((result: any) => {
-        App_Messages_IPC.request_message("request:message-success", App_Messages_IPC.get_message_from_request(request.type, doclabel));
+        App_Messages_IPC.request_message(
+          "request:message-success",
+          App_Messages_IPC.get_message_from_request(request.type, doclabel)
+        );
         reload_list();
       })
       .catch(function (error): any {
-        App_Messages_IPC.request_message("request:message-error", (error instanceof Error ? `Error: ${error.message}` : ""));
+        App_Messages_IPC.request_message(
+          "request:message-error",
+          error instanceof Error ? `Error: ${error.message}` : ""
+        );
       });
   }
+
+  const handleDeletePopconfirmCancel = (record: DocUserType) => {};
 
   function onListItemEdit(item: DocUserType): any {
     console.log(`/${item.docType}/form/${item._id}`);
@@ -107,6 +115,10 @@ export function User_List() {
 
   return (
     <>
+      <p>
+        Die interne Liste der Benutzer. Die Rechte werden durch eine AD-Abfrage
+        festgelegt.
+      </p>
       <List
         header={<div>Data in PouchDB: {listdata.length} Records</div>}
         footer={<div>{listdata.length}</div>}
@@ -126,13 +138,20 @@ export function User_List() {
                 </a>
               </Tooltip>,
               <Tooltip title={JSON.stringify(item)}>
-                <a key="_id" onClick={() => onListItemDelete(item)}>
-                  delete
-                </a>
+                <Popconfirm
+                  title="User löschen!"
+                  description="Bist du ganz sicher?"
+                  onConfirm={() => handleDeletePopconfirmOk(item)}
+                  onCancel={() => handleDeletePopconfirmCancel(item)}
+                >
+                  <a key="_id" style={{ color: "red" }}>
+                    Delete
+                  </a>
+                </Popconfirm>
               </Tooltip>,
             ]}
           >
-            <Typography.Text mark>[ITEM]</Typography.Text>{" "}
+            <Typography.Text mark> USER </Typography.Text>{" "}
             {JSON.stringify(item)}
           </List.Item>
         )}

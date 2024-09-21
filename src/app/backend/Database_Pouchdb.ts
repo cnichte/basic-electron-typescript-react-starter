@@ -1,6 +1,6 @@
 import PouchDB from "pouchdb";
 import find from "pouchdb-find";
-import { v4 as uuidv4 } from "uuid";
+import fs from "fs-extra";
 
 import { DatabaseCRUD_Interface } from "./Database_Types";
 import { FileTool } from "./FileTool";
@@ -12,16 +12,30 @@ import { pouchdb_relations } from "./Database_Pouchdb_Relations";
 import { DocumentCreator } from "./DocumentCreator";
 import { DocUser } from "../common/types/DocUser";
 import { DocBook } from "../common/types/DocBook";
+import { DocCatalogType } from "../common/types/DocCatalog";
 
 export class Database_Pouchdb implements DatabaseCRUD_Interface {
+  connection_template: DocCatalogType;
   databaseUri: string;
   db: any;
   useRelations: boolean;
-  constructor(databaseUri: string, useRelations: boolean = false) {
+
+  constructor(
+    connection_template: DocCatalogType,
+    databaseUri: string,
+    useRelations: boolean = false
+  ) {
     var self = this;
 
+    this.connection_template = connection_template;
     this.databaseUri = databaseUri;
     this.useRelations = useRelations;
+
+    console.log(
+      "Database connection_template",
+      this.connection_template,
+      this.databaseUri
+    );
 
     this.databaseUri =
       this.databaseUri + (this.databaseUri.endsWith("/") ? "" : "/");
@@ -180,7 +194,7 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
       return this.db.rel.find(type, id);
     } else {
       return new Promise((reject) => {
-        reject("Please use Relational Pouch...");
+        reject("TODO: use normal mango query for readFromRelationsID");
       });
     }
   }
@@ -214,5 +228,43 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
       .then((deleteDocs: any) => {
         return this.db.bulkDocs(deleteDocs);
       });
+  }
+
+  // https://stackoverflow.com/questions/37229561/how-to-import-export-database-from-pouchdb
+  // https://stackoverflow.com/questions/13405129/create-and-save-a-file-with-javascript/30832210#30832210
+
+  export_all(): Promise<any> {
+    let self = this;
+    return new Promise((resolve, reject) => {
+      // console.log("PERFORMING EXPORT: DB", this.db);
+      this.db
+        .allDocs({
+          include_docs: true,
+          attachments: true,
+        })
+        .then(function (result: { rows: any }) {
+          let file: string = FileTool.get_app_catalogs_path()
+            .concat(self.connection_template.dbName)
+            .concat(".json");
+
+          const json = result.rows;
+          const json_doc = json.map((item: any) => item.doc);
+
+          // console.log("PERFORMING EXPORT: file", file);
+          // console.log("PERFORMING EXPORT: json", json);
+          // console.log("PERFORMING EXPORT: json-doc", json_doc);
+
+          fs.outputJson(file, json_doc, { spaces: 4 })
+            .then(() => {
+              resolve(true);
+            })
+            .catch(function (error:any) {
+              reject(error);
+            });
+        })
+        .catch(function (err: any) {
+          console.log(err);
+        });
+    });
   }
 }

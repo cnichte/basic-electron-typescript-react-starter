@@ -20,7 +20,7 @@ export function User_View() {
   
   useEffect(() => {
     const request: DB_Request = {
-      type: "request:data",
+      type: "request:data-from-id",
       doctype: modul_props.doctype,
       id: id,
       options: {},
@@ -51,8 +51,22 @@ export function User_View() {
   }, []);
 
   return (
-    <Descriptions title="User View">
-      <Descriptions.Item label="Name">{dataObject?.name}</Descriptions.Item>
-    </Descriptions>
+    <>
+      <Descriptions layout="vertical" bordered title="User View">
+        <Descriptions.Item label="Benutzer Name">
+          {dataObject?.name}
+        </Descriptions.Item>
+        <Descriptions.Item label="Benutzer UserID / AD-Kennung">
+          {dataObject?.userid}
+        </Descriptions.Item>
+        <Descriptions.Item label="Benutzer Rechte">
+          {dataObject?.userrights}
+        </Descriptions.Item>
+      </Descriptions>
+      <Descriptions layout="horizontal" title="">
+        <Descriptions.Item label="id">{dataObject?._id}</Descriptions.Item>
+        <Descriptions.Item label="rev">{dataObject?._rev}</Descriptions.Item>
+      </Descriptions>
+    </>
   );
 }

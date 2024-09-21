@@ -21,7 +21,7 @@ export function Book_View() {
 
   useEffect(() => {
     const request: DB_Request = {
-      type: "request:data",
+      type: "request:data-from-id",
       doctype: doctype,
       id: id,
       options: {},

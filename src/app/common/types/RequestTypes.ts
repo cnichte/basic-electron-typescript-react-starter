@@ -8,16 +8,18 @@ import { ActionTarget, DocType } from "./DocType";
 export type DatabaseRequestType =
   // database
   | "request:list-all"
-  | "request:data"
+  | "request:data-from-id"
+  | "request:data-from-query"
   | "request:create"
   | "request:save"
   | "request:delete";
 
 export interface DB_Request {
   type: DatabaseRequestType;
-  doctype: DocType; // equals a 'module'
+  doctype?: DocType; // equals a 'module'
   id?: string;
-  options: any;
+  query?: Object;
+  options?: any;
 }
 
 export interface DB_RequestData<T> extends DB_Request {
@@ -39,13 +41,16 @@ export type SettingsRequestType =
   | "request:switch-catalog"
   | "request:save-startoption-selected"
   | "request:save-startoption-opensOnStartup"
-  | "request:database-backup";
+  | "request:database-backup"
+  | "request:database-export"
+  | "request:get-current-user"
+  | "request:set-current-user";
 
 export interface Settings_Request {
   type: SettingsRequestType;
-  doctype: DocType; // equals a 'module'
+  doctype?: DocType; // equals a 'module'
   id?: string;
-  options: any;
+  options?: any;
 }
 export interface Settings_RequestData<T> extends Settings_Request {
   data: T;

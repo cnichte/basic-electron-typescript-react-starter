@@ -1,23 +1,16 @@
 import { createContext } from "react";
-import { DocType } from "../common/types/DocType";
-import { ViewType } from "./types/ViewType";
+import { DocUser } from "../common/types/DocUser";
 
+// This is the users session.
 export interface ContextData {
-  
-  viewtype: ViewType;
-  setViewtype:any;
-  
-  doctype: DocType;
-  setDoctype:any;
+  currentUser: DocUser | null;
+  setCurrentUser:any;
 }
 
 // https://react.dev/learn/passing-data-deeply-with-context
 // https://react.dev/reference/react/useContext
 // https://stackoverflow.com/questions/41030361/how-to-update-react-context-from-inside-a-child-component
 export const App_Context = createContext<ContextData>({
-  viewtype: "list",
-  setViewtype: () => {},
-  doctype: "user",
-  setDoctype: () => {}
-
-}); // ArtworkSection
+  currentUser: null,
+  setCurrentUser: () => {}
+});

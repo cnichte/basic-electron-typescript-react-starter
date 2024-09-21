@@ -17,5 +17,5 @@
     },
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*", "i18next.config.js"]
+  "include": ["src/**/*", "custom.d.ts" , "i18next.config.js"], 
 }
