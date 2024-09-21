@@ -46,7 +46,7 @@ If you also want to build an app with this setup, this could be a good starting 
 
 ## How it Looks
 
-Login Screen. The session stays open if you with so,  so you will logged in automatically on next startup.
+Login Screen. The session stays open if you wish, so you will logged in automatically on next startup.
 
 ![login Screen](readme-images/screenshot-001.png)
 
