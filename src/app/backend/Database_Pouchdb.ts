@@ -146,7 +146,7 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
   initialize(exampleData: boolean, createViews: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
       if (exampleData) {
-        db_initialize();
+        db_initialize(this.db);
       }
 
       if (createViews) {
