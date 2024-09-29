@@ -9,10 +9,8 @@ import {
   PouchDB_Info_Remotestore,
 } from "../common/types/PouchDB_InfoTypes";
 import { pouchdb_relations } from "./Database_Pouchdb_Relations";
-import { DocumentCreator } from "./DocumentCreator";
-import { DocUser } from "../common/types/DocUser";
-import { DocBook } from "../common/types/DocBook";
 import { DocCatalogType } from "../common/types/DocCatalog";
+import { db_initialize } from "./Database_Pouchdb_Initialize";
 
 export class Database_Pouchdb implements DatabaseCRUD_Interface {
   connection_template: DocCatalogType;
@@ -148,8 +146,7 @@ export class Database_Pouchdb implements DatabaseCRUD_Interface {
   initialize(exampleData: boolean, createViews: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
       if (exampleData) {
-        DocumentCreator.loadTo<DocUser>(this, "./docs-json/users.json", DocUser);
-        DocumentCreator.loadTo<DocBook>(this, "./docs-json/books.json", DocBook);
+        db_initialize();
       }
 
       if (createViews) {

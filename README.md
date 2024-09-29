@@ -39,6 +39,7 @@ If you also want to build an app with this setup, this could be a good starting 
   * Provide User-Management / Users and Roles (add, remove)
   * Encrypt and decrypt data to store them localy via Elecron-Conf
   * persist current user, for automatic login.
+* Notifications
 
 ## React Pitfalls
 
@@ -479,6 +480,15 @@ npm install electron-devtools-installer --save-dev
 ```bash
 --enable-source-maps
 ```
+
+### Notifications
+
+* <https://www.electronjs.org/de/docs/latest/tutorial/notifications>
+
+### Online / Offline detection
+
+* <https://www.electronjs.org/de/docs/latest/tutorial/online-offline-events>
+* im frontend: navigator.onLine ? 'online' : 'offline'
 
 ### Issues (so far)
 

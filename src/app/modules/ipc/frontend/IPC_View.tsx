@@ -123,6 +123,10 @@ export function IPC_View() {
 
         <h3>Pattern 4: Render to renderer</h3>
         <p>Is implemented via the Header-Buttons and FormViews.</p>
+
+        <hr/>
+        <p>TODO: Den Online-Status an das Backend übergeben</p>
+        <p>{navigator.onLine ? 'online' : 'offline'}</p>
       </Flex>
     </>
   );
